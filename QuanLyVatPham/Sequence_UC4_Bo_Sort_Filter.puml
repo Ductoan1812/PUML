@@ -1,0 +1,64 @@
+@startuml Sequence_UC4_Bo_Sort_Filter
+!theme plain
+
+title Biểu đồ Trình tự - UC Bỏ & Sort & Filter
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Mở inventory với items
+activate UI
+
+alt Sort/Filter operation
+    Player -> UI: 2. Chọn Sort/Filter function
+    UI -> System: 3. Yêu cầu sort items
+    activate System
+    
+    System -> DB: 4. Lấy danh sách items
+    activate DB
+    DB --> System: 5. Trả về item list
+    deactivate DB
+    
+    System -> System: 6. Chọn tiêu chí sắp xếp
+    System -> System: 7. Sắp xếp items
+    
+    System --> UI: 8. Trả về sorted list
+    UI --> Player: 9. Hiển thị inventory đã sắp xếp
+    
+else Drop item operation
+    Player -> UI: 10. Chọn Drop item
+    UI --> Player: 11. Hiển thị confirmation dialog
+    
+    Player -> UI: 12. Xác nhận drop
+    
+    alt player confirms
+        UI -> System: 13. Yêu cầu drop item
+        activate System
+        
+        System -> DB: 14. Xóa item khỏi inventory
+        activate DB
+        DB --> System: 15. Xác nhận item removed
+        deactivate DB
+        
+        System -> DB: 16. Cập nhật slot count
+        activate DB
+        DB --> System: 17. Xác nhận slots updated
+        deactivate DB
+        
+        System --> UI: 18. Thông báo item dropped
+        UI --> Player: 19. Item bị xóa, có slot trống
+        
+        deactivate System
+        
+    else player cancels
+        UI --> Player: 20. Hủy thao tác, item vẫn còn
+    end
+end
+
+deactivate UI
+
+@enduml
+
+

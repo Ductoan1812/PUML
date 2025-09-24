@@ -1,0 +1,37 @@
+@startuml Activity_UC3_Update_Animation
+!theme plain
+
+title Biểu đồ Hoạt động - UC Update Animation
+
+|Player|
+start
+:nhân vật đã thực hiện hành động;
+
+|System|
+:xác định loại hành động đang thực hiện;
+:chọn animation phù hợp;
+
+if (tìm thấy animation?) then (yes)
+  :cập nhật frame animation;
+  :đồng bộ animation với tốc độ di chuyển;
+  :render sprite với animation mới;
+  
+  |Player|
+  :nhìn thấy animation phù hợp;
+  :tiếp tục hành động;
+  
+else (no)
+  :sử dụng animation mặc định;
+  :log lỗi để debug;
+  :render sprite với animation mặc định;
+  
+  |Player|
+  :nhìn thấy animation mặc định;
+  :tiếp tục hành động;
+endif
+
+stop
+
+@enduml
+
+

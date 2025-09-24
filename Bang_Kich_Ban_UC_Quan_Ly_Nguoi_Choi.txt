@@ -1,0 +1,73 @@
+BẢNG KỊCH BẢN USE CASE - UC QUẢN LÝ NGƯỜI CHƠI
+
+========================================
+
+UC 1: QUẢN LÝ LEVEL
+
+Tên Use Case	Quản lý level
+Tác nhân	Hệ thống
+Mục đích	Quản lý việc nâng cấp level và phân phối điểm kỹ năng cho nhân vật
+Điều kiện tiên quyết	Nhân vật có đủ EXP để lên level hoặc có điểm kỹ năng chưa phân phối
+Hậu điều kiện	Level được nâng cấp và điểm kỹ năng được phân phối
+Luồng sự kiện	Kiểm tra EXP hiện tại so với EXP cần thiết - Tự động nâng level khi đủ EXP - Tăng HP và MP tối đa - Cộng điểm kỹ năng mới - Hiển thị thông báo Level Up - Cho phép player phân phối điểm kỹ năng
+Luồng sự kiện thay thế	EXP chưa đủ để lên level - Chỉ hiển thị thanh EXP progress - Không có thay đổi level | Player không phân phối điểm kỹ năng - Để điểm kỹ năng ở trạng thái chờ - Có thể phân phối sau
+
+========================================
+
+UC 2: QUẢN LÝ KỸ NĂNG
+
+Tên Use Case	Quản lý kỹ năng
+Tác nhân	Player
+Mục đích	Player quản lý và nâng cấp các kỹ năng của nhân vật
+Điều kiện tiên quyết	Player mở skill tree và có điểm skill hoặc đủ điều kiện học skill mới
+Hậu điều kiện	Kỹ năng được nâng cấp hoặc học mới thành công
+Luồng sự kiện	Player mở skill tree interface - Xem danh sách kỹ năng có thể học/nâng cấp - Chọn kỹ năng muốn đầu tư - Kiểm tra điều kiện và cost - Xác nhận nâng cấp - Cập nhật skill level và hiệu ứng
+Luồng sự kiện thay thế	Không đủ skill point - Hiển thị thông báo "Không đủ điểm kỹ năng" - Không thể nâng cấp | Chưa đủ level requirement - Hiển thị "Cần level X để học skill này" - Skill bị khóa
+
+========================================
+
+UC 3: SỬ DỤNG VẬT PHẨM
+
+Tên Use Case	Sử dụng vật phẩm
+Tác nhân	Player
+Mục đích	Player sử dụng các vật phẩm tiêu hao như potion, buff item
+Điều kiện tiên quyết	Player có vật phẩm có thể sử dụng trong inventory
+Hậu điều kiện	Vật phẩm được sử dụng và hiệu ứng được áp dụng
+Luồng sự kiện	Player click/hotkey vật phẩm muốn sử dụng - Kiểm tra vật phẩm có thể sử dụng - Kiểm tra cooldown của loại vật phẩm - Áp dụng hiệu ứng lên nhân vật - Trừ số lượng vật phẩm - Hiển thị animation và sound effect
+Luồng sự kiện thay thế	Vật phẩm đang trong cooldown - Hiển thị thời gian cooldown còn lại - Không thể sử dụng | HP/MP đã full khi dùng potion hồi phục - Hiển thị "HP/MP đã đầy" - Không tiêu tốn vật phẩm
+
+========================================
+
+UC 4: TRANG BỊ VẬT PHẨM
+
+Tên Use Case	Trang bị vật phẩm
+Tác nhân	Player
+Mục đích	Player trang bị hoặc gỡ bỏ vũ khí, giáp, phụ kiện
+Điều kiện tiên quyết	Player có equipment trong inventory hoặc đã trang bị
+Hậu điều kiện	Equipment được trang bị/gỡ bỏ và chỉ số nhân vật thay đổi
+Luồng sự kiện	Player drag-drop hoặc double-click equipment - Kiểm tra điều kiện trang bị (level, class) - Gỡ bỏ equipment cũ nếu có - Trang bị equipment mới - Cập nhật stats nhân vật - Cập nhật appearance của nhân vật
+Luồng sự kiện thay thế	Level không đủ để trang bị - Hiển thị "Cần level X" - Không thể trang bị | Class không phù hợp - Hiển thị "Chỉ dành cho class Y" - Equipment bị từ chối
+
+========================================
+
+UC 5: HIỂN THỊ THÔNG TIN
+
+Tên Use Case	Hiển thị thông tin
+Tác nhân	Hệ thống
+Mục đích	Hiển thị thông tin chi tiết về nhân vật trên giao diện
+Điều kiện tiên quyết	Player mở character info panel
+Hậu điều kiện	Tất cả thông tin nhân vật được hiển thị đầy đủ và chính xác
+Luồng sự kiện	Lấy dữ liệu nhân vật từ database - Tính toán stats tổng hợp (base + equipment + buff) - Hiển thị thông tin cơ bản (level, HP, MP, EXP) - Hiển thị stats chi tiết (STR, AGI, INT, etc.) - Hiển thị equipment đang trang bị - Cập nhật real-time khi có thay đổi
+Luồng sự kiện thay thế	Lỗi load dữ liệu - Hiển thị thông tin cached - Thông báo "Đang cập nhật thông tin" | Dữ liệu bị conflict - Refresh từ server - Đồng bộ lại thông tin
+
+========================================
+
+UC 6: CẬP NHẬT CHỈ SỐ
+
+Tên Use Case	Cập nhật chỉ số
+Tác nhân	Hệ thống
+Mục đích	Tự động cập nhật các chỉ số nhân vật khi có thay đổi
+Điều kiện tiên quyết	Có sự thay đổi ảnh hưởng đến stats nhân vật
+Hậu điều kiện	Tất cả chỉ số được cập nhật chính xác và đồng bộ
+Luồng sự kiện	Phát hiện sự thay đổi (level up, equip, buff, etc.) - Tính toán lại base stats - Áp dụng bonus từ equipment - Áp dụng modifier từ skill/buff - Cập nhật derived stats (max HP, damage, etc.) - Đồng bộ với UI và database
+Luồng sự kiện thay thế	Có conflict trong tính toán - Sử dụng giá trị an toàn - Log lỗi để debug | Database sync thất bại - Lưu thay đổi local - Retry sync khi có kết nối

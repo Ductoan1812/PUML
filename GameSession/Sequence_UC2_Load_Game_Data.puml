@@ -1,0 +1,65 @@
+@startuml Sequence_UC2_Load_Game_Data
+!theme plain
+
+title Biểu đồ Trình tự - UC Load Game Data
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Chờ đợi loading
+activate UI
+UI -> System: 2. Bắt đầu load game data
+activate System
+
+System -> DB: 3. Load thông tin nhân vật
+activate DB
+DB --> System: 4. Trả về data nhân vật
+deactivate DB
+
+System -> UI: 5. Cập nhật loading progress (25%)
+UI --> Player: 6. Hiển thị progress bar
+
+System -> DB: 7. Load dữ liệu bản đồ
+activate DB
+DB --> System: 8. Trả về data bản đồ
+deactivate DB
+
+System -> UI: 9. Cập nhật loading progress (50%)
+UI --> Player: 10. Hiển thị progress bar
+
+System -> DB: 11. Load trạng thái NPC
+activate DB
+DB --> System: 12. Trả về data NPC
+deactivate DB
+
+System -> UI: 13. Cập nhật loading progress (75%)
+UI --> Player: 14. Hiển thị progress bar
+
+System -> DB: 15. Load tiến trình quest
+activate DB
+
+alt load thành công
+    DB --> System: 16. Trả về data quest
+    deactivate DB
+    
+    System -> UI: 17. Cập nhật loading progress (100%)
+    System --> UI: 18. Thông báo load hoàn thành
+    UI --> Player: 19. Hiển thị "Loading completed"
+    
+else lỗi khi load dữ liệu
+    DB --> System: 20. Trả về lỗi
+    deactivate DB
+    
+    System --> UI: 21. Thông báo lỗi load
+    UI --> Player: 22. Hiển thị "Load failed"
+    UI --> Player: 23. Quay về menu chính
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

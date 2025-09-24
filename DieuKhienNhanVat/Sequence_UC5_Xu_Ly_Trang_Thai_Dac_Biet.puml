@@ -1,0 +1,82 @@
+@startuml Sequence_UC5_Xu_Ly_Trang_Thai_Dac_Biet
+!theme plain
+
+title Biểu đồ Trình tự - UC Xử Lý Trạng Thái Đặc Biệt
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Nhân vật nhận hiệu ứng đặc biệt
+activate UI
+UI -> System: 2. Apply status effect
+activate System
+
+System -> DB: 3. Lấy thông tin status effect
+activate DB
+DB --> System: 4. Trả về loại và thông tin effect
+deactivate DB
+
+System -> System: 5. Xác định loại trạng thái (buff/debuff/CC/special)
+
+alt trạng thái tiêu cực (debuff/CC)
+    alt CC effects (stun/freeze/silence)
+        System -> System: 6. Vô hiệu hóa input tương ứng
+        System -> System: 7. Phát animation CC
+        System --> UI: 8. Hiển thị CC effects
+        UI --> Player: 9. Bị hạn chế điều khiển
+        
+    else debuff effects (poison/slow/weakness)
+        System -> DB: 10. Áp dụng debuff stats
+        activate DB
+        DB --> System: 11. Stats modified
+        deactivate DB
+        
+        System --> UI: 12. Hiển thị debuff icon
+        UI --> Player: 13. Chịu ảnh hưởng tiêu cực
+    end
+    
+    System -> System: 14. Bắt đầu timer
+    
+    alt player sử dụng cleanse/dispel
+        Player -> UI: 15. Sử dụng cleanse skill
+        UI -> System: 16. Yêu cầu dispel
+        
+        System -> DB: 17. Kiểm tra cleanse ability
+        activate DB
+        DB --> System: 18. Xác nhận có thể dispel
+        deactivate DB
+        
+        System -> System: 19. Kết thúc sớm negative effects
+        System --> UI: 20. Thông báo dispel thành công
+        UI --> Player: 21. Thoát khỏi hiệu ứng tiêu cực
+        
+    else hết thời gian tự nhiên
+        System -> System: 22. Timer expired
+        System -> System: 23. Tự động khôi phục
+        System --> UI: 24. Kết thúc hiệu ứng
+        UI --> Player: 25. Trở về trạng thái bình thường
+    end
+    
+else trạng thái tích cực (buff/special)
+    System -> DB: 26. Áp dụng buff effects
+    activate DB
+    DB --> System: 27. Buff stats applied
+    deactivate DB
+    
+    System -> System: 28. Bắt đầu buff timer
+    System --> UI: 29. Hiển thị buff icon
+    UI --> Player: 30. Nhận lợi ích từ buff
+    
+    System -> System: 31. Buff timer expired
+    System --> UI: 32. Kết thúc buff
+    UI --> Player: 33. Trở về stats bình thường
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

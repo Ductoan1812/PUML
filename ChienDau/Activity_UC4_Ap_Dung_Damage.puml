@@ -1,0 +1,40 @@
+@startuml Activity_UC4_Ap_Dung_Damage
+!theme plain
+
+title Biểu đồ Hoạt động - UC Áp Dụng Damage & Hiệu Ứng
+
+|Player|
+start
+:đã tính toán xong damage;
+
+|System|
+:trừ HP của mục tiêu theo damage;
+:áp dụng hiệu ứng đặc biệt (poison, stun, etc.);
+:hiển thị damage number;
+:phát animation nhận damage;
+:kiểm tra HP mục tiêu sau khi nhận damage;
+
+if (HP mục tiêu <= 0?) then (yes)
+  :mục tiêu bị tiêu diệt;
+  :player nhận EXP;
+  :kích hoạt UC "Rơi vật phẩm";
+  
+  |Player|
+  :nhìn thấy mục tiêu chết;
+  :nhận EXP;
+  :có thể nhận vật phẩm;
+  
+else (no)
+  :mục tiêu vẫn sống;
+  :tiếp tục combat;
+  
+  |Player|
+  :nhìn thấy damage dealt;
+  :tiếp tục chiến đấu;
+endif
+
+stop
+
+@enduml
+
+

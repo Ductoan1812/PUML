@@ -1,0 +1,81 @@
+# Bảng Kịch Bản Use Case - UC Điều Khiển Nhân Vật
+
+## UC: Đọc Input
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Đọc Input |
+| **ID** | UC-CTRL-001 |
+| **Tác nhân** | Hệ thống |
+| **Mô tả** | Hệ thống đọc và xử lý input từ bàn phím/chuột của player |
+| **Điều kiện tiên quyết** | Game đang ở trạng thái active, nhân vật không bị khống chế |
+| **Hậu điều kiện** | Input được xác định và sẵn sàng xử lý |
+| **Kịch bản chính** | 1. Hệ thống lắng nghe input từ bàn phím/chuột<br>2. Xác định loại input (di chuyển, tấn công, kỹ năng)<br>3. Validate input hợp lệ<br>4. Chuyển input đến module xử lý tương ứng |
+| **Kịch bản ngoại lệ** | 3a. Input không hợp lệ<br>&nbsp;&nbsp;&nbsp;&nbsp;3a1. Bỏ qua input<br>&nbsp;&nbsp;&nbsp;&nbsp;3a2. Tiếp tục lắng nghe input mới |
+
+---
+
+## UC: Áp dụng vận động
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Áp dụng vận động |
+| **ID** | UC-CTRL-002 |
+| **Tác nhân** | Hệ thống |
+| **Mô tả** | Hệ thống áp dụng các thay đổi vị trí và chuyển động cho nhân vật |
+| **Điều kiện tiên quyết** | Đã có input di chuyển hợp lệ |
+| **Hậu điều kiện** | Nhân vật di chuyển đến vị trí mới hoặc thực hiện hành động |
+| **Kịch bản chính** | 1. Tính toán vị trí mới dựa trên input<br>2. Kiểm tra collision với môi trường<br>3. Kiểm tra giới hạn bản đồ<br>4. Cập nhật vị trí nhân vật<br>5. Cập nhật camera theo nhân vật |
+| **Kịch bản ngoại lệ** | 2a. Có collision với vật cản<br>&nbsp;&nbsp;&nbsp;&nbsp;2a1. Dừng di chuyển<br>&nbsp;&nbsp;&nbsp;&nbsp;2a2. Giữ nguyên vị trí hiện tại<br>3a. Vượt quá giới hạn bản đồ<br>&nbsp;&nbsp;&nbsp;&nbsp;3a1. Giới hạn vị trí trong phạm vi cho phép |
+
+---
+
+## UC: Update Animation
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Update Animation |
+| **ID** | UC-CTRL-003 |
+| **Tác nhân** | Hệ thống |
+| **Mô tả** | Hệ thống cập nhật animation phù hợp với hành động của nhân vật |
+| **Điều kiện tiên quyết** | Nhân vật đã thực hiện hành động |
+| **Hậu điều kiện** | Animation được phát tương ứng với hành động |
+| **Kịch bản chính** | 1. Xác định loại hành động đang thực hiện<br>2. Chọn animation phù hợp<br>3. Cập nhật frame animation<br>4. Đồng bộ animation với tốc độ di chuyển<br>5. Render sprite với animation mới |
+| **Kịch bản ngoại lệ** | 2a. Không tìm thấy animation phù hợp<br>&nbsp;&nbsp;&nbsp;&nbsp;2a1. Sử dụng animation mặc định<br>&nbsp;&nbsp;&nbsp;&nbsp;2a2. Log lỗi để debug |
+
+---
+
+## UC: Lăn né
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Lăn né |
+| **ID** | UC-CTRL-004 |
+| **Tác nhân** | Player |
+| **Mô tả** | Player thực hiện hành động lăn né để tránh tấn công |
+| **Điều kiện tiên quyết** | Player nhấn phím lăn né, nhân vật có đủ stamina |
+| **Hậu điều kiện** | Nhân vật thực hiện lăn né, tạm thời miễn nhiễm damage |
+| **Kịch bản chính** | 1. Player nhấn phím lăn né (Shift + hướng di chuyển)<br>2. Kiểm tra stamina hiện tại<br>3. Trừ stamina cần thiết<br>4. Kích hoạt trạng thái invincible tạm thời<br>5. Di chuyển nhanh theo hướng đã chọn<br>6. Phát animation lăn né<br>7. Kết thúc trạng thái invincible |
+| **Kịch bản ngoại lệ** | 2a. Không đủ stamina<br>&nbsp;&nbsp;&nbsp;&nbsp;2a1. Hiển thị thông báo "Không đủ stamina"<br>&nbsp;&nbsp;&nbsp;&nbsp;2a2. Không thực hiện lăn né |
+
+---
+
+## UC: Bị khống chế
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tén UC** | Bị khống chế |
+| **ID** | UC-CTRL-005 |
+| **Tác nhân** | Hệ thống |
+| **Mô tả** | Nhân vật bị áp dụng hiệu ứng khống chế (stun, freeze, etc.) |
+| **Điều kiện tiên quyết** | Nhân vật bị tấn công bởi skill có hiệu ứng khống chế |
+| **Hậu điều kiện** | Nhân vật không thể di chuyển/hành động trong thời gian nhất định |
+| **Kịch bản chính** | 1. Nhận hiệu ứng khống chế từ skill kẻ thù<br>2. Xác định loại và thời gian khống chế<br>3. Vô hiệu hóa input của player<br>4. Phát animation bị khống chế<br>5. Đếm ngược thời gian khống chế<br>6. Khôi phục khả năng điều khiển |
+| **Kịch bản ngoại lệ** | 6a. Player sử dụng skill giải khống chế<br>&nbsp;&nbsp;&nbsp;&nbsp;6a1. Kết thúc sớm trạng thái khống chế<br>&nbsp;&nbsp;&nbsp;&nbsp;6a2. Khôi phục điều khiển ngay lập tức |
+
+## UC: Xử lý trạng thái đặc biệt
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tén UC** | Xử lý trạng thái đặc biệt |
+| **ID** | UC-CTRL-005 |
+| **Tác nhân** | Hệ thống |
+| **Mô tả** | Nhân vật nhận và xử lý các trạng thái đặc biệt (buff, debuff, CC, special effects) |
+| **Điều kiện tiên quyết** | Nhân vật nhận hiệu ứng từ skill, item hoặc môi trường |
+| **Hậu điều kiện** | Trạng thái đặc biệt được áp dụng và quản lý theo thời gian |
+| **Kịch bản chính** | 1. Nhận trạng thái đặc biệt từ nguồn (skill/item/environment)<br>2. Xác định loại trạng thái (buff/debuff/CC/special)<br>3. Áp dụng hiệu ứng tương ứng lên nhân vật<br>4. Hiển thị visual effects và UI indicators<br>5. Bắt đầu timer cho duration<br>6. Tự động kết thúc khi hết thời gian |
+| **Kịch bản ngoại lệ** | 5a. Player sử dụng cleanse/dispel skill<br>&nbsp;&nbsp;&nbsp;&nbsp;5a1. Kiểm tra khả năng dispel<br>&nbsp;&nbsp;&nbsp;&nbsp;5a2. Kết thúc sớm trạng thái tiêu cực<br>&nbsp;&nbsp;&nbsp;&nbsp;5a3. Khôi phục trạng thái bình thường<br>3b. Trạng thái là buff tích cực<br>&nbsp;&nbsp;&nbsp;&nbsp;3b1. Tăng cường stats/abilities<br>&nbsp;&nbsp;&nbsp;&nbsp;3b2. Hiển thị buff icons<br>&nbsp;&nbsp;&nbsp;&nbsp;3b3. Player nhận lợi ích từ buff |

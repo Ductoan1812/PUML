@@ -1,0 +1,71 @@
+@startuml Sequence_UC3_Hoan_Thanh_Nhiem_Vu
+!theme plain
+
+title Biểu đồ Trình tự - UC Hoàn Thành Nhiệm Vụ
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Tương tác với NPC để nộp quest
+activate UI
+UI -> System: 2. Yêu cầu nộp quest
+activate System
+
+System -> DB: 3. Kiểm tra quest completion status
+activate DB
+DB --> System: 4. Trả về completion status
+deactivate DB
+
+alt quest chưa hoàn thành
+    System --> UI: 5. Thông báo "Quest chưa hoàn thành"
+    UI --> Player: 6. Hiển thị objectives chưa xong
+    UI --> Player: 7. Không thể nộp quest
+    
+else quest đã hoàn thành
+    System -> DB: 8. Kiểm tra NPC có phải quest giver
+    activate DB
+    DB --> System: 9. Trả về NPC validation
+    deactivate DB
+    
+    alt sai NPC
+        System --> UI: 10. Thông báo "Không thể nộp tại đây"
+        UI --> Player: 11. Chỉ dẫn đến đúng NPC
+        
+    else đúng NPC
+        System -> DB: 12. Lấy quest summary và rewards
+        activate DB
+        DB --> System: 13. Trả về quest details
+        deactivate DB
+        
+        System --> UI: 14. Hiển thị quest summary
+        UI --> Player: 15. Xem tổng kết và rewards
+        
+        Player -> UI: 16. Xác nhận nộp quest
+        UI -> System: 17. Confirm quest submission
+        
+        System -> DB: 18. Final validate objectives
+        activate DB
+        DB --> System: 19. Xác nhận tất cả objectives done
+        deactivate DB
+        
+        System -> System: 20. Trigger reward system
+        
+        System -> DB: 21. Xóa quest khỏi active list
+        activate DB
+        DB --> System: 22. Xác nhận quest removed
+        deactivate DB
+        
+        System --> UI: 23. Thông báo quest submitted
+        UI --> Player: 24. Quest nộp thành công
+        UI --> Player: 25. Chuyển sang nhận rewards
+    end
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

@@ -1,0 +1,52 @@
+@startuml Activity_UC6_Thoat_Game
+!theme plain
+
+title Biểu đồ Hoạt động - UC Thoát Game
+
+|Player|
+start
+:chọn "Exit Game" từ menu;
+
+|System|
+:hiển thị xác nhận "Are you sure you want to exit?";
+
+|Player|
+if (chọn Yes?) then (yes)
+  :xác nhận thoát;
+  
+  |System|
+  :kiểm tra unsaved progress;
+  
+  if (có unsaved progress?) then (unsaved)
+    :hiển thị "Save before exit?";
+    
+    |Player|
+    if (chọn Save?) then (save)
+      :xác nhận save trước khi thoát;
+      
+      |System|
+      :tự động save game;
+      :đóng tất cả connections;
+      :clean up resources;
+      :thoát game process;
+      
+    else (don't save)
+      :đóng tất cả connections;
+      :clean up resources;
+      :thoát game process;
+    endif
+    
+  else (no unsaved)
+    :đóng tất cả connections;
+    :clean up resources;
+    :thoát game process;
+  endif
+  
+else (no)
+  :hủy bỏ exit operation;
+  
+  |Player|
+  :quay về menu hoặc game;
+endif
+
+stop

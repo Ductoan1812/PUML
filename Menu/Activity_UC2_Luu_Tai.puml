@@ -1,0 +1,47 @@
+@startuml Activity_UC2_Luu_Tai
+!theme plain
+
+title Biểu đồ Hoạt động - UC Lưu&Tải
+
+|Player|
+start
+:chọn Save/Load từ menu;
+
+|System|
+:hiển thị danh sách save slots;
+
+|Player|
+:chọn slot muốn save/load;
+
+|System|
+if (là thao tác Save?) then (save)
+  :ghi dữ liệu game vào file;
+  :cập nhật save slot info;
+  :hiển thị thông báo "Game saved successfully";
+  
+  |Player|
+  :xác nhận save thành công;
+  
+else (load)
+  :đọc dữ liệu từ save file;
+  :validate save file integrity;
+  
+  if (save file hợp lệ?) then (valid)
+    :cập nhật game state;
+    :load character data;
+    :load world state;
+    :hiển thị thông báo "Game loaded successfully";
+    
+    |Player|
+    :tiếp tục chơi từ save point;
+    
+  else (corrupt)
+    :hiển thị "Save file corrupted";
+    :không thể load game;
+    
+    |Player|
+    :chọn save slot khác hoặc tạo mới;
+  endif
+endif
+
+stop

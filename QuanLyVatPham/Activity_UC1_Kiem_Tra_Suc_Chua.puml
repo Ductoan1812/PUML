@@ -1,0 +1,46 @@
+@startuml Activity_UC1_Kiem_Tra_Suc_Chua
+!theme plain
+
+title Biểu đồ Hoạt động - UC Kiểm tra Sức chứa
+
+|Player|
+start
+:thực hiện hành động liên quan đến vật phẩm;
+
+|System|
+:đếm số slot đã sử dụng trong inventory;
+:kiểm tra số slot tối đa;
+:tính toán slot còn trống;
+:kiểm tra khối lượng hiện tại và giới hạn;
+
+if (inventory đã đầy slot?) then (yes)
+  :hiển thị thông báo "Inventory đầy";
+  :không thể thêm vật phẩm mới;
+  
+  |Player|
+  :nhận thông báo inventory đầy;
+  :cần dọn dẹp inventory;
+  
+else (no)
+  if (vượt quá giới hạn khối lượng?) then (yes)
+    :hiển thị thông báo "Quá tải trọng";
+    :không thể thêm vật phẩm;
+    
+    |Player|
+    :nhận thông báo quá tải;
+    :cần giảm khối lượng;
+    
+  else (no)
+    :xác nhận có thể thêm vật phẩm mới;
+    
+    |Player|
+    :có thể thêm vật phẩm;
+    :tiếp tục thao tác;
+  endif
+endif
+
+stop
+
+@enduml
+
+

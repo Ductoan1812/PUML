@@ -1,0 +1,53 @@
+@startuml Activity_Main_UC_Quan_Ly_Nhiem_Vu
+!theme plain
+
+title Biểu đồ Hoạt động Tổng quát - UC Quản Lý Nhiệm Vụ
+
+|Player|
+start
+:tương tác với quest system;
+
+|System|
+if (player tương tác với NPC?) then (yes)
+  :thực hiện UC "Nhận nhiệm vụ";
+  note right: Include - khi tương tác NPC
+  
+  |Player|
+  :có quest mới trong quest log;
+endif
+
+:thực hiện UC "Theo dõi tiến độ";
+note right: Include - liên tục khi có active quest
+
+if (player thực hiện hành động?) then (yes)
+  |Player|
+  :quest progress được cập nhật;
+  
+  if (quest objectives hoàn thành?) then (yes)
+    :thực hiện UC "Hoàn thành nhiệm vụ";
+    note right: Include - khi quest done
+    
+    :thực hiện UC "Phần thưởng";
+    note right: Include - sau khi nộp quest
+    
+    |Player|
+    :nhận EXP, gold, items;
+  endif
+endif
+
+if (đăng nhập hoặc trigger điều kiện đặc biệt?) then (yes)
+  :thực hiện UC "Nhiệm vụ ngày & phụ";
+  note right: Extend - daily/event/side quests
+  
+  |Player|
+  :có thêm quest đặc biệt;
+  
+else (no)
+  |Player|
+  :chỉ có quest thường;
+endif
+
+stop
+
+@enduml
+

@@ -1,0 +1,92 @@
+@startuml Sequence_UC4_Theo_Doi_Tien_Do
+!theme plain
+
+title Biểu đồ Trình tự - UC Theo Dõi Tiến Độ
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Thực hiện hành động (kill, collect, etc.)
+activate UI
+UI -> System: 2. Report player action
+activate System
+
+System -> DB: 3. Lấy danh sách active quests
+activate DB
+DB --> System: 4. Trả về active quest list
+deactivate DB
+
+System -> System: 5. Monitor và so sánh với objectives
+
+System -> DB: 6. Kiểm tra action khớp objectives
+activate DB
+DB --> System: 7. Trả về matching objectives
+deactivate DB
+
+alt có objectives khớp
+    System -> DB: 8. Kiểm tra multiple quests cùng objective
+    activate DB
+    DB --> System: 9. Trả về affected quests
+    deactivate DB
+    
+    alt multiple quests affected
+        System -> DB: 10. Cập nhật progress cho tất cả
+        activate DB
+        DB --> System: 11. Xác nhận all progress updated
+        deactivate DB
+        
+        System --> UI: 12. Thông báo multiple quest progress
+        UI --> Player: 13. Hiển thị nhiều quest tiến bộ
+        
+    else single quest affected
+        System -> DB: 14. Cập nhật progress counter
+        activate DB
+        DB --> System: 15. Xác nhận progress updated
+        deactivate DB
+        
+        System --> UI: 16. Thông báo quest progress
+        UI --> Player: 17. Hiển thị quest tiến bộ
+    end
+    
+    System -> DB: 18. Kiểm tra completion status
+    activate DB
+    DB --> System: 19. Trả về completion status
+    deactivate DB
+    
+    alt quest completed
+        System --> UI: 20. Thông báo quest hoàn thành
+        UI --> Player: 21. Quest ready để nộp
+        
+    else quest chưa xong
+        System --> UI: 22. Cập nhật quest tracker
+        UI --> Player: 23. Tiếp tục objectives
+    end
+    
+else không có objective khớp
+    System -> DB: 24. Kiểm tra progress desync
+    activate DB
+    
+    alt có desync
+        DB --> System: 25. Sync data từ server
+        deactivate DB
+        
+        System --> UI: 26. Cập nhật UI với data chính xác
+        UI --> Player: 27. Progress được điều chỉnh
+        
+    else không có desync
+        DB --> System: 28. No action needed
+        deactivate DB
+        
+        System --> UI: 29. Không có thay đổi
+        UI --> Player: 30. Không ảnh hưởng quest progress
+    end
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

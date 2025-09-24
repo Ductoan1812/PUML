@@ -1,0 +1,44 @@
+@startuml Activity_UC5_Tu_Dong_Nhat
+!theme plain
+
+title Biểu đồ Hoạt động - UC Tự Động Nhặt
+
+|Player|
+start
+:có vật phẩm rơi trên bản đồ và player đi gần;
+
+|System|
+:phát hiện vật phẩm trong phạm vi auto-pickup;
+:kiểm tra setting auto-pickup của player;
+
+if (auto-pickup bị tắt?) then (yes)
+  :vật phẩm vẫn nằm trên đất;
+  
+  |Player|
+  :phải nhặt thủ công;
+  
+else (no)
+  :kiểm tra filter loại vật phẩm;
+  
+  if (vật phẩm không trong filter?) then (yes)
+    :bỏ qua vật phẩm đó;
+    :chỉ nhặt vật phẩm được cho phép;
+    
+    |Player|
+    :một số vật phẩm không được nhặt;
+    
+  else (no)
+    :thực hiện thu thập tự động;
+    :hiển thị animation và sound effect;
+    
+    |Player|
+    :vật phẩm tự động vào inventory;
+    :nghe thấy sound pickup;
+  endif
+endif
+
+stop
+
+@enduml
+
+

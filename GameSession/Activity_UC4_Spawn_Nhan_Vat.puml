@@ -1,0 +1,55 @@
+@startuml Activity_UC4_Spawn_Nhan_Vat
+!theme plain
+
+title Biểu đồ Hoạt động - UC Spawn Nhân Vật
+
+|Player|
+start
+:chờ đợi spawn nhân vật;
+
+|System|
+:đọc vị trí spawn từ save data;
+
+if (đọc vị trí thành công?) then (yes)
+  :kiểm tra vị trí spawn hợp lệ;
+  
+  if (vị trí spawn hợp lệ?) then (yes)
+    :tạo character object;
+    :đặt nhân vật tại vị trí spawn;
+    :khởi tạo camera theo dõi nhân vật;
+    
+    |Player|
+    :nhìn thấy nhân vật trong game world;
+    :sẵn sàng điều khiển nhân vật;
+    :bắt đầu chơi game;
+    
+  else (no - vị trí không hợp lệ)
+    :sử dụng vị trí spawn mặc định;
+    :cập nhật save data;
+    :tạo character object;
+    :đặt nhân vật tại vị trí mặc định;
+    :khởi tạo camera theo dõi nhân vật;
+    
+    |Player|
+    :nhìn thấy nhân vật tại vị trí mặc định;
+    :sẵn sàng điều khiển nhân vật;
+    :bắt đầu chơi game;
+  endif
+  
+else (no)
+  :sử dụng vị trí spawn mặc định;
+  :tạo character object;
+  :đặt nhân vật tại vị trí mặc định;
+  :khởi tạo camera theo dõi nhân vật;
+  
+  |Player|
+  :nhìn thấy nhân vật tại vị trí mặc định;
+  :sẵn sàng điều khiển nhân vật;
+  :bắt đầu chơi game;
+endif
+
+stop
+
+@enduml
+
+

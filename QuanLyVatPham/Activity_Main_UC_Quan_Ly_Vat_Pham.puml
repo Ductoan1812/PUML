@@ -1,0 +1,54 @@
+@startuml Activity_Main_UC_Quan_Ly_Vat_Pham
+!theme plain
+
+title Biểu đồ Hoạt động Tổng quát - UC Quản Lý Vật Phẩm
+
+|Player|
+start
+:thực hiện hành động liên quan vật phẩm;
+
+|System|
+:thực hiện UC "Kiểm tra sức chứa";
+note right: Include - bắt buộc thực hiện
+
+if (có thể thêm vật phẩm?) then (yes)
+  :thực hiện UC "Thêm & Stack Item";
+  note right: Include - bắt buộc thực hiện
+  
+  :thực hiện UC "Cập nhật HUD & Toast";
+  note right: Include - bắt buộc thực hiện
+  
+  if (player mở inventory?) then (yes)
+    :thực hiện UC "Bỏ & Sort & Filter";
+    note right: Extend - tùy player action
+    
+    |Player|
+    :quản lý và sắp xếp items;
+    
+  else (no)
+    |Player|
+    :items được thêm tự động;
+  endif
+  
+  if (có items rơi gần player?) then (yes)
+    :thực hiện UC "Tự động nhặt";
+    note right: Extend - tùy setting và proximity
+    
+    |Player|
+    :items được nhặt tự động;
+    
+  else (no)
+    |Player|
+    :phải nhặt thủ công;
+  endif
+  
+else (no)
+  |Player|
+  :không thể thêm vật phẩm (inventory đầy);
+  :cần dọn dẹp inventory;
+endif
+
+stop
+
+@enduml
+

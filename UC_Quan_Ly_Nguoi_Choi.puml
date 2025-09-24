@@ -1,0 +1,27 @@
+@startuml UC_Quan_Ly_Nguoi_Choi
+!theme plain
+
+title Use Case Diagram Chi Tiết - UC Quản Lý Người Chơi
+
+actor "Player" as P
+
+usecase "Quản lý người chơi" as MainUC
+usecase "Quản lý level" as UC1
+usecase "Quản lý kỹ năng" as UC2
+usecase "Sử dụng vật phẩm" as UC3
+usecase "Trang bị vật phẩm" as UC4
+usecase "Hiển thị thông tin" as UC5
+usecase "Cập nhật chỉ số" as UC6
+
+' Main relationship
+P --> MainUC
+
+' Extend relationships (tất cả đều là extend theo hình)
+UC1 ..> MainUC : <<extend>>
+UC2 ..> MainUC : <<extend>>
+UC3 ..> MainUC : <<extend>>
+UC4 ..> MainUC : <<extend>>
+UC5 ..> MainUC : <<extend>>
+UC6 ..> MainUC : <<extend>>
+
+@enduml

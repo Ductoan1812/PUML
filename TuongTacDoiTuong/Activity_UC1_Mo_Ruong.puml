@@ -1,0 +1,61 @@
+@startuml Activity_UC1_Mo_Ruong
+!theme plain
+
+title Biểu đồ Hoạt động - UC Mở Rương
+
+|Player|
+start
+:tương tác với rương (click hoặc phím E);
+
+|System|
+:kiểm tra rương có khóa hay không;
+
+if (rương có khóa?) then (yes)
+  :kiểm tra key trong inventory;
+  
+  if (không có key?) then (yes)
+    :hiển thị "Cần chìa khóa để mở rương";
+    :rương không được mở;
+    
+    |Player|
+    :thấy thông báo cần key;
+    :tìm key để mở rương;
+    
+  else (no)
+    :phát animation mở rương;
+    :random vật phẩm theo drop table;
+    :hiển thị vật phẩm nhận được;
+    
+    if (inventory đầy?) then (yes)
+      :hiển thị lựa chọn drop item hoặc bỏ qua;
+      :vật phẩm rơi xuống đất nếu không thể nhận;
+      
+      |Player|
+      :chọn drop item hoặc bỏ qua;
+      :vật phẩm rơi trên đất;
+      
+    else (no)
+      :thêm vật phẩm vào inventory;
+      :đánh dấu rương đã được mở;
+      
+      |Player|
+      :nhận được vật phẩm;
+      :rương đã mở;
+    endif
+  endif
+  
+else (no)
+  :phát animation mở rương;
+  :random vật phẩm theo drop table;
+  :thêm vật phẩm vào inventory;
+  :đánh dấu rương đã được mở;
+  
+  |Player|
+  :nhận được vật phẩm;
+  :rương đã mở;
+endif
+
+stop
+
+@enduml
+

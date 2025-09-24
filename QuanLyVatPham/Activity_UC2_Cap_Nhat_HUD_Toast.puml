@@ -1,0 +1,35 @@
+@startuml Activity_UC2_Cap_Nhat_HUD_Toast
+!theme plain
+
+title Biểu đồ Hoạt động - UC Cập Nhật HUD & Toast
+
+|Player|
+start
+:có thay đổi trong inventory;
+
+|System|
+:cập nhật số lượng vật phẩm trên HUD;
+:hiển thị toast notification khi nhận vật phẩm;
+:cập nhật weight/capacity bar;
+:làm mới danh sách inventory;
+:highlight vật phẩm mới nhận;
+
+if (lỗi cập nhật UI?) then (yes)
+  :sử dụng dữ liệu cache;
+  :refresh toàn bộ inventory UI;
+  
+  |Player|
+  :có thể thấy UI delay;
+  :UI được refresh lại;
+  
+else (no)
+  |Player|
+  :nhìn thấy UI cập nhật smooth;
+  :thấy thông báo vật phẩm mới;
+endif
+
+stop
+
+@enduml
+
+

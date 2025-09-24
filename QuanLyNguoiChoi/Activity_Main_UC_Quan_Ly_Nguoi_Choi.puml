@@ -1,0 +1,63 @@
+@startuml Activity_Main_UC_Quan_Ly_Nguoi_Choi
+!theme plain
+
+title Biểu đồ Hoạt động Tổng quát - UC Quản Lý Người Chơi
+
+|Player|
+start
+:có sự thay đổi ảnh hưởng đến nhân vật;
+
+|System|
+if (nhận được EXP?) then (yes)
+  :thực hiện UC "Quản lý Level";
+  note right: Extend - khi có EXP
+  
+  if (level up?) then (yes)
+    |Player|
+    :có điểm skill mới để phân phối;
+    
+    if (player mở skill tree?) then (yes)
+      :thực hiện UC "Quản lý Kỹ năng";
+      note right: Extend - player action
+      
+      |Player|
+      :phân phối skill points;
+    endif
+  endif
+endif
+
+if (player sử dụng consumable?) then (yes)
+  :thực hiện UC "Sử dụng Vật phẩm";
+  note right: Extend - player action
+  
+  |Player|
+  :nhận hiệu ứng từ item;
+endif
+
+if (player trang bị equipment?) then (yes)
+  :thực hiện UC "Trang bị Vật phẩm";
+  note right: Extend - player action
+  
+  |Player|
+  :stats thay đổi;
+endif
+
+:thực hiện UC "Cập nhật Chỉ số";
+note right: Include - luôn thực hiện khi có thay đổi
+
+if (player mở character panel?) then (yes)
+  :thực hiện UC "Hiển thị Thông tin";
+  note right: Extend - player action
+  
+  |Player|
+  :xem thông tin nhân vật chi tiết;
+  
+else (no)
+  |Player|
+  :stats được cập nhật ngầm;
+endif
+
+stop
+
+@enduml
+

@@ -1,0 +1,117 @@
+@startuml Sequence_Main_UC_Menu
+!theme plain
+
+title Biểu đồ Trình tự Tổng quát - UC Menu
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Mở menu chính
+activate UI
+UI -> System: 2. Yêu cầu hiển thị menu options
+activate System
+
+System -> DB: 3. Lấy menu configuration
+activate DB
+DB --> System: 4. Menu options data
+deactivate DB
+
+System --> UI: 5. Hiển thị menu options
+UI --> Player: 6. Hiển thị menu interface
+
+Player -> UI: 7. Chọn option từ menu
+UI -> System: 8. Xác định menu option
+
+alt Audio Settings
+    == UC "Điều chỉnh âm thanh" (Include - bắt buộc) ==
+    System -> System: 9. Thực hiện UC Điều chỉnh âm thanh
+    System -> DB: 10. Load audio settings
+    activate DB
+    DB --> System: 11. Audio config data
+    deactivate DB
+    
+    System --> UI: 12. Hiển thị audio settings
+    UI --> Player: 13. Audio controls interface
+    
+    Player -> UI: 14. Điều chỉnh volume settings
+    UI -> System: 15. Apply audio changes
+    System -> DB: 16. Save audio settings
+    activate DB
+    DB --> System: 17. Audio settings saved
+    deactivate DB
+
+else Save/Load
+    == UC "Lưu&Tải" (Include - bắt buộc) ==
+    System -> System: 18. Thực hiện UC Lưu&Tải
+    System -> DB: 19. Get save slots
+    activate DB
+    DB --> System: 20. Save slots data
+    deactivate DB
+    
+    System --> UI: 21. Hiển thị save/load interface
+    UI --> Player: 22. Save slots interface
+
+else Graphics Settings
+    == UC "Điều chỉnh đồ họa" (Include - bắt buộc) ==
+    System -> System: 23. Thực hiện UC Điều chỉnh đồ họa
+    System -> DB: 24. Load graphics settings
+    activate DB
+    DB --> System: 25. Graphics config data
+    deactivate DB
+    
+    System --> UI: 26. Hiển thị graphics settings
+    UI --> Player: 27. Graphics controls interface
+
+else Controls Settings
+    == UC "Điều chỉnh điều khiển" (Include - bắt buộc) ==
+    System -> System: 28. Thực hiện UC Điều chỉnh điều khiển
+    System -> DB: 29. Load control settings
+    activate DB
+    DB --> System: 30. Control config data
+    deactivate DB
+    
+    System --> UI: 31. Hiển thị controls settings
+    UI --> Player: 32. Controls interface
+
+else Reset to Default
+    == UC "Khôi phục mặc định" (Extend - tùy điều kiện) ==
+    System -> System: 33. Thực hiện UC Khôi phục mặc định
+    System --> UI: 34. Hiển thị confirmation dialog
+    UI --> Player: 35. "Reset all settings to default?"
+    
+    alt Player xác nhận reset
+        System -> DB: 36. Reset to default settings
+        activate DB
+        DB --> System: 37. Default settings applied
+        deactivate DB
+        System --> UI: 38. Thông báo reset thành công
+        UI --> Player: 39. Settings reset confirmation
+    end
+
+else Exit Game
+    == UC "Thoát game" (Extend - tùy điều kiện) ==
+    System -> System: 40. Thực hiện UC Thoát game
+    System --> UI: 41. Hiển thị exit confirmation
+    UI --> Player: 42. "Are you sure you want to exit?"
+    
+    alt Player xác nhận exit
+        System -> System: 43. Check unsaved progress
+        System -> System: 44. Clean up resources
+        System -> System: 45. Exit game process
+    end
+end
+
+System -> DB: 46. Lưu tất cả settings changes
+activate DB
+DB --> System: 47. Settings saved
+deactivate DB
+
+System --> UI: 48. Hiển thị confirmation
+UI --> Player: 49. Thông báo thành công
+
+deactivate System
+deactivate UI
+
+@enduml

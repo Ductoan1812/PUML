@@ -1,0 +1,55 @@
+@startuml Activity_Main_UC_Dieu_Khien_Nhan_Vat
+!theme plain
+
+title Biểu đồ Hoạt động Tổng quát - UC Điều Khiển Nhân Vật
+
+|Player|
+start
+:thực hiện input điều khiển;
+
+|System|
+:thực hiện UC "Đọc Input";
+note right: Include - bắt buộc thực hiện
+
+if (input hợp lệ?) then (yes)
+  :thực hiện UC "Áp dụng vận động";
+  note right: Include - bắt buộc thực hiện
+  
+  :thực hiện UC "Update Animation";
+  note right: Include - bắt buộc thực hiện
+  
+  if (player nhấn dodge key?) then (yes)
+    :thực hiện UC "Lăn né";
+    note right: Extend - tùy điều kiện
+    
+    |Player|
+    :nhân vật thực hiện dodge roll;
+    
+  else (no)
+    |Player|
+    :nhân vật di chuyển/hành động bình thường;
+  endif
+  
+  if (nhân vật nhận status effect?) then (yes)
+    :thực hiện UC "Xử lý trạng thái đặc biệt";
+    note right: Extend - tùy tình huống
+    
+    |Player|
+    :chịu ảnh hưởng từ buff/debuff/CC;
+    :có thể dùng cleanse/dispel;
+    
+  else (no)
+    |Player|
+    :tiếp tục có quyền điều khiển;
+  endif
+  
+else (no - input không hợp lệ)
+  |Player|
+  :không có phản hồi từ nhân vật;
+  :thử input khác;
+endif
+
+stop
+
+@enduml
+

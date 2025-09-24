@@ -1,0 +1,71 @@
+@startuml Sequence_UC1_Ve_Menu_Chinh
+!theme plain
+
+title Biểu đồ Trình tự - UC Về Menu Chính
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Chọn "Return to Main Menu"
+activate UI
+UI --> Player: 2. Hiển thị confirmation dialog
+Player -> UI: 3. Chọn Yes
+
+UI -> System: 4. Yêu cầu return to menu
+activate System
+
+System -> DB: 5. Kiểm tra unsaved progress
+activate DB
+DB --> System: 6. Trả về progress status
+deactivate DB
+
+alt có unsaved progress
+    System --> UI: 7. Hỏi "Save before returning?"
+    UI --> Player: 8. Hiển thị save options
+    
+    alt player chọn Save
+        Player -> UI: 9. Chọn Save
+        UI -> System: 10. Yêu cầu save game
+        
+        System -> DB: 11. Thực hiện save
+        activate DB
+        DB --> System: 12. Xác nhận saved
+        deactivate DB
+        
+        System -> System: 13. Cleanup game resources
+        System -> System: 14. Load main menu
+        
+        System --> UI: 15. Hiển thị main menu
+        UI --> Player: 16. Về menu với game saved
+        
+    else player chọn Don't Save
+        Player -> UI: 17. Chọn Don't Save
+        UI -> System: 18. Proceed without saving
+        
+        System -> System: 19. Cleanup game resources
+        System -> System: 20. Load main menu
+        
+        System --> UI: 21. Hiển thị main menu
+        UI --> Player: 22. Về menu, mất progress
+        
+    else player chọn Cancel
+        Player -> UI: 23. Chọn Cancel
+        System --> UI: 24. Hủy operation
+        UI --> Player: 25. Tiếp tục gameplay
+    end
+    
+else không có unsaved progress
+    System -> System: 26. Cleanup game resources
+    System -> System: 27. Load main menu
+    
+    System --> UI: 28. Hiển thị main menu
+    UI --> Player: 29. Về main menu
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+

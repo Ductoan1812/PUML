@@ -1,0 +1,61 @@
+@startuml Activity_Main_UC_Chien_Dau
+!theme plain
+
+title Biểu đồ Hoạt động Tổng quát - UC Chiến Đấu
+
+|Player|
+start
+:thực hiện hành động tấn công;
+
+|System|
+:thực hiện UC "Kiểm tra CD & tài nguyên";
+note right: Include - bắt buộc thực hiện
+
+if (đủ điều kiện tấn công?) then (yes)
+  :thực hiện UC "Phát hiện mục tiêu";
+  note right: Include - bắt buộc thực hiện
+  
+  if (tìm thấy mục tiêu?) then (yes)
+    if (random trúng critical?) then (yes)
+      :thực hiện UC "Đón chí mạng";
+      note right: Extend - tùy RNG
+      
+    else (no)
+      :tấn công bình thường;
+    endif
+    
+    :thực hiện UC "Tính sát thương";
+    note right: Include - bắt buộc thực hiện
+    
+    :thực hiện UC "Áp dụng damage & hiệu ứng";
+    note right: Include - bắt buộc thực hiện
+    
+    :thực hiện UC "Cập nhật giao diện";
+    note right: Extend - cập nhật UI
+    
+    if (mục tiêu bị tiêu diệt?) then (yes)
+      :thực hiện UC "Rơi vật phẩm";
+      note right: Extend - khi enemy chết
+      
+      |Player|
+      :nhận EXP và có thể nhận loot;
+      
+    else (no)
+      |Player|
+      :mục tiêu nhận damage nhưng vẫn sống;
+    endif
+    
+  else (no)
+    |Player|
+    :tấn công trượt, mất tài nguyên;
+  endif
+  
+else (no)
+  |Player|
+  :không thể tấn công (CD hoặc thiếu tài nguyên);
+endif
+
+stop
+
+@enduml
+

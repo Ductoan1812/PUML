@@ -1,0 +1,46 @@
+@startuml Activity_UC3_Su_Dung_Vat_Pham
+!theme plain
+
+title Biểu đồ Hoạt động - UC Sử Dụng Vật Phẩm
+
+|Player|
+start
+:click/hotkey vật phẩm muốn sử dụng;
+
+|System|
+:kiểm tra vật phẩm có thể sử dụng;
+:kiểm tra cooldown của loại vật phẩm;
+
+if (vật phẩm đang trong cooldown?) then (yes)
+  :hiển thị thời gian cooldown còn lại;
+  :không thể sử dụng;
+  
+  |Player|
+  :thấy cooldown timer;
+  :chờ đợi cooldown hết;
+  
+else (no)
+  if (HP/MP đã full khi dùng potion hồi phục?) then (yes)
+    :hiển thị "HP/MP đã đầy";
+    :không tiêu tốn vật phẩm;
+    
+    |Player|
+    :thấy thông báo đã đầy;
+    :vật phẩm không bị mất;
+    
+  else (no)
+    :áp dụng hiệu ứng lên nhân vật;
+    :trừ số lượng vật phẩm;
+    :hiển thị animation và sound effect;
+    
+    |Player|
+    :nhận hiệu ứng từ vật phẩm;
+    :vật phẩm bị tiêu tốn;
+  endif
+endif
+
+stop
+
+@enduml
+
+

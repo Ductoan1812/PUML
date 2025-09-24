@@ -1,0 +1,69 @@
+# Bảng Kịch Bản Use Case - UC Quản Lý Nhân Vật
+
+## UC: Xem thông tin nhân vật
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Xem thông tin nhân vật |
+| **ID** | UC-CHAR-001 |
+| **Tác nhân** | Player |
+| **Mô tả** | Player xem các thông tin cơ bản của nhân vật |
+| **Điều kiện tiên quyết** | Player đã tạo nhân vật |
+| **Hậu điều kiện** | Thông tin nhân vật được hiển thị đầy đủ trên màn hình |
+| **Kịch bản chính** | 1. Player mở menu nhân vật (phím C)<br>2. Hệ thống hiển thị thông tin nhân vật<br>3. Hiển thị Level, HP, MP, EXP<br>4. Hiển thị các chỉ số Strength, Agility, Intelligence |
+| **Kịch bản ngoại lệ** | Không có |
+
+---
+
+## UC: Nâng cấp level
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Nâng cấp level |
+| **ID** | UC-CHAR-002 |
+| **Tác nhân** | Player |
+| **Mô tả** | Nhân vật tự động nâng level khi đủ EXP |
+| **Điều kiện tiên quyết** | EXP hiện tại >= EXP cần thiết để lên level |
+| **Hậu điều kiện** | Nhân vật tăng level, có thêm điểm kỹ năng và chỉ số tăng |
+| **Kịch bản chính** | 1. Hệ thống kiểm tra EXP<br>2. Tự động tăng level lên 1<br>3. Reset EXP về 0<br>4. Tăng HP, MP tối đa<br>5. Cộng thêm điểm kỹ năng<br>6. Hiển thị thông báo "Level Up!" |
+| **Kịch bản ngoại lệ** | 1a. EXP chưa đủ<br>&nbsp;&nbsp;&nbsp;&nbsp;1a1. Không có gì xảy ra |
+
+---
+
+## UC: Phân phối điểm kỹ năng
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Phân phối điểm kỹ năng |
+| **ID** | UC-CHAR-003 |
+| **Tác nhân** | Player |
+| **Mô tả** | Player phân phối điểm kỹ năng có được khi lên level |
+| **Điều kiện tiên quyết** | Có điểm kỹ năng chưa phân phối |
+| **Hậu điều kiện** | Điểm kỹ năng được phân phối và chỉ số nhân vật được cập nhật |
+| **Kịch bản chính** | 1. Player mở menu phân phối kỹ năng<br>2. Chọn kỹ năng muốn tăng (STR/AGI/INT)<br>3. Click nút "+" để tăng điểm<br>4. Hệ thống cập nhật chỉ số<br>5. Trừ 1 điểm kỹ năng khả dụng<br>6. Cập nhật HP/MP nếu cần |
+| **Kịch bản ngoại lệ** | 1a. Không có điểm kỹ năng<br>&nbsp;&nbsp;&nbsp;&nbsp;1a1. Nút "+" bị vô hiệu hóa |
+
+---
+
+## UC: Quản lý inventory
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Quản lý inventory |
+| **ID** | UC-CHAR-004 |
+| **Tác nhân** | Player |
+| **Mô tả** | Player xem và sắp xếp các vật phẩm trong túi đồ |
+| **Điều kiện tiên quyết** | Player có ít nhất 1 vật phẩm |
+| **Hậu điều kiện** | Inventory được hiển thị với các vật phẩm được sắp xếp |
+| **Kịch bản chính** | 1. Player mở inventory (phím I)<br>2. Hiển thị danh sách vật phẩm<br>3. Player có thể click vào vật phẩm để xem chi tiết<br>4. Player có thể kéo thả để sắp xếp |
+| **Kịch bản ngoại lệ** | 1a. Inventory trống<br>&nbsp;&nbsp;&nbsp;&nbsp;1a1. Hiển thị "Inventory trống" |
+
+---
+
+## UC: Trang bị vũ khí/giáp
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Trang bị vũ khí/giáp |
+| **ID** | UC-CHAR-005 |
+| **Tác nhân** | Player |
+| **Mô tả** | Player trang bị vũ khí hoặc giáp từ inventory |
+| **Điều kiện tiên quyết** | Có vũ khí/giáp trong inventory |
+| **Hậu điều kiện** | Vật phẩm được trang bị và chỉ số nhân vật thay đổi |
+| **Kịch bản chính** | 1. Player mở inventory<br>2. Click đúp vào vũ khí/giáp<br>3. Hệ thống kiểm tra điều kiện trang bị<br>4. Trang bị vật phẩm<br>5. Cập nhật chỉ số nhân vật<br>6. Hiển thị vật phẩm ở slot trang bị |
+| **Kịch bản ngoại lệ** | 3a. Level không đủ<br>&nbsp;&nbsp;&nbsp;&nbsp;3a1. Hiển thị "Level không đủ"<br>4a. Đã có vật phẩm cùng loại<br>&nbsp;&nbsp;&nbsp;&nbsp;4a1. Tự động gỡ vật phẩm cũ<br>&nbsp;&nbsp;&nbsp;&nbsp;4a2. Trang bị vật phẩm mới |

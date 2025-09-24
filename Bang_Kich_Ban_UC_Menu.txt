@@ -1,0 +1,73 @@
+BẢNG KỊCH BẢN USE CASE - UC MENU
+
+========================================
+
+UC 1: ĐIỀU CHỈNH ÂM THANH
+
+Tên Use Case	Điều chỉnh âm thanh
+Tác nhân	Player
+Mục đích	Player điều chỉnh các thiết lập âm thanh trong game
+Điều kiện tiên quyết	Player mở menu settings và chọn tab Audio
+Hậu điều kiện	Thiết lập âm thanh được cập nhật và lưu vào config file
+Luồng sự kiện	Player mở Audio settings - Hiển thị các slider âm thanh (Master, Music, SFX, Voice) - Player kéo slider để điều chỉnh volume - Phát sample audio để test - Áp dụng thay đổi real-time - Lưu settings vào config file - Hiển thị thông báo "Settings saved"
+Luồng sự kiện thay thế	Audio device không khả dụng - Hiển thị "Audio device error" - Sử dụng default audio settings | Lỗi khi lưu settings - Hiển thị "Cannot save settings" - Giữ nguyên settings cũ
+
+========================================
+
+UC 2: LƯU&TẢI
+
+Tên Use Case	Lưu&tải
+Tác nhân	Player
+Mục đích	Player lưu game progress hoặc load game đã lưu
+Điều kiện tiên quyết	Player mở menu và chọn Save/Load option
+Hậu điều kiện	Game được lưu thành công hoặc load save file thành công
+Luồng sự kiện	Player chọn Save/Load từ menu - Hiển thị danh sách save slots - Player chọn slot muốn save/load - Nếu save: ghi dữ liệu game vào file - Nếu load: đọc dữ liệu từ save file - Cập nhật game state - Hiển thị thông báo thành công - Quay về game hoặc menu
+Luồng sự kiện thay thế	Save slot đã có dữ liệu - Hiển thị xác nhận "Overwrite existing save?" - Player chọn Yes/No | Save file bị corrupt - Hiển thị "Save file corrupted" - Không thể load game
+
+========================================
+
+UC 3: ĐIỀU CHỈNH ĐỒ HỌA
+
+Tên Use Case	Điều chỉnh đồ họa
+Tác nhân	Player
+Mục đích	Player điều chỉnh các thiết lập đồ họa và hiển thị
+Điều kiện tiên quyết	Player mở menu settings và chọn tab Graphics
+Hậu điều kiện	Thiết lập đồ họa được áp dụng và game hiển thị theo setting mới
+Luồng sự kiện	Player mở Graphics settings - Hiển thị các options (Resolution, Fullscreen, VSync, Quality) - Player thay đổi settings - Preview thay đổi nếu có thể - Áp dụng settings mới - Test stability trong vài giây - Lưu settings nếu ổn định - Restart game nếu cần thiết
+Luồng sự kiện thay thế	Settings không tương thích - Hiển thị "Unsupported settings" - Revert về settings cũ | Game crash sau khi apply - Auto revert về safe settings - Hiển thị "Settings reverted for stability"
+
+========================================
+
+UC 4: ĐIỀU CHỈNH ĐIỀU KHIỂN
+
+Tên Use Case	Điều chỉnh điều khiển
+Tác nhân	Player
+Mục đích	Player tùy chỉnh key binding và control settings
+Điều kiện tiên quyết	Player mở menu settings và chọn tab Controls
+Hậu điều kiện	Key bindings được cập nhật và áp dụng trong game
+Luồng sự kiện	Player mở Controls settings - Hiển thị danh sách actions và keys hiện tại - Player click vào action muốn thay đổi - Nhập key mới từ bàn phím - Kiểm tra conflict với key khác - Cập nhật key binding - Test key trong game - Lưu settings vào config
+Luồng sự kiện thay thế	Key đã được assign cho action khác - Hiển thị "Key already in use" - Hỏi có muốn swap không | Invalid key được nhập - Hiển thị "Invalid key" - Yêu cầu nhập lại
+
+========================================
+
+UC 5: KHÔI PHỤC MẶC ĐỊNH
+
+Tên Use Case	Khôi phục mặc định
+Tác nhân	Player
+Mục đích	Player reset tất cả settings về giá trị mặc định
+Điều kiện tiên quyết	Player click nút "Reset to Default" trong settings
+Hậu điều kiện	Tất cả settings được reset về default values
+Luồng sự kiện	Player click "Reset to Default" - Hiển thị xác nhận "Reset all settings to default?" - Player chọn Yes - Reset tất cả settings về default - Áp dụng default settings - Restart game nếu cần - Hiển thị "Settings reset successfully"
+Luồng sự kiện thay thế	Player chọn No trong confirmation - Hủy bỏ reset operation - Giữ nguyên settings hiện tại | Lỗi khi reset - Hiển thị "Cannot reset settings" - Giữ nguyên settings cũ
+
+========================================
+
+UC 6: THOÁT GAME
+
+Tên Use Case	Thoát game
+Tác nhân	Player
+Mục đích	Player thoát khỏi game an toàn
+Điều kiện tiên quyết	Player chọn "Exit Game" từ menu
+Hậu điều kiện	Game được đóng an toàn và dữ liệu được lưu
+Luồng sự kiện	Player chọn "Exit Game" - Hiển thị xác nhận "Are you sure you want to exit?" - Player chọn Yes - Kiểm tra unsaved progress - Tự động save game nếu cần - Đóng tất cả connections - Clean up resources - Thoát game process
+Luồng sự kiện thay thế	Player chọn No - Hủy bỏ exit operation - Quay về menu hoặc game | Có unsaved progress - Hiển thị "Save before exit?" - Player chọn Save/Don't Save/Cancel

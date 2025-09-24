@@ -1,0 +1,50 @@
+@startuml Activity_UC2_Quan_Ly_Ky_Nang
+!theme plain
+
+title Biểu đồ Hoạt động - UC Quản Lý Kỹ Năng
+
+|Player|
+start
+:mở skill tree interface;
+
+|System|
+:xem danh sách kỹ năng có thể học/nâng cấp;
+
+|Player|
+:chọn kỹ năng muốn đầu tư;
+
+|System|
+:kiểm tra điều kiện và cost;
+
+if (không đủ skill point?) then (yes)
+  :hiển thị thông báo "Không đủ điểm kỹ năng";
+  :không thể nâng cấp;
+  
+  |Player|
+  :nhận thông báo thiếu điểm;
+  :cần lên level để có thêm điểm;
+  
+else (no)
+  if (chưa đủ level requirement?) then (yes)
+    :hiển thị "Cần level X để học skill này";
+    :skill bị khóa;
+    
+    |Player|
+    :thấy skill bị lock;
+    :cần lên level cao hơn;
+    
+  else (no)
+    :xác nhận nâng cấp;
+    :cập nhật skill level và hiệu ứng;
+    
+    |Player|
+    :skill được nâng cấp thành công;
+    :có thể sử dụng skill mới/mạnh hơn;
+  endif
+endif
+
+stop
+
+@enduml
+
+

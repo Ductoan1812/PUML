@@ -1,0 +1,55 @@
+# Bảng Kịch Bản Use Case - UC Khởi Tạo Game Session
+
+## UC: Kiểm tra save file
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Kiểm tra save file |
+| **ID** | UC-INIT-001 |
+| **Tác nhân** | Player |
+| **Mô tả** | Hệ thống kiểm tra và validate file save khi player bắt đầu game |
+| **Điều kiện tiên quyết** | Player đã chọn "Continue Game" từ menu |
+| **Hậu điều kiện** | File save được xác nhận hợp lệ và sẵn sàng để load dữ liệu |
+| **Kịch bản chính** | 1. Hệ thống tìm kiếm file save<br>2. Kiểm tra tính hợp lệ của file save<br>3. Đọc dữ liệu cơ bản từ save file<br>4. Chuyển sang UC Load game data |
+| **Kịch bản ngoại lệ** | 1a. Không tìm thấy file save<br>&nbsp;&nbsp;&nbsp;&nbsp;1a1. Hiển thị thông báo "Không có game save"<br>&nbsp;&nbsp;&nbsp;&nbsp;1a2. Quay về menu chính<br>2a. File save bị lỗi/corrupt<br>&nbsp;&nbsp;&nbsp;&nbsp;2a1. Hiển thị thông báo "File save bị lỗi"<br>&nbsp;&nbsp;&nbsp;&nbsp;2a2. Quay về menu chính |
+
+---
+
+## UC: Load game data
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Load game data |
+| **ID** | UC-INIT-002 |
+| **Tác nhân** | Hệ thống |
+| **Mô tả** | Hệ thống load toàn bộ dữ liệu game từ save file |
+| **Điều kiện tiên quyết** | Save file đã được validate thành công |
+| **Hậu điều kiện** | Tất cả dữ liệu game được load thành công vào bộ nhớ |
+| **Kịch bản chính** | 1. Load thông tin nhân vật (level, stats, vị trí)<br>2. Load dữ liệu bản đồ hiện tại<br>3. Load trạng thái các NPC<br>4. Load tiến trình quest<br>5. Hiển thị loading progress |
+| **Kịch bản ngoại lệ** | 1-4a. Lỗi khi load dữ liệu<br>&nbsp;&nbsp;&nbsp;&nbsp;1-4a1. Hiển thị thông báo lỗi<br>&nbsp;&nbsp;&nbsp;&nbsp;1-4a2. Quay về menu chính |
+
+---
+
+## UC: Khởi tạo bản đồ
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Khởi tạo bản đồ |
+| **ID** | UC-INIT-003 |
+| **Tác nhân** | Hệ thống |
+| **Mô tả** | Hệ thống tạo và hiển thị bản đồ game |
+| **Điều kiện tiên quyết** | Dữ liệu bản đồ đã được load |
+| **Hậu điều kiện** | Bản đồ được render hoàn chỉnh với tất cả đối tượng |
+| **Kịch bản chính** | 1. Render terrain và background<br>2. Đặt các object tĩnh (cây, đá, building)<br>3. Spawn các NPC theo vị trí đã lưu<br>4. Spawn quái vật theo cấu hình<br>5. Đặt các vật phẩm trên bản đồ |
+| **Kịch bản ngoại lệ** | 1-5a. Lỗi render<br>&nbsp;&nbsp;&nbsp;&nbsp;1-5a1. Sử dụng bản đồ mặc định<br>&nbsp;&nbsp;&nbsp;&nbsp;1-5a2. Log lỗi để debug |
+
+---
+
+## UC: Spawn nhân vật
+| **Thuộc tính** | **Mô tả** |
+|----------------|-----------|
+| **Tên UC** | Spawn nhân vật |
+| **ID** | UC-INIT-004 |
+| **Tác nhân** | Hệ thống |
+| **Mô tả** | Đặt nhân vật player vào vị trí spawn trong game world |
+| **Điều kiện tiên quyết** | Bản đồ đã được khởi tạo xong |
+| **Hậu điều kiện** | Nhân vật player xuất hiện trong game world và sẵn sàng điều khiển |
+| **Kịch bản chính** | 1. Đọc vị trí spawn từ save data<br>2. Kiểm tra vị trí spawn hợp lệ<br>3. Tạo character object<br>4. Đặt nhân vật tại vị trí spawn<br>5. Khởi tạo camera theo dõi nhân vật |
+| **Kịch bản ngoại lệ** | 2a. Vị trí spawn không hợp lệ<br>&nbsp;&nbsp;&nbsp;&nbsp;2a1. Sử dụng vị trí spawn mặc định<br>&nbsp;&nbsp;&nbsp;&nbsp;2a2. Cập nhật save data |

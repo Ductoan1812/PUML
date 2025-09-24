@@ -1,0 +1,69 @@
+@startuml Activity_Main_UC_Menu
+!theme plain
+
+title Biểu đồ Hoạt động Tổng quát - UC Menu
+
+|Player|
+start
+:mở menu chính;
+
+|System|
+:hiển thị các options menu;
+
+|Player|
+:chọn option từ menu;
+
+|System|
+if (chọn Audio Settings?) then (audio)
+  :thực hiện UC "Điều chỉnh âm thanh";
+  note right: Include - bắt buộc
+  
+  |Player|
+  :điều chỉnh volume settings;
+  :test audio samples;
+  
+elseif (chọn Save/Load?) then (save/load)
+  :thực hiện UC "Lưu&Tải";
+  note right: Include - bắt buộc
+  
+  |Player|
+  :chọn save slot hoặc load game;
+  
+elseif (chọn Graphics?) then (graphics)
+  :thực hiện UC "Điều chỉnh đồ họa";
+  note right: Include - bắt buộc
+  
+  |Player|
+  :thay đổi graphics settings;
+  :preview changes;
+  
+elseif (chọn Controls?) then (controls)
+  :thực hiện UC "Điều chỉnh điều khiển";
+  note right: Include - bắt buộc
+  
+  |Player|
+  :customize key bindings;
+  :test controls;
+  
+elseif (chọn Reset?) then (reset)
+  :thực hiện UC "Khôi phục mặc định";
+  note right: Extend - tùy điều kiện
+  
+  |Player|
+  :xác nhận reset settings;
+  
+else (exit)
+  :thực hiện UC "Thoát game";
+  note right: Extend - tùy điều kiện
+  
+  |Player|
+  :xác nhận thoát game;
+endif
+
+:lưu settings changes;
+:hiển thị confirmation;
+
+|Player|
+:xác nhận thay đổi;
+
+stop

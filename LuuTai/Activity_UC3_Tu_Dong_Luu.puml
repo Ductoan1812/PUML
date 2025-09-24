@@ -1,0 +1,52 @@
+@startuml Activity_UC3_Tu_Dong_Luu
+!theme plain
+
+title Biểu đồ Hoạt động - UC Tự Động Lưu
+
+|Player|
+start
+:đang chơi game;
+
+|System|
+:monitor auto-save timer và game events;
+
+if (đến thời điểm auto-save hoặc có trigger?) then (yes)
+  :kiểm tra game state có thể save không;
+  
+  if (game đang trong cutscene/dialogue?) then (yes)
+    :delay auto-save đến khi kết thúc;
+    :đánh dấu pending auto-save;
+    
+    |Player|
+    :không bị gián đoạn;
+    :auto-save sẽ thực hiện sau;
+    
+  else (no)
+    :thực hiện save ở background thread;
+    :hiển thị save indicator nhỏ;
+    :cập nhật last auto-save timestamp;
+    :không làm gián đoạn gameplay;
+    
+    if (auto-save thất bại?) then (yes)
+      :retry sau một khoảng thời gian;
+      :thông báo cho player nếu retry nhiều lần;
+      
+      |Player|
+      :có thể thấy thông báo auto-save lỗi;
+      
+    else (no)
+      |Player|
+      :thấy save indicator;
+      :gameplay không bị gián đoạn;
+    endif
+  endif
+  
+else (no)
+  |Player|
+  :tiếp tục chơi;
+endif
+
+stop
+
+@enduml
+

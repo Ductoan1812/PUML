@@ -1,0 +1,88 @@
+@startuml Sequence_Main_UC_Quan_Ly_Nguoi_Choi
+!theme plain
+
+title Biểu đồ Trình tự Tổng quát - UC Quản Lý Người Chơi
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Có sự thay đổi ảnh hưởng nhân vật
+activate UI
+UI -> System: 2. Trigger character management
+activate System
+
+== UC "Quản lý Level" (Extend - khi có EXP) ==
+alt nhận được EXP
+    System -> System: 3. Thực hiện UC Quản lý Level
+    System -> DB: 4. Process EXP và level up
+    activate DB
+    DB --> System: 5. Level status updated
+    deactivate DB
+    
+    alt level up occurred
+        System --> UI: 6. Show level up effects
+        UI --> Player: 7. Level up notification
+        
+        == UC "Quản lý Kỹ năng" (Extend - player action) ==
+        alt player mở skill tree
+            System -> System: 8. Thực hiện UC Quản lý Kỹ năng
+            System -> DB: 9. Manage skill points
+            activate DB
+            DB --> System: 10. Skill upgrades applied
+            deactivate DB
+            
+            System --> UI: 11. Update skill display
+            UI --> Player: 12. Skills upgraded
+        end
+    end
+end
+
+== UC "Sử dụng Vật phẩm" (Extend - player action) ==
+alt player sử dụng consumable
+    System -> System: 13. Thực hiện UC Sử dụng Vật phẩm
+    System -> DB: 14. Apply item effects
+    activate DB
+    DB --> System: 15. Effects applied
+    deactivate DB
+    
+    System --> UI: 16. Show item effects
+    UI --> Player: 17. Nhận hiệu ứng item
+end
+
+== UC "Trang bị Vật phẩm" (Extend - player action) ==
+alt player trang bị equipment
+    System -> System: 18. Thực hiện UC Trang bị Vật phẩm
+    System -> DB: 19. Equip/unequip items
+    activate DB
+    DB --> System: 20. Equipment changed
+    deactivate DB
+    
+    System --> UI: 21. Update character appearance
+    UI --> Player: 22. Stats và appearance thay đổi
+end
+
+== UC "Cập nhật Chỉ số" (Include - luôn thực hiện) ==
+System -> System: 23. Thực hiện UC Cập nhật Chỉ số
+System -> DB: 24. Recalculate all stats
+activate DB
+DB --> System: 25. Stats recalculated
+deactivate DB
+
+== UC "Hiển thị Thông tin" (Extend - player action) ==
+alt player mở character panel
+    System -> System: 26. Thực hiện UC Hiển thị Thông tin
+    System --> UI: 27. Display character info
+    UI --> Player: 28. Xem thông tin chi tiết
+    
+else stats cập nhật ngầm
+    System --> UI: 29. Background stats update
+    UI --> Player: 30. Stats updated invisibly
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+

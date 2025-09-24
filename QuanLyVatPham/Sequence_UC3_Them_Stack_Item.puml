@@ -1,0 +1,68 @@
+@startuml Sequence_UC3_Them_Stack_Item
+!theme plain
+
+title Biểu đồ Trình tự - UC Thêm & Stack Item
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Đã kiểm tra sức chứa OK
+activate UI
+UI -> System: 2. Bắt đầu thêm item
+activate System
+
+System -> DB: 3. Kiểm tra item đã có trong inventory
+activate DB
+DB --> System: 4. Trả về existing items
+deactivate DB
+
+System -> System: 5. Tìm item cùng loại
+
+alt có item cùng loại
+    System -> DB: 6. Kiểm tra stack limit
+    activate DB
+    DB --> System: 7. Trả về stack info
+    deactivate DB
+    
+    alt có thể stack
+        System -> DB: 8. Cập nhật số lượng stack
+        activate DB
+        DB --> System: 9. Xác nhận stack updated
+        deactivate DB
+        
+        System --> UI: 10. Thông báo stacked
+        UI --> Player: 11. Số lượng item tăng
+        
+    else stack đã đầy
+        System -> DB: 12. Tạo stack mới
+        activate DB
+        DB --> System: 13. Xác nhận new stack created
+        deactivate DB
+        
+        System --> UI: 14. Thông báo "Tạo stack mới"
+        UI --> Player: 15. Hiển thị stack mới
+    end
+    
+else không có item cùng loại
+    System -> DB: 16. Tìm slot trống đầu tiên
+    activate DB
+    DB --> System: 17. Trả về empty slot
+    deactivate DB
+    
+    System -> DB: 18. Tạo item mới trong slot
+    activate DB
+    DB --> System: 19. Xác nhận item created
+    deactivate DB
+    
+    System --> UI: 20. Thông báo item added
+    UI --> Player: 21. Hiển thị item mới trong slot
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

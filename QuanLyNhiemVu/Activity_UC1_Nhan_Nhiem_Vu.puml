@@ -1,0 +1,52 @@
+@startuml Activity_UC1_Nhan_Nhiem_Vu
+!theme plain
+
+title Biểu đồ Hoạt động - UC Nhận Nhiệm Vụ
+
+|Player|
+start
+:tương tác với NPC quest giver;
+
+|System|
+:hiển thị dialog và mô tả nhiệm vụ;
+
+|Player|
+:chọn "Accept Quest";
+
+|System|
+:kiểm tra điều kiện nhận quest (level, quest tiền đề);
+
+if (level không đủ?) then (yes)
+  :hiển thị "Cần level X để nhận quest";
+  :quest bị từ chối;
+  
+  |Player|
+  :thấy thông báo level không đủ;
+  :cần lên level cao hơn;
+  
+else (no)
+  if (quest log đã đầy?) then (yes)
+    :hiển thị "Quest log đầy, hãy hoàn thành quest khác";
+    :không thể nhận quest mới;
+    
+    |Player|
+    :thấy thông báo quest log đầy;
+    :cần hoàn thành quest cũ;
+    
+  else (no)
+    :thêm quest vào active quest list;
+    :hiển thị quest objective;
+    :bắt đầu tracking progress;
+    
+    |Player|
+    :nhận quest thành công;
+    :có thể theo dõi objective;
+    :bắt đầu thực hiện quest;
+  endif
+endif
+
+stop
+
+@enduml
+
+

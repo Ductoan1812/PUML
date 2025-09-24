@@ -1,0 +1,41 @@
+@startuml Activity_UC5_Khoi_Phuc_Mac_Dinh
+!theme plain
+
+title Biểu đồ Hoạt động - UC Khôi Phục Mặc Định
+
+|Player|
+start
+:click "Reset to Default" trong settings;
+
+|System|
+:hiển thị xác nhận "Reset all settings to default?";
+
+|Player|
+if (chọn Yes?) then (yes)
+  :xác nhận reset;
+  
+  |System|
+  :reset tất cả settings về default;
+  :áp dụng default settings;
+  
+  if (cần restart game?) then (restart)
+    :restart game với default settings;
+    
+    |Player|
+    :chờ game restart;
+    
+  else (no restart)
+    :hiển thị "Settings reset successfully";
+    
+    |Player|
+    :xác nhận reset thành công;
+  endif
+  
+else (no)
+  :hủy bỏ reset operation;
+  
+  |Player|
+  :giữ nguyên settings hiện tại;
+endif
+
+stop

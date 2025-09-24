@@ -1,0 +1,54 @@
+@startuml Sequence_UC4_Spawn_Nhan_Vat
+!theme plain
+
+title Biểu đồ Trình tự - UC Spawn Nhân Vật
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Chờ đợi spawn nhân vật
+activate UI
+UI -> System: 2. Yêu cầu spawn nhân vật
+activate System
+
+System -> DB: 3. Đọc vị trí spawn từ save data
+activate DB
+DB --> System: 4. Trả về spawn position
+deactivate DB
+
+System -> System: 5. Kiểm tra vị trí spawn hợp lệ
+
+alt vị trí spawn hợp lệ
+    System -> System: 6. Tạo character object
+    System -> System: 7. Đặt nhân vật tại vị trí spawn
+    System -> System: 8. Khởi tạo camera theo dõi nhân vật
+    
+    System --> UI: 9. Thông báo spawn thành công
+    UI --> Player: 10. Hiển thị nhân vật trong game world
+    UI --> Player: 11. Sẵn sàng điều khiển
+    
+else vị trí spawn không hợp lệ
+    System -> System: 12. Sử dụng vị trí spawn mặc định
+    
+    System -> DB: 13. Cập nhật save data với vị trí mới
+    activate DB
+    DB --> System: 14. Xác nhận cập nhật
+    deactivate DB
+    
+    System -> System: 15. Tạo character object
+    System -> System: 16. Đặt nhân vật tại vị trí mặc định
+    System -> System: 17. Khởi tạo camera theo dõi nhân vật
+    
+    System --> UI: 18. Thông báo spawn tại vị trí mặc định
+    UI --> Player: 19. Hiển thị nhân vật tại vị trí mặc định
+    UI --> Player: 20. Sẵn sàng điều khiển
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

@@ -1,0 +1,68 @@
+@startuml Sequence_UC4_Dieu_Chinh_Dieu_Khien
+!theme plain
+
+title Biểu đồ Trình tự - UC Điều Chỉnh Điều Khiển
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Mở Controls settings
+activate UI
+UI -> System: 2. Yêu cầu load control settings
+activate System
+
+System -> DB: 3. Lấy current key bindings
+activate DB
+DB --> System: 4. Trả về key mappings
+deactivate DB
+
+System --> UI: 5. Hiển thị actions và keys hiện tại
+UI --> Player: 6. Hiển thị controls interface
+
+Player -> UI: 7. Click action muốn thay đổi
+UI -> System: 8. Yêu cầu input key mới
+
+System --> UI: 9. Chờ input key
+UI --> Player: 10. "Press new key"
+
+Player -> UI: 11. Nhập key mới
+UI -> System: 12. Validate new key
+
+System -> System: 13. Kiểm tra key conflict
+
+alt key có conflict
+    System --> UI: 14. "Key already in use"
+    UI --> Player: 15. Hiển thị conflict message
+    
+    Player -> UI: 16. Chọn swap hoặc cancel
+    UI -> System: 17. Xử lý swap request
+    
+    alt chọn swap
+        System -> System: 18. Swap keys giữa actions
+        System -> DB: 19. Cập nhật key bindings
+        activate DB
+        DB --> System: 20. Key bindings updated
+        deactivate DB
+        
+    else chọn cancel
+        System --> UI: 21. Hủy thay đổi
+        UI --> Player: 22. Quay về controls menu
+    end
+    
+else key không conflict
+    System -> DB: 23. Cập nhật key binding
+    activate DB
+    DB --> System: 24. Key binding updated
+    deactivate DB
+end
+
+System -> System: 25. Test key trong game
+System --> UI: 26. Thông báo "Controls updated successfully"
+UI --> Player: 27. Hiển thị confirmation
+
+deactivate System
+deactivate UI
+
+@enduml

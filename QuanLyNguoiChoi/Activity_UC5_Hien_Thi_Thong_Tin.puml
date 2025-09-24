@@ -1,0 +1,46 @@
+@startuml Activity_UC5_Hien_Thi_Thong_Tin
+!theme plain
+
+title Biểu đồ Hoạt động - UC Hiển Thị Thông Tin
+
+|Player|
+start
+:mở character info panel;
+
+|System|
+:lấy dữ liệu nhân vật từ database;
+:tính toán stats tổng hợp (base + equipment + buff);
+:hiển thị thông tin cơ bản (level, HP, MP, EXP);
+:hiển thị stats chi tiết (STR, AGI, INT, etc.);
+:hiển thị equipment đang trang bị;
+:cập nhật real-time khi có thay đổi;
+
+if (lỗi load dữ liệu?) then (yes)
+  :hiển thị thông tin cached;
+  :thông báo "Đang cập nhật thông tin";
+  
+  |Player|
+  :thấy thông tin có thể không chính xác;
+  :chờ đợi refresh;
+  
+else (no)
+  if (dữ liệu bị conflict?) then (yes)
+    :refresh từ server;
+    :đồng bộ lại thông tin;
+    
+    |Player|
+    :thấy UI refresh;
+    :thông tin được cập nhật chính xác;
+    
+  else (no)
+    |Player|
+    :thấy thông tin đầy đủ và chính xác;
+    :có thể theo dõi stats real-time;
+  endif
+endif
+
+stop
+
+@enduml
+
+

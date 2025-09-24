@@ -1,0 +1,45 @@
+@startuml Activity_UC6_Cap_Nhat_Chi_So
+!theme plain
+
+title Biểu đồ Hoạt động - UC Cập Nhật Chỉ Số
+
+|Player|
+start
+:có sự thay đổi ảnh hưởng đến stats nhân vật;
+
+|System|
+:phát hiện sự thay đổi (level up, equip, buff, etc.);
+:tính toán lại base stats;
+:áp dụng bonus từ equipment;
+:áp dụng modifier từ skill/buff;
+:cập nhật derived stats (max HP, damage, etc.);
+:đồng bộ với UI và database;
+
+if (có conflict trong tính toán?) then (yes)
+  :sử dụng giá trị an toàn;
+  :log lỗi để debug;
+  
+  |Player|
+  :stats có thể không chính xác tạm thời;
+  
+else (no)
+  if (database sync thất bại?) then (yes)
+    :lưu thay đổi local;
+    :retry sync khi có kết nối;
+    
+    |Player|
+    :stats hiển thị chính xác locally;
+    :sync sau khi có kết nối;
+    
+  else (no)
+    |Player|
+    :stats được cập nhật chính xác;
+    :thấy thay đổi real-time;
+  endif
+endif
+
+stop
+
+@enduml
+
+

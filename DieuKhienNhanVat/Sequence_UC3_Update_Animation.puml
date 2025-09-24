@@ -1,0 +1,53 @@
+@startuml Sequence_UC3_Update_Animation
+!theme plain
+
+title Biểu đồ Trình tự - UC Update Animation
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Nhân vật thực hiện hành động
+activate UI
+UI -> System: 2. Yêu cầu update animation
+activate System
+
+System -> System: 3. Xác định loại hành động đang thực hiện
+
+System -> DB: 4. Tìm animation phù hợp
+activate DB
+
+alt animation tồn tại
+    DB --> System: 5. Trả về animation data
+    deactivate DB
+    
+    System -> System: 6. Cập nhật frame animation
+    System -> System: 7. Đồng bộ với tốc độ di chuyển
+    System -> System: 8. Render sprite với animation mới
+    
+    System --> UI: 9. Thông báo animation updated
+    UI --> Player: 10. Hiển thị animation phù hợp
+    
+else animation không tồn tại
+    DB --> System: 11. Không tìm thấy animation
+    deactivate DB
+    
+    System -> DB: 12. Lấy animation mặc định
+    activate DB
+    DB --> System: 13. Trả về default animation
+    deactivate DB
+    
+    System -> System: 14. Log lỗi để debug
+    System -> System: 15. Render với animation mặc định
+    
+    System --> UI: 16. Thông báo dùng animation mặc định
+    UI --> Player: 17. Hiển thị animation mặc định
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

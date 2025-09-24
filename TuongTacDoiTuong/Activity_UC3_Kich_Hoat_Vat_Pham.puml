@@ -1,0 +1,46 @@
+@startuml Activity_UC3_Kich_Hoat_Vat_Pham
+!theme plain
+
+title Biểu đồ Hoạt động - UC Kích Hoạt Vật Phẩm
+
+|Player|
+start
+:tương tác với interactive object;
+
+|System|
+:kiểm tra điều kiện kích hoạt;
+
+if (chưa đủ điều kiện?) then (yes)
+  :hiển thị thông báo yêu cầu;
+  :object không được kích hoạt;
+  
+  |Player|
+  :thấy thông báo requirements;
+  :cần đáp ứng điều kiện;
+  
+else (no)
+  if (object đã được kích hoạt rồi?) then (yes)
+    :hiển thị "Đã được kích hoạt";
+    :không có hiệu ứng gì;
+    
+    |Player|
+    :thấy thông báo đã active;
+    
+  else (no)
+    :phát animation kích hoạt;
+    :thực hiện hiệu ứng (mở cửa, spawn monster, etc.);
+    :cập nhật trạng thái object;
+    :hiển thị feedback cho player;
+    :log interaction cho quest tracking;
+    
+    |Player|
+    :thấy object được kích hoạt;
+    :thấy hiệu ứng xảy ra;
+    :có thể ảnh hưởng quest progress;
+  endif
+endif
+
+stop
+
+@enduml
+

@@ -1,0 +1,42 @@
+@startuml Activity_Diagram_Game_Session
+!theme plain
+
+title Biểu đồ Hoạt động - UC Khởi tạo Game Session
+
+|Player|
+start
+:chọn "Continue Game";
+
+|System|
+:tìm kiếm file save;
+:kiểm tra tính hợp lệ của file save;
+
+if (file save hợp lệ?) then (yes)
+  :đọc dữ liệu cơ bản từ save file;
+  :load thông tin nhân vật;
+  :load dữ liệu bản đồ hiện tại;
+  :load trạng thái các NPC;
+  :load tiến trình quest;
+  :hiển thị loading progress;
+  :render terrain và background;
+  :đặt các object tĩnh;
+  :spawn các NPC theo vị trí đã lưu;
+  :spawn quái vật theo cấu hình;
+  :đặt các vật phẩm trên bản đồ;
+  :đọc vị trí spawn từ save data;
+  :kiểm tra vị trí spawn hợp lệ;
+  :tạo character object;
+  :đặt nhân vật tại vị trí spawn;
+  :khởi tạo camera theo dõi nhân vật;
+  
+  |Player|
+  :bắt đầu chơi game;
+  
+else (no)
+  :hiển thị thông báo lỗi;
+  :quay về menu chính;
+endif
+
+stop
+
+@enduml

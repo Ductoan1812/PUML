@@ -1,0 +1,68 @@
+@startuml Sequence_UC1_Nhan_Nhiem_Vu
+!theme plain
+
+title Biểu đồ Trình tự - UC Nhận Nhiệm Vụ
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Tương tác với NPC quest giver
+activate UI
+UI -> System: 2. Yêu cầu hiển thị quest
+activate System
+
+System -> DB: 3. Lấy thông tin quest từ NPC
+activate DB
+DB --> System: 4. Trả về quest details
+deactivate DB
+
+System --> UI: 5. Hiển thị quest dialog
+UI --> Player: 6. Xem mô tả nhiệm vụ
+
+Player -> UI: 7. Chọn "Accept Quest"
+UI -> System: 8. Yêu cầu accept quest
+
+System -> DB: 9. Kiểm tra level requirement
+activate DB
+DB --> System: 10. Trả về player level vs required
+deactivate DB
+
+alt level không đủ
+    System --> UI: 11. Thông báo "Cần level X"
+    UI --> Player: 12. Hiển thị level requirement
+    
+else level đủ
+    System -> DB: 13. Kiểm tra quest log capacity
+    activate DB
+    DB --> System: 14. Trả về quest log status
+    deactivate DB
+    
+    alt quest log đầy
+        System --> UI: 15. Thông báo "Quest log đầy"
+        UI --> Player: 16. Cần hoàn thành quest khác
+        
+    else có thể nhận quest
+        System -> DB: 17. Thêm quest vào active list
+        activate DB
+        DB --> System: 18. Xác nhận quest added
+        deactivate DB
+        
+        System -> DB: 19. Khởi tạo quest tracking
+        activate DB
+        DB --> System: 20. Xác nhận tracking started
+        deactivate DB
+        
+        System --> UI: 21. Thông báo quest accepted
+        UI --> Player: 22. Hiển thị quest objectives
+        UI --> Player: 23. Bắt đầu tracking progress
+    end
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

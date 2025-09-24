@@ -1,0 +1,44 @@
+@startuml Activity_UC7_Don_Chi_Mang
+!theme plain
+
+title Biểu đồ Hoạt động - UC Đón Chí Mạng
+
+|Player|
+start
+:random trúng tỷ lệ critical hit;
+
+|System|
+:kiểm tra critical chance của nhân vật;
+
+if (critical chance > 0?) then (yes)
+  :random xác định có critical không;
+  
+  if (trúng critical?) then (yes)
+    :nhân damage với critical multiplier;
+    :hiển thị hiệu ứng đặc biệt;
+    :phát animation critical hit;
+    
+    |Player|
+    :nhìn thấy critical hit;
+    :damage cao hơn bình thường;
+    
+  else (no)
+    :áp dụng damage bình thường;
+    
+    |Player|
+    :damage bình thường;
+  endif
+  
+else (no)
+  :bỏ qua UC này;
+  :áp dụng damage bình thường;
+  
+  |Player|
+  :damage bình thường;
+endif
+
+stop
+
+@enduml
+
+

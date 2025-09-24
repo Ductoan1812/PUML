@@ -1,0 +1,36 @@
+@startuml Activity_UC6_Roi_Vat_Pham
+!theme plain
+
+title Biểu đồ Hoạt động - UC Rơi Vật Phẩm
+
+|Player|
+start
+:mục tiêu bị tiêu diệt hoàn toàn;
+
+|System|
+:kiểm tra drop table của kẻ thù;
+:random vật phẩm theo tỷ lệ;
+
+if (random trúng vật phẩm?) then (yes)
+  :tạo vật phẩm tại vị trí kẻ thù;
+  :hiển thị animation rơi vật phẩm;
+  :thêm vật phẩm vào danh sách có thể thu thập;
+  
+  |Player|
+  :nhìn thấy vật phẩm rơi;
+  :có thể thu thập vật phẩm;
+  
+else (no)
+  :chỉ rơi gold/EXP;
+  :không tạo vật phẩm vật lý;
+  
+  |Player|
+  :chỉ nhận gold/EXP;
+  :không có vật phẩm để thu thập;
+endif
+
+stop
+
+@enduml
+
+

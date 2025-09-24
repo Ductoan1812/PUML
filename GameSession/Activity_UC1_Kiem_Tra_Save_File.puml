@@ -1,0 +1,43 @@
+@startuml Activity_UC1_Kiem_Tra_Save_File
+!theme plain
+
+title Biểu đồ Hoạt động - UC Kiểm tra Save File
+
+|Player|
+start
+:chọn "Continue Game" từ menu;
+
+|System|
+:tìm kiếm file save;
+
+if (tìm thấy file save?) then (yes)
+  :kiểm tra tính hợp lệ của file save;
+  
+  if (file save hợp lệ?) then (yes)
+    :đọc dữ liệu cơ bản từ save file;
+    :chuyển sang UC Load game data;
+    
+    |Player|
+    :tiếp tục khởi tạo game;
+    
+  else (no - corrupt)
+    :hiển thị thông báo "File save bị lỗi";
+    :quay về menu chính;
+    
+    |Player|
+    :nhận thông báo lỗi;
+  endif
+  
+else (no)
+  :hiển thị thông báo "Không có game save";
+  :quay về menu chính;
+  
+  |Player|
+  :nhận thông báo không có save;
+endif
+
+stop
+
+@enduml
+
+

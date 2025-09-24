@@ -1,0 +1,68 @@
+@startuml Sequence_UC6_Thoat_Game
+!theme plain
+
+title Biểu đồ Trình tự - UC Thoát Game
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Chọn "Exit Game" từ menu
+activate UI
+UI -> System: 2. Yêu cầu exit game
+activate System
+
+System --> UI: 3. Hiển thị confirmation dialog
+UI --> Player: 4. "Are you sure you want to exit?"
+
+alt Player chọn Yes
+    Player -> UI: 5. Xác nhận thoát
+    UI -> System: 6. Thực hiện exit process
+    
+    System -> System: 7. Kiểm tra unsaved progress
+    
+    alt có unsaved progress
+        System --> UI: 8. "Save before exit?"
+        UI --> Player: 9. Hiển thị save options
+        
+        alt Player chọn Save
+            Player -> UI: 10. Chọn save trước khi thoát
+            UI -> System: 11. Yêu cầu auto save
+            
+            System -> DB: 12. Lưu game state
+            activate DB
+            DB --> System: 13. Game saved
+            deactivate DB
+            
+            System -> System: 14. Đóng connections
+            System -> System: 15. Clean up resources
+            System -> System: 16. Thoát game process
+            
+        else Player chọn Don't Save
+            Player -> UI: 17. Chọn không save
+            UI -> System: 18. Exit without save
+            
+            System -> System: 19. Đóng connections
+            System -> System: 20. Clean up resources
+            System -> System: 21. Thoát game process
+        end
+        
+    else không có unsaved progress
+        System -> System: 22. Đóng connections
+        System -> System: 23. Clean up resources
+        System -> System: 24. Thoát game process
+    end
+    
+else Player chọn No
+    Player -> UI: 25. Hủy exit
+    UI -> System: 26. Cancel exit operation
+    
+    System --> UI: 27. Hủy bỏ exit
+    UI --> Player: 28. Quay về menu hoặc game
+end
+
+deactivate System
+deactivate UI
+
+@enduml

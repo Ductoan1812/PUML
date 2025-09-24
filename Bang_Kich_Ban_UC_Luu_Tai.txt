@@ -1,0 +1,52 @@
+BẢNG KỊCH BẢN USE CASE - UC LƯU&TẢI
+
+========================================
+
+UC 1: SERIALIZA&DESERIALIZE
+
+Tên Use Case	Serializa&deserialize
+Tác nhân	Hệ thống
+Mục đích	Chuyển đổi dữ liệu game thành format có thể lưu trữ và ngược lại
+Điều kiện tiên quyết	Có dữ liệu game cần serialize hoặc save file cần deserialize
+Hậu điều kiện	Dữ liệu được chuyển đổi thành công giữa object và file format
+Luồng sự kiện	Nhận yêu cầu serialize/deserialize - Nếu serialize: chuyển game objects thành JSON/Binary - Nếu deserialize: parse file data thành game objects - Validate data integrity - Kiểm tra version compatibility - Trả về kết quả conversion - Log quá trình để debug nếu cần
+Luồng sự kiện thay thế	Data corruption trong quá trình convert - Hiển thị "Data conversion failed" - Sử dụng backup data nếu có | Version mismatch - Thực hiện data migration - Cập nhật format lên version mới
+
+========================================
+
+UC 2: ĐỌC&GHI FILE
+
+Tên Use Case	Đọc&ghi file
+Tác nhân	Hệ thống
+Mục đích	Thực hiện các thao tác I/O với save files trên disk
+Điều kiện tiên quyết	Có quyền truy cập file system và đường dẫn save hợp lệ
+Hậu điều kiện	File được đọc/ghi thành công và dữ liệu được xử lý
+Luồng sự kiện	Kiểm tra quyền truy cập file system - Tạo thư mục save nếu chưa có - Nếu ghi: mở file để write, ghi data, close file - Nếu đọc: mở file để read, đọc data, close file - Verify file integrity sau khi ghi - Cập nhật metadata (timestamp, checksum) - Log file operations
+Luồng sự kiện thay thế	Không có quyền truy cập - Hiển thị "Permission denied" - Thử alternative save location | Disk full khi ghi file - Hiển thị "Not enough disk space" - Xóa old backups để tạo chỗ trống | File bị lock bởi process khác - Retry sau delay ngắn - Thông báo nếu vẫn thất bại
+
+========================================
+
+UC 3: TỰ ĐỘNG LƯU
+
+Tên Use Case	Tự động lưu
+Tác nhân	Hệ thống
+Mục đích	Tự động lưu game progress theo intervals hoặc events quan trọng
+Điều kiện tiên quyết	Auto-save được bật và đã đủ thời gian interval hoặc có trigger event
+Hậu điều kiện	Game progress được lưu tự động mà không làm gián đoạn gameplay
+Luồng sự kiện	Monitor auto-save timer và game events - Khi đến thời điểm auto-save hoặc có trigger - Kiểm tra game state có thể save không - Thực hiện save ở background thread - Hiển thị save indicator nhỏ - Cập nhật last auto-save timestamp - Không làm gián đoạn gameplay
+Luồng sự kiện thay thế	Game đang trong cutscene/dialogue - Delay auto-save đến khi kết thúc - Đánh dấu pending auto-save | Auto-save thất bại - Retry sau một khoảng thời gian - Thông báo cho player nếu retry nhiều lần
+
+========================================
+
+UC 4: BACKUP DỮ LIỆU
+
+Tên Use Case	Backup dữ liệu
+Tác nhân	Hệ thống
+Mục đích	Tạo backup copies của save files để bảo vệ dữ liệu
+Điều kiện tiên quyết	Có save file mới được tạo hoặc đến thời điểm backup định kỳ
+Hậu điều kiện	Backup files được tạo và quản lý theo policy đã định
+Luồng sự kiện	Kiểm tra số lượng backup hiện tại - Copy save file hiện tại thành backup file - Đặt tên backup với timestamp - Kiểm tra giới hạn số backup files - Xóa backup cũ nhất nếu vượt giới hạn - Verify backup file integrity - Cập nhật backup metadata
+Luồng sự kiện thay thế	Backup folder không tồn tại - Tạo backup folder mới - Retry backup operation | Backup file bị corrupt - Xóa backup lỗi - Tạo backup mới từ save file gốc | Không đủ disk space cho backup - Xóa backup cũ để tạo chỗ trống - Thông báo nếu vẫn không đủ
+
+
+

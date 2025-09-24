@@ -1,0 +1,28 @@
+BẢNG KỊCH BẢN USE CASE - UC THOÁT GAME
+
+========================================
+
+UC 1: VỀ MENU CHÍNH
+
+Tên Use Case	Về Menu chính
+Tác nhân	Player
+Mục đích	Player quay về menu chính thay vì thoát game hoàn toàn
+Điều kiện tiên quyết	Player đang trong game và chọn option về menu chính
+Hậu điều kiện	Game quay về main menu và giải phóng resources của gameplay
+Luồng sự kiện	Player chọn "Return to Main Menu" - Hiển thị xác nhận "Return to main menu? Unsaved progress will be lost" - Player chọn Yes - Kiểm tra có unsaved progress không - Tùy chọn save game trước khi về menu - Dừng background music của gameplay - Giải phóng game world resources - Load main menu scene - Hiển thị main menu interface
+Luồng sự kiện thay thế	Player chọn No trong confirmation - Hủy bỏ operation - Tiếp tục gameplay hiện tại | Có unsaved progress quan trọng - Hiển thị "Save before returning to menu?" - Player chọn Save/Don't Save/Cancel
+
+========================================
+
+UC 2: LƯU NHANH
+
+Tên Use Case	Lưu nhanh
+Tác nhân	Player
+Mục đích	Player thực hiện quick save trước khi thoát để bảo toàn progress
+Điều kiện tiên quyết	Player chọn quick save hoặc hệ thống đề xuất save trước khi thoát
+Hậu điều kiện	Game progress được lưu nhanh vào quick save slot
+Luồng sự kiện	Player nhấn hotkey quick save hoặc chọn từ menu - Kiểm tra game state có thể save không - Thực hiện save vào quick save slot - Hiển thị save progress indicator - Ghi đè quick save cũ nếu có - Hiển thị "Quick save completed" - Cho phép player tiếp tục hoặc thoát game
+Luồng sự kiện thay thế	Game đang trong trạng thái không thể save - Hiển thị "Cannot save at this time" - Đề xuất player tìm safe location để save | Quick save thất bại - Hiển thị "Quick save failed" - Đề xuất sử dụng regular save menu | Disk space không đủ - Hiển thị "Not enough space for quick save" - Đề xuất xóa old saves
+
+
+

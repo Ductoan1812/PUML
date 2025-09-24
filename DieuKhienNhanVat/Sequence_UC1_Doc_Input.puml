@@ -1,0 +1,50 @@
+@startuml Sequence_UC1_Doc_Input
+!theme plain
+
+title Biểu đồ Trình tự - UC Đọc Input
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Nhấn phím/chuột
+activate UI
+UI -> System: 2. Gửi input signal
+activate System
+
+System -> System: 3. Lắng nghe input từ bàn phím/chuột
+System -> System: 4. Xác định loại input
+
+alt input hợp lệ
+    System -> System: 5. Validate input
+    
+    alt input di chuyển
+        System -> System: 6. Chuyển đến movement module
+        System --> UI: 7. Thông báo input được xử lý
+        UI --> Player: 8. Nhân vật bắt đầu di chuyển
+        
+    else input tấn công
+        System -> System: 9. Chuyển đến combat module
+        System --> UI: 10. Thông báo input được xử lý
+        UI --> Player: 11. Nhân vật thực hiện tấn công
+        
+    else input kỹ năng
+        System -> System: 12. Chuyển đến skill module
+        System --> UI: 13. Thông báo input được xử lý
+        UI --> Player: 14. Nhân vật sử dụng kỹ năng
+    end
+    
+else input không hợp lệ
+    System -> System: 15. Bỏ qua input
+    System -> System: 16. Tiếp tục lắng nghe input mới
+    System --> UI: 17. Không có phản hồi
+    UI --> Player: 18. Không có thay đổi
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

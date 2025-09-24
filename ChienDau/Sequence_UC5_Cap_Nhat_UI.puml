@@ -1,0 +1,63 @@
+@startuml Sequence_UC5_Cap_Nhat_UI
+!theme plain
+
+title Biểu đồ Trình tự - UC Cập Nhật Giao Diện
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Hoàn thành một lượt tấn công
+activate UI
+UI -> System: 2. Yêu cầu cập nhật UI
+activate System
+
+System -> DB: 3. Lấy HP/MP nhân vật hiện tại
+activate DB
+DB --> System: 4. Trả về player stats
+deactivate DB
+
+System -> DB: 5. Lấy HP mục tiêu hiện tại
+activate DB
+DB --> System: 6. Trả về target HP
+deactivate DB
+
+System -> DB: 7. Lấy cooldown status
+activate DB
+DB --> System: 8. Trả về skill cooldowns
+deactivate DB
+
+System -> System: 9. Chuẩn bị UI updates
+
+alt có EXP mới
+    System -> DB: 10. Lấy EXP hiện tại
+    activate DB
+    DB --> System: 11. Trả về EXP value
+    deactivate DB
+    
+    System --> UI: 12. Cập nhật tất cả UI elements + EXP
+    UI --> Player: 13. Hiển thị UI với EXP tăng
+    
+else không có EXP mới
+    System --> UI: 14. Cập nhật UI elements cơ bản
+    UI --> Player: 15. Hiển thị UI không có EXP mới
+end
+
+alt UI lỗi hiển thị
+    System -> DB: 16. Lấy backup data
+    activate DB
+    DB --> System: 17. Trả về backup values
+    deactivate DB
+    
+    System -> System: 18. Log lỗi để debug
+    System --> UI: 19. Sử dụng backup data
+    UI --> Player: 20. UI có thể không chính xác
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

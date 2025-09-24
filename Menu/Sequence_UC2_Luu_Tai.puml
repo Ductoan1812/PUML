@@ -1,0 +1,69 @@
+@startuml Sequence_UC2_Luu_Tai
+!theme plain
+
+title Biểu đồ Trình tự - UC Lưu&Tải
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Chọn Save/Load từ menu
+activate UI
+UI -> System: 2. Yêu cầu hiển thị save slots
+activate System
+
+System -> DB: 3. Lấy danh sách save files
+activate DB
+DB --> System: 4. Trả về save slots info
+deactivate DB
+
+System --> UI: 5. Hiển thị danh sách save slots
+UI --> Player: 6. Hiển thị available slots
+
+Player -> UI: 7. Chọn slot muốn save/load
+UI -> System: 8. Xác định thao tác (save/load)
+
+alt thao tác Save
+    System -> DB: 9. Ghi dữ liệu game vào file
+    activate DB
+    DB --> System: 10. Xác nhận save thành công
+    deactivate DB
+    
+    System -> System: 11. Cập nhật save slot metadata
+    System --> UI: 12. Thông báo "Game saved successfully"
+    UI --> Player: 13. Hiển thị save confirmation
+    
+else thao tác Load
+    System -> DB: 14. Đọc dữ liệu từ save file
+    activate DB
+    DB --> System: 15. Save file data
+    deactivate DB
+    
+    System -> System: 16. Validate save file integrity
+    
+    alt save file hợp lệ
+        System -> System: 17. Cập nhật game state
+        System -> DB: 18. Load character data
+        activate DB
+        DB --> System: 19. Character data loaded
+        deactivate DB
+        
+        System -> DB: 20. Load world state
+        activate DB
+        DB --> System: 21. World state loaded
+        deactivate DB
+        
+        System --> UI: 22. Thông báo "Game loaded successfully"
+        UI --> Player: 23. Chuyển về game với loaded state
+        
+    else save file bị corrupt
+        System --> UI: 24. Thông báo "Save file corrupted"
+        UI --> Player: 25. Hiển thị error message
+    end
+end
+
+deactivate System
+deactivate UI
+
+@enduml

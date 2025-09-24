@@ -1,0 +1,22 @@
+@startuml UC_Thoat_Game
+!theme plain
+
+title Use Case Diagram Chi Tiết - UC Thoát Game
+
+actor "Player" as P
+
+usecase "Thoát game" as MainUC
+usecase "Về Menu chính" as UC1
+usecase "Lưu nhanh" as UC2
+
+' Main relationship
+P --> MainUC
+
+' Extend relationships
+UC1 ..> MainUC : <<extend>>
+UC2 ..> MainUC : <<extend>>
+
+@enduml
+
+
+

@@ -1,0 +1,51 @@
+@startuml Sequence_UC3_Tinh_Sat_Thuong
+!theme plain
+
+title Biểu đồ Trình tự - UC Tính Sát Thương
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Đã xác định mục tiêu hợp lệ
+activate UI
+UI -> System: 2. Bắt đầu tính sát thương
+activate System
+
+System -> DB: 3. Lấy attack power của nhân vật
+activate DB
+DB --> System: 4. Trả về player attack stats
+deactivate DB
+
+System -> DB: 5. Lấy defense của mục tiêu
+activate DB
+DB --> System: 6. Trả về target defense stats
+deactivate DB
+
+System -> System: 7. Tính damage cơ bản (attack - defense)
+
+alt damage > 0
+    System -> DB: 8. Lấy các modifier (crit, buff, debuff)
+    activate DB
+    DB --> System: 9. Trả về modifier values
+    deactivate DB
+    
+    System -> System: 10. Áp dụng modifiers
+    System -> System: 11. Tính damage cuối cùng
+    
+    System --> UI: 12. Thông báo damage calculated
+    UI --> Player: 13. Chuẩn bị hiển thị damage
+    
+else damage <= 0
+    System -> System: 14. Set minimum damage = 1
+    System --> UI: 15. Thông báo "MISS" hoặc "BLOCKED"
+    UI --> Player: 16. Hiển thị tấn công bị chặn
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

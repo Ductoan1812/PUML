@@ -1,0 +1,90 @@
+@startuml Sequence_Main_UC_Chien_Dau
+!theme plain
+
+title Biểu đồ Trình tự Tổng quát - UC Chiến Đấu
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Thực hiện hành động tấn công
+activate UI
+UI -> System: 2. Yêu cầu combat action
+activate System
+
+== UC "Kiểm tra CD & tài nguyên" (Include) ==
+System -> System: 3. Thực hiện UC Kiểm tra CD & tài nguyên
+System -> DB: 4. Validate combat conditions
+activate DB
+DB --> System: 5. Conditions result
+deactivate DB
+
+alt đủ điều kiện tấn công
+    == UC "Phát hiện mục tiêu" (Include) ==
+    System -> System: 6. Thực hiện UC Phát hiện mục tiêu
+    System -> DB: 7. Scan for targets
+    activate DB
+    DB --> System: 8. Target list
+    deactivate DB
+    
+    alt có mục tiêu
+        == UC "Đón chí mạng" (Extend - RNG) ==
+        alt random critical hit
+            System -> System: 9. Thực hiện UC Đón chí mạng
+            System -> DB: 10. Apply critical multiplier
+            activate DB
+            DB --> System: 11. Critical damage calculated
+            deactivate DB
+        end
+        
+        == UC "Tính sát thương" (Include) ==
+        System -> System: 12. Thực hiện UC Tính sát thương
+        System -> DB: 13. Calculate final damage
+        activate DB
+        DB --> System: 14. Damage value
+        deactivate DB
+        
+        == UC "Áp dụng damage & hiệu ứng" (Include) ==
+        System -> System: 15. Thực hiện UC Áp dụng damage
+        System -> DB: 16. Apply damage to target
+        activate DB
+        DB --> System: 17. Damage applied, target status
+        deactivate DB
+        
+        == UC "Cập nhật giao diện" (Extend) ==
+        System -> System: 18. Thực hiện UC Cập nhật UI
+        System --> UI: 19. Update combat UI
+        UI --> Player: 20. Hiển thị damage và effects
+        
+        == UC "Rơi vật phẩm" (Extend - khi target chết) ==
+        alt target eliminated
+            System -> System: 21. Thực hiện UC Rơi vật phẩm
+            System -> DB: 22. Generate loot drops
+            activate DB
+            DB --> System: 23. Loot generated
+            deactivate DB
+            
+            System --> UI: 24. Hiển thị loot drop
+            UI --> Player: 25. Nhận EXP và loot
+            
+        else target alive
+            System --> UI: 26. Target nhận damage
+            UI --> Player: 27. Combat continues
+        end
+        
+    else không có mục tiêu
+        System --> UI: 28. Attack missed
+        UI --> Player: 29. Tấn công trượt
+    end
+    
+else không đủ điều kiện
+    System --> UI: 30. Combat blocked
+    UI --> Player: 31. Không thể tấn công
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+

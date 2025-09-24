@@ -1,0 +1,49 @@
+BẢNG KỊCH BẢN USE CASE - UC TƯƠNG TÁC ĐỐI TƯỢNG
+
+========================================
+
+UC 1: MỞ RƯƠNG
+
+Tên Use Case	Mở rương
+Tác nhân	Player
+Mục đích	Player mở các rương báu để nhận vật phẩm bên trong
+Điều kiện tiên quyết	Player đứng gần rương và rương chưa được mở
+Hậu điều kiện	Rương được mở và vật phẩm bên trong được hiển thị hoặc thu thập
+Luồng sự kiện	Player tương tác với rương (click hoặc phím E) - Kiểm tra rương có khóa hay không - Nếu có khóa thì kiểm tra key trong inventory - Phát animation mở rương - Random vật phẩm theo drop table - Hiển thị vật phẩm nhận được - Thêm vật phẩm vào inventory - Đánh dấu rương đã được mở
+Luồng sự kiện thay thế	Rương có khóa nhưng không có key - Hiển thị "Cần chìa khóa để mở rương" - Rương không được mở | Inventory đầy - Hiển thị lựa chọn drop item hoặc bỏ qua - Vật phẩm rơi xuống đất nếu không thể nhận
+
+========================================
+
+UC 2: HỘP THOẠI
+
+Tên Use Case	Hộp thoại
+Tác nhân	Player
+Mục đích	Player tương tác và trò chuyện với NPC
+Điều kiện tiên quyết	Player đứng gần NPC và NPC có dialogue available
+Hậu điều kiện	Cuộc hội thoại được thực hiện và có thể dẫn đến quest hoặc giao dịch
+Luồng sự kiện	Player tương tác với NPC - Hiển thị dialogue interface - Hiển thị text và portrait của NPC - Player chọn response option - Xử lý response và chuyển đến dialogue node tiếp theo - Có thể dẫn đến quest, shop, hoặc kết thúc dialogue - Đóng dialogue interface khi hoàn thành
+Luồng sự kiện thay thế	NPC không có dialogue - Hiển thị thông báo mặc định - Không mở dialogue interface | Dialogue bị lỗi - Hiển thị default text - Log lỗi để debug
+
+========================================
+
+UC 3: KÍCH HOẠT VẬT PHẨM
+
+Tên Use Case	Kích hoạt vật phẩm
+Tác nhân	Player
+Mục đích	Player kích hoạt các vật phẩm đặc biệt trong môi trường như switch, lever, button
+Điều kiện tiên quyết	Player đứng gần interactive object và object có thể kích hoạt
+Hậu điều kiện	Object được kích hoạt và trigger hiệu ứng tương ứng
+Luồng sự kiện	Player tương tác với interactive object - Kiểm tra điều kiện kích hoạt (quest requirement, item requirement) - Phát animation kích hoạt - Thực hiện hiệu ứng (mở cửa, spawn monster, etc.) - Cập nhật trạng thái object - Hiển thị feedback cho player - Log interaction cho quest tracking
+Luồng sự kiện thay thế	Chưa đủ điều kiện kích hoạt - Hiển thị thông báo yêu cầu - Object không được kích hoạt | Object đã được kích hoạt rồi - Hiển thị "Đã được kích hoạt" - Không có hiệu ứng gì
+
+========================================
+
+UC 4: KÍCH HOẠT SỰ KIỆN
+
+Tên Use Case	Kích hoạt sự kiện
+Tác nhân	Hệ thống
+Mục đích	Tự động kích hoạt các sự kiện đặc biệt khi player tương tác với trigger zones
+Điều kiện tiên quyết	Player bước vào trigger zone hoặc thực hiện hành động trigger
+Hậu điều kiện	Sự kiện được kích hoạt và thực hiện các hiệu ứng tương ứng
+Luồng sự kiện	Phát hiện player trong trigger zone - Kiểm tra điều kiện trigger (level, quest status, item) - Kích hoạt event script - Thực hiện các hiệu ứng (cutscene, spawn enemies, weather change) - Cập nhật game state - Thông báo cho player nếu cần - Disable trigger nếu là one-time event
+Luồng sự kiện thay thế	Điều kiện trigger chưa đủ - Event không được kích hoạt - Chờ đến khi đủ điều kiện | Event đã được trigger rồi - Bỏ qua trigger - Không thực hiện gì thêm

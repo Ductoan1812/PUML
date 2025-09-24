@@ -1,0 +1,68 @@
+@startuml Sequence_UC1_Quan_Ly_Level
+!theme plain
+
+title Biểu đồ Trình tự - UC Quản Lý Level
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Nhận EXP từ combat/quest
+activate UI
+UI -> System: 2. Cập nhật EXP
+activate System
+
+System -> DB: 3. Lấy EXP hiện tại
+activate DB
+DB --> System: 4. Trả về current EXP
+deactivate DB
+
+System -> DB: 5. Lấy EXP cần thiết cho level tiếp
+activate DB
+DB --> System: 6. Trả về required EXP
+deactivate DB
+
+System -> System: 7. So sánh EXP hiện tại vs required
+
+alt đủ EXP để level up
+    System -> DB: 8. Tăng level lên 1
+    activate DB
+    DB --> System: 9. Xác nhận level updated
+    deactivate DB
+    
+    System -> DB: 10. Reset EXP về 0
+    activate DB
+    DB --> System: 11. Xác nhận EXP reset
+    deactivate DB
+    
+    System -> DB: 12. Tăng HP/MP tối đa
+    activate DB
+    DB --> System: 13. Xác nhận stats updated
+    deactivate DB
+    
+    System -> DB: 14. Cộng điểm kỹ năng
+    activate DB
+    DB --> System: 15. Xác nhận skill points added
+    deactivate DB
+    
+    System --> UI: 16. Thông báo "Level Up!"
+    UI --> Player: 17. Hiển thị level up effects
+    UI --> Player: 18. Thông báo có điểm kỹ năng mới
+    
+else EXP chưa đủ
+    System -> DB: 19. Chỉ cập nhật EXP progress
+    activate DB
+    DB --> System: 20. Xác nhận EXP updated
+    deactivate DB
+    
+    System --> UI: 21. Cập nhật EXP bar
+    UI --> Player: 22. Hiển thị EXP progress
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

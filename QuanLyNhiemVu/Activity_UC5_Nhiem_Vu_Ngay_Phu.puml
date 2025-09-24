@@ -1,0 +1,50 @@
+@startuml Activity_UC5_Nhiem_Vu_Ngay_Phu
+!theme plain
+
+title Biểu đồ Hoạt động - UC Nhiệm Vụ Ngày & Phụ
+
+|Player|
+start
+:đăng nhập hoặc đạt điều kiện kích hoạt quest đặc biệt;
+
+|System|
+:kiểm tra daily quest reset time;
+
+if (daily quest đã completed hôm nay?) then (yes)
+  :không tạo daily quest mới;
+  :chờ đến reset time;
+  
+  |Player|
+  :không có daily quest mới;
+  :chờ đến ngày mai;
+  
+else (no)
+  :tạo daily quests mới cho player;
+  :kiểm tra event quests đang active;
+  
+  if (event đã kết thúc?) then (yes)
+    :xóa event quests khỏi available list;
+    :thông báo "Event đã kết thúc";
+    
+    |Player|
+    :không thể làm event quest;
+    :chỉ có daily quest;
+    
+  else (no)
+    :kiểm tra điều kiện unlock side quests;
+    :thêm available quests vào quest giver;
+    :thông báo về quests mới;
+    :cập nhật quest availability;
+    
+    |Player|
+    :có daily quest mới;
+    :có thể có event quest và side quest;
+    :nhiều lựa chọn quest;
+  endif
+endif
+
+stop
+
+@enduml
+
+

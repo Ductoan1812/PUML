@@ -1,0 +1,48 @@
+@startuml Activity_UC4_Bo_Sort_Filter
+!theme plain
+
+title Biểu đồ Hoạt động - UC Bỏ & Sort & Filter
+
+|Player|
+start
+:mở inventory và có ít nhất 1 vật phẩm;
+
+if (chọn Sort/Filter?) then (Sort/Filter)
+  |System|
+  :chọn tiêu chí sắp xếp (tên, loại, giá trị, rarity);
+  :sắp xếp lại vật phẩm;
+  :hiển thị kết quả;
+  
+  |Player|
+  :nhìn thấy inventory được sắp xếp;
+  :dễ tìm vật phẩm hơn;
+  
+else (Drop item)
+  |Player|
+  :chọn Drop item;
+  
+  |System|
+  :hiển thị xác nhận "Bạn có chắc muốn bỏ?";
+  
+  |Player|
+  if (xác nhận?) then (yes)
+    |System|
+    :xóa vật phẩm khỏi inventory;
+    :tăng slot trống;
+    
+    |Player|
+    :vật phẩm bị xóa;
+    :có thêm chỗ trống;
+    
+  else (no)
+    |Player|
+    :hủy bỏ thao tác;
+    :vật phẩm vẫn còn;
+  endif
+endif
+
+stop
+
+@enduml
+
+

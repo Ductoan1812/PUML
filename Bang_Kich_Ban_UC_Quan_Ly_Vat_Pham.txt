@@ -1,0 +1,61 @@
+BẢNG KỊCH BẢN USE CASE - UC QUẢN LÝ VẬT PHẨM
+
+========================================
+
+UC 1: KIỂM TRA SỨC CHỨA
+
+Tên Use Case	Kiểm tra sức chứa
+Tác nhân	Hệ thống
+Mục đích	Kiểm tra khả năng chứa vật phẩm trong inventory
+Điều kiện tiên quyết	Player thực hiện hành động liên quan đến vật phẩm
+Hậu điều kiện	Xác định được khả năng thêm vật phẩm vào inventory
+Luồng sự kiện	Đếm số slot đã sử dụng trong inventory - Kiểm tra số slot tối đa - Tính toán slot còn trống - Kiểm tra khối lượng hiện tại và giới hạn - Xác nhận có thể thêm vật phẩm mới
+Luồng sự kiện thay thế	Inventory đã đầy slot - Hiển thị thông báo "Inventory đầy" - Không thể thêm vật phẩm mới | Vượt quá giới hạn khối lượng - Hiển thị thông báo "Quá tải trọng" - Không thể thêm vật phẩm
+
+========================================
+
+UC 2: CẬP NHẬT HUD & TOAST
+
+Tên Use Case	Cập nhật HUD & Toast
+Tác nhân	Hệ thống
+Mục đích	Cập nhật giao diện hiển thị thông tin vật phẩm
+Điều kiện tiên quyết	Có thay đổi trong inventory
+Hậu điều kiện	UI được cập nhật với thông tin mới nhất
+Luồng sự kiện	Cập nhật số lượng vật phẩm trên HUD - Hiển thị toast notification khi nhận vật phẩm - Cập nhật weight/capacity bar - Làm mới danh sách inventory - Highlight vật phẩm mới nhận
+Luồng sự kiện thay thế	Lỗi cập nhật UI - Sử dụng dữ liệu cache - Refresh toàn bộ inventory UI
+
+========================================
+
+UC 3: THÊM & STACK ITEM
+
+Tên Use Case	Thêm & Stack item
+Tác nhân	Hệ thống
+Mục đích	Thêm vật phẩm mới vào inventory và stack với vật phẩm cùng loại
+Điều kiện tiên quyết	Đã kiểm tra sức chứa và có thể thêm vật phẩm
+Hậu điều kiện	Vật phẩm được thêm vào inventory hoặc stack với vật phẩm có sẵn
+Luồng sự kiện	Kiểm tra vật phẩm đã có trong inventory - Nếu có cùng loại thì stack với item hiện tại - Kiểm tra giới hạn stack của vật phẩm - Cập nhật số lượng - Nếu không thể stack thì tạo slot mới
+Luồng sự kiện thay thế	Vật phẩm không thể stack - Tạo slot mới trong inventory - Đặt vật phẩm vào slot trống đầu tiên | Stack đã đạt giới hạn - Tạo stack mới cho phần dư - Thông báo "Tạo stack mới"
+
+========================================
+
+UC 4: BỎ & SORT & FILTER
+
+Tên Use Case	Bỏ & Sort & Filter
+Tác nhân	Player
+Mục đích	Player quản lý, sắp xếp và lọc vật phẩm trong inventory
+Điều kiện tiên quyết	Player mở inventory và có ít nhất 1 vật phẩm
+Hậu điều kiện	Inventory được sắp xếp hoặc lọc theo yêu cầu
+Luồng sự kiện	Player chọn chức năng Sort/Filter - Chọn tiêu chí sắp xếp (tên, loại, giá trị, rarity) - Hệ thống sắp xếp lại vật phẩm - Hiển thị kết quả - Player có thể drop vật phẩm không cần thiết
+Luồng sự kiện thay thế	Player chọn Drop item - Hiển thị xác nhận "Bạn có chắc muốn bỏ?" - Nếu xác nhận thì xóa vật phẩm khỏi inventory - Tăng slot trống
+
+========================================
+
+UC 5: TỰ ĐỘNG NHẶT
+
+Tên Use Case	Tự động nhặt
+Tác nhân	Hệ thống
+Mục đích	Tự động thu thập vật phẩm khi player đi gần
+Điều kiện tiên quyết	Có vật phẩm rơi trên bản đồ và player đi gần
+Hậu điều kiện	Vật phẩm được thu thập tự động vào inventory
+Luồng sự kiện	Phát hiện vật phẩm trong phạm vi auto-pickup - Kiểm tra setting auto-pickup của player - Kiểm tra filter loại vật phẩm - Thực hiện thu thập tự động - Hiển thị animation và sound effect
+Luồng sự kiện thay thế	Auto-pickup bị tắt - Vật phẩm vẫn nằm trên đất - Player phải nhặt thủ công | Vật phẩm không nằm trong filter - Bỏ qua vật phẩm đó - Chỉ nhặt vật phẩm được cho phép

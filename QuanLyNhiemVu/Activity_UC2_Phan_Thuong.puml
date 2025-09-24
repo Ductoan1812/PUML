@@ -1,0 +1,50 @@
+@startuml Activity_UC2_Phan_Thuong
+!theme plain
+
+title Biểu đồ Hoạt động - UC Phần Thưởng
+
+|Player|
+start
+:đã hoàn thành tất cả objective của quest;
+
+|System|
+:kiểm tra quest completion status;
+:tính toán phần thưởng (EXP, gold, items);
+:kiểm tra inventory space cho items;
+
+if (inventory không đủ chỗ cho item reward?) then (yes)
+  :gửi items qua mail system;
+  :thông báo "Items đã được gửi qua mail";
+  :trao EXP và gold cho player;
+  :cập nhật quest log status thành "Completed";
+  
+  |Player|
+  :nhận EXP và gold;
+  :items được gửi qua mail;
+  :quest hoàn thành;
+  
+else (no)
+  :trao EXP và gold cho player;
+  :thêm items vào inventory;
+  :hiển thị reward notification;
+  :cập nhật quest log status thành "Completed";
+  
+  if (lỗi khi trao thưởng?) then (yes)
+    :lưu reward vào pending list;
+    :retry trao thưởng sau;
+    
+    |Player|
+    :có thể nhận reward muộn;
+    
+  else (no)
+    |Player|
+    :nhận đầy đủ phần thưởng;
+    :quest hoàn thành thành công;
+  endif
+endif
+
+stop
+
+@enduml
+
+

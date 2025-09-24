@@ -1,0 +1,66 @@
+@startuml Activity_UC4_Theo_Doi_Tien_Do
+!theme plain
+
+title Biểu đồ Hoạt động - UC Theo Dõi Tiến Độ
+
+|Player|
+start
+:có ít nhất 1 quest đang active;
+:thực hiện hành động (kill monster, collect item, etc.);
+
+|System|
+:monitor các hành động của player;
+:so sánh với quest objectives;
+
+if (hành động khớp với objective?) then (yes)
+  if (multiple quests có cùng objective?) then (yes)
+    :cập nhật progress cho tất cả quest liên quan;
+    :tránh double counting;
+    :hiển thị progress notification;
+    :cập nhật quest tracker UI;
+    
+    |Player|
+    :thấy nhiều quest progress cùng lúc;
+    
+  else (no)
+    :cập nhật progress counter;
+    :hiển thị progress notification;
+    :cập nhật quest tracker UI;
+    
+    |Player|
+    :thấy quest progress tăng;
+  endif
+  
+  :kiểm tra completion status;
+  
+  if (quest hoàn thành?) then (yes)
+    :thông báo khi quest hoàn thành;
+    
+    |Player|
+    :nhận thông báo quest completed;
+    :có thể đi nộp quest;
+    
+  else (no)
+    |Player|
+    :tiếp tục thực hiện objectives;
+  endif
+  
+else (no)
+  if (progress bị desync?) then (yes)
+    :sync lại từ server;
+    :cập nhật UI với dữ liệu chính xác;
+    
+    |Player|
+    :thấy progress được điều chỉnh;
+    
+  else (no)
+    |Player|
+    :không có thay đổi progress;
+  endif
+endif
+
+stop
+
+@enduml
+
+

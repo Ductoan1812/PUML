@@ -1,0 +1,67 @@
+@startuml Activity_UC1_Ve_Menu_Chinh
+!theme plain
+
+title Biểu đồ Hoạt động - UC Về Menu Chính
+
+|Player|
+start
+:chọn "Return to Main Menu";
+
+|System|
+:hiển thị xác nhận "Return to main menu? Unsaved progress will be lost";
+
+|Player|
+if (chọn Yes?) then (yes)
+  |System|
+  :kiểm tra có unsaved progress không;
+  
+  if (có unsaved progress quan trọng?) then (yes)
+    :hiển thị "Save before returning to menu?";
+    
+    |Player|
+    if (chọn Save?) then (Save)
+      |System|
+      :thực hiện save game;
+      :dừng background music của gameplay;
+      :giải phóng game world resources;
+      :load main menu scene;
+      :hiển thị main menu interface;
+      
+      |Player|
+      :về main menu với game đã được lưu;
+      
+    else (Don't Save)
+      |System|
+      :dừng background music của gameplay;
+      :giải phóng game world resources;
+      :load main menu scene;
+      :hiển thị main menu interface;
+      
+      |Player|
+      :về main menu, mất progress;
+      
+    else (Cancel)
+      |Player|
+      :tiếp tục gameplay hiện tại;
+    endif
+    
+  else (no)
+    |System|
+    :dừng background music của gameplay;
+    :giải phóng game world resources;
+    :load main menu scene;
+    :hiển thị main menu interface;
+    
+    |Player|
+    :về main menu;
+  endif
+  
+else (no)
+  |Player|
+  :tiếp tục gameplay hiện tại;
+endif
+
+stop
+
+@enduml
+

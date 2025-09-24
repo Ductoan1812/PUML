@@ -1,0 +1,71 @@
+@startuml Sequence_UC2_Quan_Ly_Ky_Nang
+!theme plain
+
+title Biểu đồ Trình tự - UC Quản Lý Kỹ Năng
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Mở skill tree interface
+activate UI
+UI -> System: 2. Yêu cầu load skill tree
+activate System
+
+System -> DB: 3. Lấy danh sách skills available
+activate DB
+DB --> System: 4. Trả về skill list
+deactivate DB
+
+System --> UI: 5. Hiển thị skill tree
+UI --> Player: 6. Xem skills có thể học/nâng cấp
+
+Player -> UI: 7. Chọn skill muốn đầu tư
+UI -> System: 8. Yêu cầu upgrade skill
+
+System -> DB: 9. Kiểm tra skill points hiện tại
+activate DB
+DB --> System: 10. Trả về available points
+deactivate DB
+
+System -> DB: 11. Kiểm tra level requirement
+activate DB
+DB --> System: 12. Trả về level requirement
+deactivate DB
+
+alt không đủ skill points
+    System --> UI: 13. Thông báo "Không đủ điểm kỹ năng"
+    UI --> Player: 14. Hiển thị insufficient points
+    
+else chưa đủ level
+    System --> UI: 15. Thông báo "Cần level X"
+    UI --> Player: 16. Hiển thị skill locked
+    
+else đủ điều kiện
+    System -> DB: 17. Trừ skill points
+    activate DB
+    DB --> System: 18. Xác nhận points deducted
+    deactivate DB
+    
+    System -> DB: 19. Nâng cấp skill level
+    activate DB
+    DB --> System: 20. Xác nhận skill upgraded
+    deactivate DB
+    
+    System -> DB: 21. Cập nhật skill effects
+    activate DB
+    DB --> System: 22. Xác nhận effects updated
+    deactivate DB
+    
+    System --> UI: 23. Thông báo upgrade thành công
+    UI --> Player: 24. Hiển thị skill upgraded
+    UI --> Player: 25. Có thể sử dụng skill mới
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

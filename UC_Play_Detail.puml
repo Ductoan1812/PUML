@@ -1,0 +1,31 @@
+@startuml UC_Khoi_Tao_Game_Session
+!theme plain
+
+title Use Case Diagram Chi Tiết - UC Khởi Tạo Game Session
+
+actor "Player" as P
+
+usecase "Khởi tạo Game Session" as MainUC
+usecase "Kiểm tra save file" as UC1
+usecase "Load dữ liệu nhân vật" as UC2
+usecase "Khởi tạo bản đồ" as UC3
+usecase "Spawn NPC & quái vật" as UC4
+usecase "Load inventory" as UC5
+usecase "Khởi tạo UI game" as UC6
+usecase "Hiển thị loading screen" as UC7
+
+' Main relationship
+P --> MainUC
+
+' Include relationships
+MainUC ..> UC1 : <<include>>
+MainUC ..> UC2 : <<include>>
+MainUC ..> UC3 : <<include>>
+MainUC ..> UC4 : <<include>>
+MainUC ..> UC5 : <<include>>
+
+' Extend relationships
+UC6 ..> MainUC : <<extend>>
+UC7 ..> MainUC : <<extend>>
+
+@enduml

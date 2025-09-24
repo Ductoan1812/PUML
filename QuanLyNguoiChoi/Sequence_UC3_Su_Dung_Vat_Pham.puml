@@ -1,0 +1,64 @@
+@startuml Sequence_UC3_Su_Dung_Vat_Pham
+!theme plain
+
+title Biểu đồ Trình tự - UC Sử Dụng Vật Phẩm
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Click/hotkey vật phẩm
+activate UI
+UI -> System: 2. Yêu cầu sử dụng item
+activate System
+
+System -> DB: 3. Kiểm tra item có thể sử dụng
+activate DB
+DB --> System: 4. Trả về item usability
+deactivate DB
+
+System -> DB: 5. Kiểm tra cooldown
+activate DB
+DB --> System: 6. Trả về cooldown status
+deactivate DB
+
+alt item trong cooldown
+    System --> UI: 7. Hiển thị cooldown timer
+    UI --> Player: 8. Không thể sử dụng
+    
+else item có thể dùng
+    System -> DB: 9. Kiểm tra HP/MP hiện tại
+    activate DB
+    DB --> System: 10. Trả về current HP/MP
+    deactivate DB
+    
+    alt HP/MP đã full (potion case)
+        System --> UI: 11. Thông báo "HP/MP đã đầy"
+        UI --> Player: 12. Không tiêu tốn item
+        
+    else có thể áp dụng hiệu ứng
+        System -> DB: 13. Áp dụng item effects
+        activate DB
+        DB --> System: 14. Xác nhận effects applied
+        deactivate DB
+        
+        System -> DB: 15. Trừ số lượng item
+        activate DB
+        DB --> System: 16. Xác nhận item consumed
+        deactivate DB
+        
+        System -> System: 17. Hiển thị animation & sound
+        
+        System --> UI: 18. Thông báo item used
+        UI --> Player: 19. Hiển thị effects
+        UI --> Player: 20. Item bị tiêu tốn
+    end
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

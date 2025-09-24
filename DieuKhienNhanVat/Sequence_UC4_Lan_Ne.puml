@@ -1,0 +1,52 @@
+@startuml Sequence_UC4_Lan_Ne
+!theme plain
+
+title Biểu đồ Trình tự - UC Lăn Né
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Nhấn phím lăn né (Shift + hướng)
+activate UI
+UI -> System: 2. Yêu cầu thực hiện lăn né
+activate System
+
+System -> DB: 3. Kiểm tra stamina hiện tại
+activate DB
+DB --> System: 4. Trả về stamina value
+deactivate DB
+
+System -> System: 5. Kiểm tra đủ stamina để lăn né
+
+alt đủ stamina
+    System -> DB: 6. Trừ stamina cần thiết
+    activate DB
+    DB --> System: 7. Xác nhận trừ stamina
+    deactivate DB
+    
+    System -> System: 8. Kích hoạt trạng thái invincible
+    System -> System: 9. Di chuyển nhanh theo hướng
+    System -> System: 10. Phát animation lăn né
+    
+    System --> UI: 11. Thông báo lăn né thành công
+    UI --> Player: 12. Hiển thị animation lăn né
+    UI --> Player: 13. Nhân vật tránh được damage
+    
+    System -> System: 14. Kết thúc trạng thái invincible
+    System --> UI: 15. Thông báo kết thúc invincible
+    UI --> Player: 16. Có thể nhận damage trở lại
+    
+else không đủ stamina
+    System --> UI: 17. Thông báo "Không đủ stamina"
+    UI --> Player: 18. Hiển thị thông báo lỗi
+    UI --> Player: 19. Không thực hiện lăn né
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

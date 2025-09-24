@@ -1,0 +1,29 @@
+@startuml UC_Menu
+!theme plain
+
+title Use Case Diagram Chi Tiết - UC Menu
+
+actor "Player" as P
+
+usecase "Menu" as MainUC
+usecase "Điều chỉnh âm thanh" as UC1
+usecase "Lưu&tải" as UC2
+usecase "Điều chỉnh đồ họa" as UC3
+usecase "Điều chỉnh điều khiển" as UC4
+usecase "Khôi phục mặc định" as UC5
+usecase "Thoát game" as UC6
+
+' Main relationship
+P --> MainUC
+
+' Include relationships
+MainUC ..> UC1 : <<include>>
+MainUC ..> UC3 : <<include>>
+MainUC ..> UC4 : <<include>>
+
+' Extend relationships
+UC2 ..> MainUC : <<extend>>
+UC5 ..> MainUC : <<extend>>
+UC6 ..> MainUC : <<extend>>
+
+@enduml

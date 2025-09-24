@@ -1,0 +1,66 @@
+@startuml Activity_UC2_Load_Game_Data
+!theme plain
+
+title Biểu đồ Hoạt động - UC Load Game Data
+
+|Player|
+start
+:chờ đợi loading;
+
+|System|
+:load thông tin nhân vật (level, stats, vị trí);
+
+if (load nhân vật thành công?) then (yes)
+  :load dữ liệu bản đồ hiện tại;
+  
+  if (load bản đồ thành công?) then (yes)
+    :load trạng thái các NPC;
+    
+    if (load NPC thành công?) then (yes)
+      :load tiến trình quest;
+      
+      if (load quest thành công?) then (yes)
+        :hiển thị loading progress;
+        :hoàn thành load dữ liệu;
+        
+        |Player|
+        :nhận thông báo load thành công;
+        :chuẩn bị vào game;
+        
+      else (no)
+        :hiển thị thông báo lỗi load quest;
+        :quay về menu chính;
+        
+        |Player|
+        :nhận thông báo lỗi;
+      endif
+      
+    else (no)
+      :hiển thị thông báo lỗi load NPC;
+      :quay về menu chính;
+      
+      |Player|
+      :nhận thông báo lỗi;
+    endif
+    
+  else (no)
+    :hiển thị thông báo lỗi load bản đồ;
+    :quay về menu chính;
+    
+    |Player|
+    :nhận thông báo lỗi;
+  endif
+  
+else (no)
+  :hiển thị thông báo lỗi load nhân vật;
+  :quay về menu chính;
+  
+  |Player|
+  :nhận thông báo lỗi;
+endif
+
+stop
+
+@enduml
+
+

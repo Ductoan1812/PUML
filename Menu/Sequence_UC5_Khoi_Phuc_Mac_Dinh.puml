@@ -1,0 +1,57 @@
+@startuml Sequence_UC5_Khoi_Phuc_Mac_Dinh
+!theme plain
+
+title Biểu đồ Trình tự - UC Khôi Phục Mặc Định
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Click "Reset to Default"
+activate UI
+UI -> System: 2. Yêu cầu reset settings
+activate System
+
+System --> UI: 3. Hiển thị confirmation dialog
+UI --> Player: 4. "Reset all settings to default?"
+
+alt Player chọn Yes
+    Player -> UI: 5. Xác nhận reset
+    UI -> System: 6. Thực hiện reset operation
+    
+    System -> DB: 7. Load default settings
+    activate DB
+    DB --> System: 8. Default settings data
+    deactivate DB
+    
+    System -> System: 9. Reset tất cả settings về default
+    System -> DB: 10. Cập nhật config với default values
+    activate DB
+    DB --> System: 11. Settings reset completed
+    deactivate DB
+    
+    System -> System: 12. Áp dụng default settings
+    
+    alt cần restart game
+        System -> System: 13. Restart game process
+        System --> UI: 14. Thông báo "Restarting with default settings"
+        UI --> Player: 15. Game restarting
+        
+    else không cần restart
+        System --> UI: 16. Thông báo "Settings reset successfully"
+        UI --> Player: 17. Hiển thị confirmation
+    end
+    
+else Player chọn No
+    Player -> UI: 18. Hủy reset
+    UI -> System: 19. Cancel reset operation
+    
+    System --> UI: 20. Hủy bỏ reset
+    UI --> Player: 21. Giữ nguyên settings hiện tại
+end
+
+deactivate System
+deactivate UI
+
+@enduml

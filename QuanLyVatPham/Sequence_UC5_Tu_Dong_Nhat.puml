@@ -1,0 +1,55 @@
+@startuml Sequence_UC5_Tu_Dong_Nhat
+!theme plain
+
+title Biểu đồ Trình tự - UC Tự Động Nhặt
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Đi gần vật phẩm rơi trên đất
+activate UI
+UI -> System: 2. Phát hiện player trong pickup range
+activate System
+
+System -> DB: 3. Kiểm tra auto-pickup setting
+activate DB
+DB --> System: 4. Trả về pickup settings
+deactivate DB
+
+System -> System: 5. Validate auto-pickup enabled
+
+alt auto-pickup enabled
+    System -> DB: 6. Kiểm tra item filter settings
+    activate DB
+    DB --> System: 7. Trả về filter rules
+    deactivate DB
+    
+    System -> System: 8. Kiểm tra item có trong filter
+    
+    alt item allowed by filter
+        System -> System: 9. Thực hiện auto pickup
+        System -> System: 10. Hiển thị pickup animation
+        System -> System: 11. Phát pickup sound
+        
+        System --> UI: 12. Thông báo item picked up
+        UI --> Player: 13. Vật phẩm tự động vào inventory
+        UI --> Player: 14. Hiển thị pickup effects
+        
+    else item not in filter
+        System --> UI: 15. Bỏ qua item này
+        UI --> Player: 16. Item vẫn nằm trên đất
+    end
+    
+else auto-pickup disabled
+    System --> UI: 17. Không thực hiện auto pickup
+    UI --> Player: 18. Player phải nhặt thủ công
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

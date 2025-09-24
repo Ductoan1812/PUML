@@ -1,0 +1,78 @@
+@startuml Sequence_Main_UC_Dieu_Khien_Nhan_Vat
+!theme plain
+
+title Biểu đồ Trình tự Tổng quát - UC Điều Khiển Nhân Vật
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Thực hiện input điều khiển
+activate UI
+UI -> System: 2. Yêu cầu xử lý input
+activate System
+
+== UC "Đọc Input" (Include - bắt buộc) ==
+System -> System: 3. Thực hiện UC Đọc Input
+System -> DB: 4. Validate input
+activate DB
+DB --> System: 5. Input validation result
+deactivate DB
+
+alt input hợp lệ
+    == UC "Áp dụng vận động" (Include - bắt buộc) ==
+    System -> System: 6. Thực hiện UC Áp dụng vận động
+    System -> DB: 7. Cập nhật vị trí nhân vật
+    activate DB
+    DB --> System: 8. Xác nhận vị trí updated
+    deactivate DB
+    
+    == UC "Update Animation" (Include - bắt buộc) ==
+    System -> System: 9. Thực hiện UC Update Animation
+    System -> DB: 10. Load animation data
+    activate DB
+    DB --> System: 11. Animation data
+    deactivate DB
+    
+    System --> UI: 12. Cập nhật character display
+    UI --> Player: 13. Nhân vật phản hồi input
+    
+    == UC "Lăn né" (Extend - tùy điều kiện) ==
+    alt player nhấn dodge key
+        System -> System: 14. Thực hiện UC Lăn né
+        System -> DB: 15. Kiểm tra stamina cho dodge
+        activate DB
+        DB --> System: 16. Stamina status
+        deactivate DB
+        
+        System --> UI: 17. Thực hiện dodge animation
+        UI --> Player: 18. Nhân vật dodge roll
+    end
+    
+    == UC "Xử lý trạng thái đặc biệt" (Extend - tùy tình huống) ==
+    alt nhân vật nhận status effect
+        System -> System: 19. Thực hiện UC Xử lý trạng thái đặc biệt
+        System -> DB: 20. Áp dụng status effects
+        activate DB
+        DB --> System: 21. Status effects applied
+        deactivate DB
+        
+        System --> UI: 22. Apply buff/debuff/CC effects
+        UI --> Player: 23. Chịu ảnh hưởng từ status effects
+        
+        System -> System: 24. Status duration timer
+        System --> UI: 25. Update status display
+        UI --> Player: 26. Hiển thị trạng thái hiện tại
+    end
+    
+else input không hợp lệ
+    System --> UI: 27. Bỏ qua input
+    UI --> Player: 28. Không có phản hồi
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+

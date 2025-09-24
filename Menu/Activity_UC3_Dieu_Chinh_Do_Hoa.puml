@@ -1,0 +1,46 @@
+@startuml Activity_UC3_Dieu_Chinh_Do_Hoa
+!theme plain
+
+title Biểu đồ Hoạt động - UC Điều Chỉnh Đồ Họa
+
+|Player|
+start
+:mở Graphics settings;
+
+|System|
+:hiển thị các options (Resolution, Fullscreen, VSync, Quality);
+
+|Player|
+:thay đổi settings;
+
+|System|
+:preview thay đổi nếu có thể;
+:áp dụng settings mới;
+:test stability trong vài giây;
+
+if (settings ổn định?) then (stable)
+  :lưu settings vào config;
+  :hiển thị "Settings applied successfully";
+  
+  |Player|
+  :xác nhận settings mới;
+  
+  if (cần restart game?) then (restart)
+    :restart game với settings mới;
+    
+    |Player|
+    :chờ game restart;
+    
+  else (no restart)
+    :tiếp tục chơi với settings mới;
+  endif
+  
+else (unstable)
+  :revert về settings cũ;
+  :hiển thị "Settings reverted for stability";
+  
+  |Player|
+  :thử settings khác;
+endif
+
+stop

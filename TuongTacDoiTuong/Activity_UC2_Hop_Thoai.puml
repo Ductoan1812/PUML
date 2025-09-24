@@ -1,0 +1,63 @@
+@startuml Activity_UC2_Hop_Thoai
+!theme plain
+
+title Biểu đồ Hoạt động - UC Hộp Thoại
+
+|Player|
+start
+:tương tác với NPC;
+
+|System|
+:kiểm tra NPC có dialogue available;
+
+if (NPC không có dialogue?) then (yes)
+  :hiển thị thông báo mặc định;
+  :không mở dialogue interface;
+  
+  |Player|
+  :thấy thông báo generic;
+  
+else (no)
+  :hiển thị dialogue interface;
+  :hiển thị text và portrait của NPC;
+  
+  |Player|
+  :đọc dialogue;
+  :chọn response option;
+  
+  |System|
+  :xử lý response và chuyển đến dialogue node tiếp theo;
+  
+  if (dialogue bị lỗi?) then (yes)
+    :hiển thị default text;
+    :log lỗi để debug;
+    
+    |Player|
+    :thấy text mặc định;
+    
+  else (no)
+    if (dẫn đến quest?) then (quest)
+      :chuyển đến quest system;
+      
+      |Player|
+      :có thể nhận quest;
+      
+    else (shop)
+      :mở shop interface;
+      
+      |Player|
+      :có thể mua bán;
+      
+    else (kết thúc)
+      :đóng dialogue interface;
+      
+      |Player|
+      :kết thúc cuộc trò chuyện;
+    endif
+  endif
+endif
+
+stop
+
+@enduml
+

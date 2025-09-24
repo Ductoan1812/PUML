@@ -1,0 +1,52 @@
+@startuml Activity_UC3_Hoan_Thanh_Nhiem_Vu
+!theme plain
+
+title Biểu đồ Hoạt động - UC Hoàn Thành Nhiệm Vụ
+
+|Player|
+start
+:tương tác với NPC để nộp quest;
+
+|System|
+:kiểm tra quest completion status;
+
+if (chưa hoàn thành hết objectives?) then (yes)
+  :hiển thị "Quest chưa hoàn thành";
+  :không thể nộp quest;
+  
+  |Player|
+  :thấy thông báo chưa xong;
+  :tiếp tục thực hiện objectives;
+  
+else (no)
+  if (NPC không phải quest giver?) then (yes)
+    :hiển thị "Không thể nộp quest tại đây";
+    :chỉ dẫn đến đúng NPC;
+    
+    |Player|
+    :thấy thông báo sai NPC;
+    :tìm đúng NPC để nộp;
+    
+  else (no)
+    :hiển thị quest summary và reward preview;
+    
+    |Player|
+    :xem tổng kết quest và phần thưởng;
+    :xác nhận nộp quest;
+    
+    |System|
+    :validate tất cả objectives đã completed;
+    :chuyển sang UC "Phần thưởng";
+    :xóa quest khỏi active list;
+    
+    |Player|
+    :quest được nộp thành công;
+    :nhận phần thưởng;
+  endif
+endif
+
+stop
+
+@enduml
+
+

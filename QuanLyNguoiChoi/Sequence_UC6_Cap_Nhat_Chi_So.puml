@@ -1,0 +1,72 @@
+@startuml Sequence_UC6_Cap_Nhat_Chi_So
+!theme plain
+
+title Biểu đồ Trình tự - UC Cập Nhật Chỉ Số
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Sự thay đổi ảnh hưởng stats
+activate UI
+UI -> System: 2. Trigger stats recalculation
+activate System
+
+System -> System: 3. Phát hiện loại thay đổi
+
+System -> DB: 4. Lấy base stats hiện tại
+activate DB
+DB --> System: 5. Trả về base stats
+deactivate DB
+
+System -> DB: 6. Lấy equipment bonuses
+activate DB
+DB --> System: 7. Trả về equipment stats
+deactivate DB
+
+System -> DB: 8. Lấy skill/buff modifiers
+activate DB
+DB --> System: 9. Trả về active modifiers
+deactivate DB
+
+System -> System: 10. Tính toán stats tổng hợp
+
+alt tính toán thành công
+    System -> System: 11. Cập nhật derived stats
+    
+    System -> DB: 12. Đồng bộ với database
+    activate DB
+    
+    alt sync thành công
+        DB --> System: 13. Xác nhận sync OK
+        deactivate DB
+        
+        System --> UI: 14. Stats updated successfully
+        UI --> Player: 15. Hiển thị stats mới real-time
+        
+    else sync thất bại
+        DB --> System: 16. Lỗi sync
+        deactivate DB
+        
+        System -> System: 17. Lưu local changes
+        System -> System: 18. Schedule retry sync
+        
+        System --> UI: 19. Stats updated locally
+        UI --> Player: 20. Hiển thị stats, sync sau
+    end
+    
+else conflict trong tính toán
+    System -> System: 21. Sử dụng safe values
+    System -> System: 22. Log error để debug
+    
+    System --> UI: 23. Stats với safe values
+    UI --> Player: 24. Stats có thể không chính xác
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

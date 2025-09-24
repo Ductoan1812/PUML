@@ -1,0 +1,25 @@
+@startuml UC_Tuong_Tac_Doi_Tuong
+!theme plain
+
+title Use Case Diagram Chi Tiết - UC Tương Tác Đối Tượng
+
+actor "Player" as P
+
+usecase "Tương tác đối tượng" as MainUC
+usecase "Mở rương" as UC1
+usecase "Hộp thoại" as UC2
+usecase "Kích hoạt vật phẩm" as UC3
+usecase "Kích hoạt sự kiện" as UC4
+
+' Main relationship
+P --> MainUC
+
+' Include relationships
+MainUC ..> UC1 : <<include>>
+MainUC ..> UC2 : <<include>>
+
+' Extend relationships
+UC3 ..> MainUC : <<extend>>
+UC4 ..> MainUC : <<extend>>
+
+@enduml

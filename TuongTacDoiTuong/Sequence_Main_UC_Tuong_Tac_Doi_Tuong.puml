@@ -1,0 +1,92 @@
+@startuml Sequence_Main_UC_Tuong_Tac_Doi_Tuong
+!theme plain
+
+title Biểu đồ Trình tự Tổng quát - UC Tương Tác Đối Tượng
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Tương tác với object
+activate UI
+UI -> System: 2. Object interaction request
+activate System
+
+System -> DB: 3. Identify object type
+activate DB
+DB --> System: 4. Object type và properties
+deactivate DB
+
+== UC "Mở rương" (Include - chest interaction) ==
+alt object là rương
+    System -> System: 5. Thực hiện UC Mở rương
+    System -> DB: 6. Process chest opening
+    activate DB
+    DB --> System: 7. Chest contents
+    deactivate DB
+    
+    System --> UI: 8. Show chest loot
+    UI --> Player: 9. Nhận vật phẩm từ rương
+    
+== UC "Hộp thoại" (Include - NPC interaction) ==
+else object là NPC
+    System -> System: 10. Thực hiện UC Hộp thoại
+    System -> DB: 11. Load NPC dialogue
+    activate DB
+    DB --> System: 12. Dialogue data
+    deactivate DB
+    
+    System --> UI: 13. Show dialogue interface
+    UI --> Player: 14. Trò chuyện với NPC
+    
+== UC "Kích hoạt vật phẩm" (Extend - interactive object) ==
+else object là interactive item
+    System -> DB: 15. Check activation conditions
+    activate DB
+    DB --> System: 16. Condition status
+    deactivate DB
+    
+    alt đủ điều kiện
+        System -> System: 17. Thực hiện UC Kích hoạt vật phẩm
+        System -> DB: 18. Activate object
+        activate DB
+        DB --> System: 19. Object activated
+        deactivate DB
+        
+        System --> UI: 20. Show activation effects
+        UI --> Player: 21. Object kích hoạt thành công
+        
+    else chưa đủ điều kiện
+        System --> UI: 22. Show requirement message
+        UI --> Player: 23. Thông báo chưa đủ điều kiện
+    end
+    
+== UC "Kích hoạt sự kiện" (Extend - trigger zone) ==
+else object là trigger zone
+    System -> DB: 24. Check trigger conditions
+    activate DB
+    DB --> System: 25. Trigger status
+    deactivate DB
+    
+    alt có thể trigger
+        System -> System: 26. Thực hiện UC Kích hoạt sự kiện
+        System -> DB: 27. Execute event
+        activate DB
+        DB --> System: 28. Event executed
+        deactivate DB
+        
+        System --> UI: 29. Show event effects
+        UI --> Player: 30. Trải nghiệm event
+        
+    else không trigger
+        System --> UI: 31. No event triggered
+        UI --> Player: 32. Không có gì xảy ra
+    end
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+

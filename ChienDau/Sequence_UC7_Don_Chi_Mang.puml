@@ -1,0 +1,56 @@
+@startuml Sequence_UC7_Don_Chi_Mang
+!theme plain
+
+title Biểu đồ Trình tự - UC Đón Chí Mạng
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Random trúng tỷ lệ critical hit
+activate UI
+UI -> System: 2. Kích hoạt critical system
+activate System
+
+System -> DB: 3. Kiểm tra critical chance của nhân vật
+activate DB
+DB --> System: 4. Trả về crit chance value
+deactivate DB
+
+System -> System: 5. Validate critical chance > 0
+
+alt có khả năng critical
+    System -> System: 6. Random critical hit
+    
+    alt trúng critical
+        System -> DB: 7. Lấy critical multiplier
+        activate DB
+        DB --> System: 8. Trả về crit multiplier
+        deactivate DB
+        
+        System -> System: 9. Nhân damage với multiplier
+        System -> System: 10. Hiển thị hiệu ứng đặc biệt
+        System -> System: 11. Phát animation critical
+        
+        System --> UI: 12. Thông báo critical hit
+        UI --> Player: 13. Hiển thị critical effects
+        UI --> Player: 14. Damage cao hơn bình thường
+        
+    else không trúng critical
+        System --> UI: 15. Thông báo normal hit
+        UI --> Player: 16. Damage bình thường
+    end
+    
+else critical chance = 0
+    System -> System: 17. Bỏ qua critical system
+    System --> UI: 18. Áp dụng damage bình thường
+    UI --> Player: 19. Damage bình thường
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

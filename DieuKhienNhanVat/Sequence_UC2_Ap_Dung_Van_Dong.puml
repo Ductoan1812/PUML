@@ -1,0 +1,59 @@
+@startuml Sequence_UC2_Ap_Dung_Van_Dong
+!theme plain
+
+title Biểu đồ Trình tự - UC Áp Dụng Vận Động
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Input di chuyển đã được xử lý
+activate UI
+UI -> System: 2. Yêu cầu áp dụng vận động
+activate System
+
+System -> System: 3. Tính toán vị trí mới dựa trên input
+
+System -> DB: 4. Kiểm tra collision data
+activate DB
+DB --> System: 5. Trả về collision info
+deactivate DB
+
+System -> System: 6. Kiểm tra collision với môi trường
+
+alt không có collision
+    System -> DB: 7. Kiểm tra giới hạn bản đồ
+    activate DB
+    DB --> System: 8. Trả về map boundaries
+    deactivate DB
+    
+    System -> System: 9. Validate vị trí trong giới hạn
+    
+    alt trong giới hạn
+        System -> System: 10. Cập nhật vị trí nhân vật
+        System -> System: 11. Cập nhật camera theo nhân vật
+        System --> UI: 12. Thông báo di chuyển thành công
+        UI --> Player: 13. Nhân vật di chuyển tự do
+        
+    else vượt giới hạn
+        System -> System: 14. Giới hạn vị trí trong phạm vi
+        System -> System: 15. Cập nhật vị trí tại biên
+        System -> System: 16. Cập nhật camera
+        System --> UI: 17. Thông báo di chuyển đến biên
+        UI --> Player: 18. Nhân vật dừng tại biên bản đồ
+    end
+    
+else có collision
+    System -> System: 19. Dừng di chuyển
+    System -> System: 20. Giữ nguyên vị trí hiện tại
+    System --> UI: 21. Thông báo collision
+    UI --> Player: 22. Nhân vật không di chuyển
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

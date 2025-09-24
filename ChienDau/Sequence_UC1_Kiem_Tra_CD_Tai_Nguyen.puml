@@ -1,0 +1,53 @@
+@startuml Sequence_UC1_Kiem_Tra_CD_Tai_Nguyen
+!theme plain
+
+title Biểu đồ Trình tự - UC Kiểm tra CD & Tài nguyên
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Thực hiện hành động tấn công
+activate UI
+UI -> System: 2. Nhận input tấn công
+activate System
+
+System -> DB: 3. Kiểm tra cooldown skill/weapon
+activate DB
+DB --> System: 4. Trả về cooldown status
+deactivate DB
+
+System -> System: 5. Validate cooldown
+
+alt skill sẵn sàng
+    System -> DB: 6. Kiểm tra MP/stamina hiện tại
+    activate DB
+    DB --> System: 7. Trả về resource values
+    deactivate DB
+    
+    System -> System: 8. Kiểm tra đủ tài nguyên
+    
+    alt đủ tài nguyên
+        System -> System: 9. Xác nhận điều kiện tấn công
+        System --> UI: 10. Thông báo ready to attack
+        UI --> Player: 11. Chuẩn bị thực hiện tấn công
+        
+    else không đủ tài nguyên
+        System --> UI: 12. Thông báo "Không đủ tài nguyên"
+        UI --> Player: 13. Hiển thị thiếu MP/stamina
+        UI --> Player: 14. Không thực hiện tấn công
+    end
+    
+else skill đang cooldown
+    System --> UI: 15. Thông báo "Skill chưa sẵn sàng"
+    UI --> Player: 16. Hiển thị cooldown timer
+    UI --> Player: 17. Không thực hiện tấn công
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

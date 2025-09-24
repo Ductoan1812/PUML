@@ -1,0 +1,54 @@
+@startuml Sequence_UC1_Kiem_Tra_Save_File
+!theme plain
+
+title Biểu đồ Trình tự - UC Kiểm tra Save File
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Chọn "Continue Game"
+activate UI
+UI -> System: 2. Yêu cầu kiểm tra save file
+activate System
+
+System -> DB: 3. Tìm kiếm file save
+activate DB
+
+alt file save tồn tại
+    DB --> System: 4. Trả về file save
+    deactivate DB
+    
+    System -> System: 5. Kiểm tra tính hợp lệ file save
+    
+    alt file save hợp lệ
+        System -> DB: 6. Đọc dữ liệu cơ bản
+        activate DB
+        DB --> System: 7. Trả về dữ liệu cơ bản
+        deactivate DB
+        
+        System --> UI: 8. Thông báo validation thành công
+        UI --> Player: 9. Chuẩn bị load game
+        
+    else file save corrupt
+        System --> UI: 10. Thông báo "File save bị lỗi"
+        UI --> Player: 11. Hiển thị lỗi
+        UI --> Player: 12. Quay về menu chính
+    end
+    
+else file save không tồn tại
+    DB --> System: 13. Không tìm thấy file
+    deactivate DB
+    
+    System --> UI: 14. Thông báo "Không có game save"
+    UI --> Player: 15. Hiển thị thông báo
+    UI --> Player: 16. Quay về menu chính
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

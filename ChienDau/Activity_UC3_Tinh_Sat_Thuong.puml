@@ -1,0 +1,34 @@
+@startuml Activity_UC3_Tinh_Sat_Thuong
+!theme plain
+
+title Biểu đồ Hoạt động - UC Tính Sát Thương
+
+|Player|
+start
+:đã xác định được mục tiêu hợp lệ;
+
+|System|
+:lấy attack power của nhân vật;
+:lấy defense của mục tiêu;
+:tính toán damage cơ bản (attack - defense);
+
+if (damage > 0?) then (yes)
+  :áp dụng các modifier (crit, buff, debuff);
+  :tính toán damage cuối cùng;
+  
+  |Player|
+  :chuẩn bị nhìn thấy damage;
+  
+else (no)
+  :set damage = 1 (minimum damage);
+  :hiển thị "MISS" hoặc "BLOCKED";
+  
+  |Player|
+  :nhìn thấy tấn công bị chặn;
+endif
+
+stop
+
+@enduml
+
+

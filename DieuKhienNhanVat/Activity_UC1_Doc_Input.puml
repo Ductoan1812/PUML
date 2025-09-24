@@ -1,0 +1,34 @@
+@startuml Activity_UC1_Doc_Input
+!theme plain
+
+title Biểu đồ Hoạt động - UC Đọc Input
+
+|Player|
+start
+:nhấn phím/chuột;
+
+|System|
+:lắng nghe input từ bàn phím/chuột;
+:xác định loại input (di chuyển, tấn công, kỹ năng);
+
+if (input hợp lệ?) then (yes)
+  :chuyển input đến module xử lý tương ứng;
+  
+  |Player|
+  :nhân vật phản hồi theo input;
+  :tiếp tục điều khiển;
+  
+else (no)
+  :bỏ qua input không hợp lệ;
+  :tiếp tục lắng nghe input mới;
+  
+  |Player|
+  :không có phản hồi;
+  :thử input khác;
+endif
+
+stop
+
+@enduml
+
+

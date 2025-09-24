@@ -1,0 +1,58 @@
+@startuml Activity_UC4_Trang_Bi_Vat_Pham
+!theme plain
+
+title Biểu đồ Hoạt động - UC Trang Bị Vật Phẩm
+
+|Player|
+start
+:drag-drop hoặc double-click equipment;
+
+|System|
+:kiểm tra điều kiện trang bị (level, class);
+
+if (level không đủ?) then (yes)
+  :hiển thị "Cần level X";
+  :không thể trang bị;
+  
+  |Player|
+  :thấy thông báo level không đủ;
+  :cần lên level cao hơn;
+  
+else (no)
+  if (class không phù hợp?) then (yes)
+    :hiển thị "Chỉ dành cho class Y";
+    :equipment bị từ chối;
+    
+    |Player|
+    :thấy thông báo class mismatch;
+    :cần equipment phù hợp với class;
+    
+  else (no)
+    if (đã có vật phẩm cùng loại?) then (yes)
+      :tự động gỡ bỏ vật phẩm cũ;
+      :trang bị vật phẩm mới;
+      :cập nhật stats nhân vật;
+      :cập nhật appearance của nhân vật;
+      
+      |Player|
+      :thấy equipment cũ được gỡ;
+      :equipment mới được trang bị;
+      :stats thay đổi;
+      
+    else (no)
+      :trang bị vật phẩm mới;
+      :cập nhật stats nhân vật;
+      :cập nhật appearance của nhân vật;
+      
+      |Player|
+      :equipment mới được trang bị;
+      :stats tăng;
+    endif
+  endif
+endif
+
+stop
+
+@enduml
+
+

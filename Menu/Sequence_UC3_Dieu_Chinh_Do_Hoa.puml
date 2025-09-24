@@ -1,0 +1,58 @@
+@startuml Sequence_UC3_Dieu_Chinh_Do_Hoa
+!theme plain
+
+title Biểu đồ Trình tự - UC Điều Chỉnh Đồ Họa
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Mở Graphics settings
+activate UI
+UI -> System: 2. Yêu cầu load graphics options
+activate System
+
+System -> DB: 3. Lấy current graphics settings
+activate DB
+DB --> System: 4. Trả về graphics config
+deactivate DB
+
+System --> UI: 5. Hiển thị graphics options
+UI --> Player: 6. Hiển thị settings interface
+
+Player -> UI: 7. Thay đổi graphics settings
+UI -> System: 8. Apply new graphics settings
+
+System -> System: 9. Preview changes if possible
+System -> System: 10. Test stability
+
+alt settings ổn định
+    System -> DB: 11. Lưu graphics settings
+    activate DB
+    DB --> System: 12. Settings saved
+    deactivate DB
+    
+    System --> UI: 13. Thông báo "Settings applied successfully"
+    UI --> Player: 14. Hiển thị confirmation
+    
+    alt cần restart game
+        System -> System: 15. Restart game process
+        System --> UI: 16. Thông báo "Restarting game"
+        UI --> Player: 17. Game restarting
+        
+    else không cần restart
+        System --> UI: 18. Apply settings immediately
+        UI --> Player: 19. Settings applied in real-time
+    end
+    
+else settings không ổn định
+    System -> System: 20. Revert to previous settings
+    System --> UI: 21. Thông báo "Settings reverted for stability"
+    UI --> Player: 22. Hiển thị error message
+end
+
+deactivate System
+deactivate UI
+
+@enduml

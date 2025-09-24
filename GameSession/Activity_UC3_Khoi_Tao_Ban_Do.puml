@@ -1,0 +1,76 @@
+@startuml Activity_UC3_Khoi_Tao_Ban_Do
+!theme plain
+
+title Biểu đồ Hoạt động - UC Khởi tạo Bản đồ
+
+|Player|
+start
+:chờ đợi render bản đồ;
+
+|System|
+:render terrain và background;
+
+if (render terrain thành công?) then (yes)
+  :đặt các object tĩnh (cây, đá, building);
+  
+  if (đặt object tĩnh thành công?) then (yes)
+    :spawn các NPC theo vị trí đã lưu;
+    
+    if (spawn NPC thành công?) then (yes)
+      :spawn quái vật theo cấu hình;
+      
+      if (spawn quái vật thành công?) then (yes)
+        :đặt các vật phẩm trên bản đồ;
+        
+        if (đặt vật phẩm thành công?) then (yes)
+          :hoàn thành khởi tạo bản đồ;
+          
+          |Player|
+          :nhìn thấy bản đồ hoàn chỉnh;
+          :chuẩn bị spawn nhân vật;
+          
+        else (no)
+          :log lỗi để debug;
+          :sử dụng bản đồ mặc định;
+          
+          |Player|
+          :nhận thông báo bản đồ mặc định;
+        endif
+        
+      else (no)
+        :log lỗi để debug;
+        :sử dụng bản đồ mặc định;
+        
+        |Player|
+        :nhận thông báo bản đồ mặc định;
+      endif
+      
+    else (no)
+      :log lỗi để debug;
+      :sử dụng bản đồ mặc định;
+      
+      |Player|
+      :nhận thông báo bản đồ mặc định;
+    endif
+    
+  else (no)
+    :log lỗi để debug;
+    :sử dụng bản đồ mặc định;
+    
+    |Player|
+    :nhận thông báo bản đồ mặc định;
+  endif
+  
+else (no)
+  :log lỗi để debug;
+  :sử dụng bản đồ mặc định;
+  
+  |Player|
+  :nhận thông báo bản đồ mặc định;
+endif
+
+stop
+
+@enduml
+
+

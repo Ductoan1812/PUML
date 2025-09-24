@@ -1,0 +1,74 @@
+@startuml Sequence_Main_UC_Quan_Ly_Vat_Pham
+!theme plain
+
+title Biểu đồ Trình tự Tổng quát - UC Quản Lý Vật Phẩm
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Thực hiện hành động liên quan vật phẩm
+activate UI
+UI -> System: 2. Yêu cầu item management
+activate System
+
+== UC "Kiểm tra sức chứa" (Include) ==
+System -> System: 3. Thực hiện UC Kiểm tra sức chứa
+System -> DB: 4. Check inventory capacity
+activate DB
+DB --> System: 5. Capacity status
+deactivate DB
+
+alt có thể thêm vật phẩm
+    == UC "Thêm & Stack Item" (Include) ==
+    System -> System: 6. Thực hiện UC Thêm & Stack Item
+    System -> DB: 7. Add/stack items
+    activate DB
+    DB --> System: 8. Items processed
+    deactivate DB
+    
+    == UC "Cập nhật HUD & Toast" (Include) ==
+    System -> System: 9. Thực hiện UC Cập nhật HUD & Toast
+    System --> UI: 10. Update UI elements
+    UI --> Player: 11. Hiển thị item changes
+    
+    == UC "Bỏ & Sort & Filter" (Extend - player action) ==
+    alt player mở inventory
+        System -> System: 12. Thực hiện UC Bỏ & Sort & Filter
+        System -> DB: 13. Manage inventory items
+        activate DB
+        DB --> System: 14. Inventory updated
+        deactivate DB
+        
+        System --> UI: 15. Refresh inventory display
+        UI --> Player: 16. Inventory được sắp xếp
+    end
+    
+    == UC "Tự động nhặt" (Extend - proximity & settings) ==
+    alt có items gần player
+        System -> System: 17. Thực hiện UC Tự động nhặt
+        System -> DB: 18. Check auto-pickup settings
+        activate DB
+        DB --> System: 19. Auto-pickup rules
+        deactivate DB
+        
+        System -> DB: 20. Auto collect items
+        activate DB
+        DB --> System: 21. Items auto-collected
+        deactivate DB
+        
+        System --> UI: 22. Show pickup effects
+        UI --> Player: 23. Items tự động vào inventory
+    end
+    
+else inventory đầy
+    System --> UI: 24. Inventory full warning
+    UI --> Player: 25. Cần dọn dẹp inventory
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+

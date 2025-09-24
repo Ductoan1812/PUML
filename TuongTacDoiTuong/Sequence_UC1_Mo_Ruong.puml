@@ -1,0 +1,79 @@
+@startuml Sequence_UC1_Mo_Ruong
+!theme plain
+
+title Biểu đồ Trình tự - UC Mở Rương
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Tương tác với rương
+activate UI
+UI -> System: 2. Yêu cầu mở rương
+activate System
+
+System -> DB: 3. Kiểm tra rương có khóa
+activate DB
+DB --> System: 4. Trả về lock status
+deactivate DB
+
+alt rương có khóa
+    System -> DB: 5. Kiểm tra key trong inventory
+    activate DB
+    DB --> System: 6. Trả về key availability
+    deactivate DB
+    
+    alt không có key
+        System --> UI: 7. Thông báo "Cần chìa khóa"
+        UI --> Player: 8. Hiển thị cần key
+        
+    else có key
+        System -> System: 9. Phát animation mở rương
+        System -> DB: 10. Random items theo drop table
+        activate DB
+        DB --> System: 11. Trả về random items
+        deactivate DB
+        
+        System -> DB: 12. Kiểm tra inventory space
+        activate DB
+        DB --> System: 13. Trả về inventory status
+        deactivate DB
+        
+        alt inventory đầy
+            System --> UI: 14. Hiển thị lựa chọn drop/skip
+            UI --> Player: 15. Chọn drop item hoặc bỏ qua
+            System -> System: 16. Items rơi xuống đất
+            
+        else inventory có chỗ
+            System -> DB: 17. Thêm items vào inventory
+            activate DB
+            DB --> System: 18. Xác nhận items added
+            deactivate DB
+            
+            System --> UI: 19. Hiển thị items received
+            UI --> Player: 20. Nhận được vật phẩm
+        end
+        
+        System -> DB: 21. Đánh dấu rương đã mở
+        activate DB
+        DB --> System: 22. Xác nhận chest opened
+        deactivate DB
+    end
+    
+else rương không khóa
+    System -> System: 23. Phát animation mở rương
+    System -> DB: 24. Random và add items
+    activate DB
+    DB --> System: 25. Xác nhận items processed
+    deactivate DB
+    
+    System --> UI: 26. Hiển thị chest opened
+    UI --> Player: 27. Nhận vật phẩm
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+

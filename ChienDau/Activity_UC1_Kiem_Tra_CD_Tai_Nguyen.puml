@@ -1,0 +1,47 @@
+@startuml Activity_UC1_Kiem_Tra_CD_Tai_Nguyen
+!theme plain
+
+title Biểu đồ Hoạt động - UC Kiểm tra CD & Tài nguyên
+
+|Player|
+start
+:thực hiện hành động tấn công;
+
+|System|
+:nhận input tấn công từ player;
+:kiểm tra cooldown của skill/weapon;
+
+if (skill đang trong cooldown?) then (yes)
+  :hiển thị thông báo "Skill chưa sẵn sàng";
+  :không thực hiện tấn công;
+  
+  |Player|
+  :nhận thông báo cooldown;
+  :chờ đợi hoặc thử skill khác;
+  
+else (no)
+  :kiểm tra MP/stamina hiện tại;
+  
+  if (đủ MP/stamina?) then (yes)
+    :xác nhận đủ điều kiện để tấn công;
+    :chuyển sang bước phát hiện mục tiêu;
+    
+    |Player|
+    :chuẩn bị tấn công;
+    :chờ kết quả;
+    
+  else (no)
+    :hiển thị thông báo "Không đủ tài nguyên";
+    :không thực hiện tấn công;
+    
+    |Player|
+    :nhận thông báo thiếu tài nguyên;
+    :tìm cách hồi phục;
+  endif
+endif
+
+stop
+
+@enduml
+
+

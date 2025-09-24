@@ -1,0 +1,61 @@
+@startuml Activity_UC5_Xu_Ly_Trang_Thai_Dac_Biet
+!theme plain
+
+title Biểu đồ Hoạt động - UC Xử Lý Trạng Thái Đặc Biệt
+
+|Player|
+start
+:nhân vật nhận hiệu ứng đặc biệt;
+
+|System|
+:nhận trạng thái đặc biệt từ skill/item/environment;
+:xác định loại trạng thái (buff/debuff/CC/special);
+
+if (là trạng thái tiêu cực?) then (debuff/CC)
+  if (là CC (stun/freeze/silence)?) then (CC)
+    :vô hiệu hóa input tương ứng;
+    :phát animation CC;
+    :đếm ngược thời gian CC;
+    
+    |Player|
+    :bị hạn chế điều khiển;
+    
+  else (debuff)
+    :áp dụng debuff effects (poison, slow, weakness);
+    :hiển thị debuff icon;
+    :đếm ngược thời gian debuff;
+    
+    |Player|
+    :chịu ảnh hưởng tiêu cực;
+  endif
+  
+  if (player sử dụng cleanse/dispel?) then (yes)
+    :kết thúc sớm trạng thái tiêu cực;
+    :khôi phục trạng thái bình thường;
+    
+    |Player|
+    :thoát khỏi hiệu ứng tiêu cực;
+    
+  else (no)
+    :chờ hết thời gian hiệu ứng;
+    :tự động khôi phục;
+    
+    |Player|
+    :chờ đến khi hết hiệu ứng;
+  endif
+  
+else (buff/special)
+  :áp dụng hiệu ứng tích cực (speed boost, damage boost, invincible);
+  :hiển thị buff icon;
+  :đếm ngược thời gian buff;
+  
+  |Player|
+  :nhận lợi ích từ buff;
+  :có khả năng đặc biệt tạm thời;
+endif
+
+stop
+
+@enduml
+
+

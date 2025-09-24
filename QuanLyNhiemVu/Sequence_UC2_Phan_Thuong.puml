@@ -1,0 +1,88 @@
+@startuml Sequence_UC2_Phan_Thuong
+!theme plain
+
+title Biểu đồ Trình tự - UC Phần Thưởng
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Hoàn thành tất cả objectives
+activate UI
+UI -> System: 2. Trigger reward system
+activate System
+
+System -> DB: 3. Kiểm tra quest completion
+activate DB
+DB --> System: 4. Xác nhận quest completed
+deactivate DB
+
+System -> DB: 5. Lấy thông tin rewards
+activate DB
+DB --> System: 6. Trả về reward details
+deactivate DB
+
+System -> System: 7. Tính toán EXP, gold, items
+
+System -> DB: 8. Kiểm tra inventory space
+activate DB
+DB --> System: 9. Trả về inventory status
+deactivate DB
+
+alt inventory đủ chỗ
+    System -> DB: 10. Trao EXP và gold
+    activate DB
+    DB --> System: 11. Xác nhận EXP/gold awarded
+    deactivate DB
+    
+    System -> DB: 12. Thêm items vào inventory
+    activate DB
+    DB --> System: 13. Xác nhận items added
+    deactivate DB
+    
+    System --> UI: 14. Hiển thị reward notification
+    UI --> Player: 15. Nhận đầy đủ phần thưởng
+    
+else inventory không đủ chỗ
+    System -> DB: 16. Trao EXP và gold
+    activate DB
+    DB --> System: 17. Xác nhận EXP/gold awarded
+    deactivate DB
+    
+    System -> DB: 18. Gửi items qua mail
+    activate DB
+    DB --> System: 19. Xác nhận items mailed
+    deactivate DB
+    
+    System --> UI: 20. Thông báo "Items gửi qua mail"
+    UI --> Player: 21. Nhận EXP/gold, items qua mail
+end
+
+System -> DB: 22. Cập nhật quest status = "Completed"
+activate DB
+
+alt cập nhật thành công
+    DB --> System: 23. Xác nhận quest completed
+    deactivate DB
+    
+    System --> UI: 24. Quest hoàn thành
+    UI --> Player: 25. Quest đánh dấu completed
+    
+else lỗi cập nhật
+    DB --> System: 26. Lỗi update
+    deactivate DB
+    
+    System -> System: 27. Lưu vào pending list
+    System -> System: 28. Schedule retry
+    
+    System --> UI: 29. Reward có thể delay
+    UI --> Player: 30. Sẽ nhận reward sau
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

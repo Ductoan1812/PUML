@@ -1,0 +1,43 @@
+@startuml Activity_UC3_Them_Stack_Item
+!theme plain
+
+title Biểu đồ Hoạt động - UC Thêm & Stack Item
+
+|Player|
+start
+:đã kiểm tra sức chứa và có thể thêm vật phẩm;
+
+|System|
+:kiểm tra vật phẩm đã có trong inventory;
+
+if (có cùng loại?) then (yes)
+  :kiểm tra giới hạn stack của vật phẩm;
+  
+  if (có thể stack?) then (yes)
+    :stack với item hiện tại;
+    :cập nhật số lượng;
+    
+    |Player|
+    :thấy số lượng vật phẩm tăng;
+    
+  else (no - stack đã đạt giới hạn)
+    :tạo stack mới cho phần dư;
+    :thông báo "Tạo stack mới";
+    
+    |Player|
+    :thấy stack mới được tạo;
+  endif
+  
+else (no - vật phẩm không thể stack)
+  :tạo slot mới trong inventory;
+  :đặt vật phẩm vào slot trống đầu tiên;
+  
+  |Player|
+  :thấy vật phẩm mới trong slot riêng;
+endif
+
+stop
+
+@enduml
+
+

@@ -1,0 +1,61 @@
+BẢNG KỊCH BẢN USE CASE - UC QUẢN LÝ NHIỆM VỤ
+
+========================================
+
+UC 1: NHẬN NHIỆM VỤ
+
+Tên Use Case	Nhận nhiệm vụ
+Tác nhân	Player
+Mục đích	Player nhận nhiệm vụ mới từ NPC hoặc hệ thống
+Điều kiện tiên quyết	Player tương tác với NPC có nhiệm vụ hoặc đủ điều kiện nhận quest tự động
+Hậu điều kiện	Nhiệm vụ được thêm vào quest log và bắt đầu tracking
+Luồng sự kiện	Player tương tác với NPC quest giver - Hiển thị dialog và mô tả nhiệm vụ - Player chọn "Accept Quest" - Kiểm tra điều kiện nhận quest (level, quest tiền đề) - Thêm quest vào active quest list - Hiển thị quest objective - Bắt đầu tracking progress
+Luồng sự kiện thay thế	Level không đủ để nhận quest - Hiển thị "Cần level X để nhận quest" - Quest bị từ chối | Quest log đã đầy - Hiển thị "Quest log đầy, hãy hoàn thành quest khác" - Không thể nhận quest mới
+
+========================================
+
+UC 2: PHẦN THƯỞNG
+
+Tên Use Case	Phần thưởng
+Tác nhân	Hệ thống
+Mục đích	Trao phần thưởng cho player khi hoàn thành nhiệm vụ
+Điều kiện tiên quyết	Player đã hoàn thành tất cả objective của quest
+Hậu điều kiện	Player nhận được phần thưởng và quest được đánh dấu completed
+Luồng sự kiện	Kiểm tra quest completion status - Tính toán phần thưởng (EXP, gold, items) - Kiểm tra inventory space cho items - Trao EXP và gold cho player - Thêm items vào inventory - Hiển thị reward notification - Cập nhật quest log status thành "Completed"
+Luồng sự kiện thay thế	Inventory không đủ chỗ cho item reward - Gửi items qua mail system - Thông báo "Items đã được gửi qua mail" | Lỗi khi trao thưởng - Lưu reward vào pending list - Retry trao thưởng sau
+
+========================================
+
+UC 3: HOÀN THÀNH NHIỆM VỤ
+
+Tên Use Case	Hoàn thành nhiệm vụ
+Tác nhân	Player
+Mục đích	Player nộp nhiệm vụ đã hoàn thành để nhận phần thưởng
+Điều kiện tiên quyết	Player đã hoàn thành tất cả objective và quay về NPC
+Hậu điều kiện	Nhiệm vụ được nộp thành công và chuyển sang UC Phần thưởng
+Luồng sự kiện	Player tương tác với NPC để nộp quest - Kiểm tra quest completion status - Hiển thị quest summary và reward preview - Player xác nhận nộp quest - Validate tất cả objectives đã completed - Chuyển sang UC "Phần thưởng" - Xóa quest khỏi active list
+Luồng sự kiện thay thế	Chưa hoàn thành hết objectives - Hiển thị "Quest chưa hoàn thành" - Không thể nộp quest | NPC không phải quest giver - Hiển thị "Không thể nộp quest tại đây" - Chỉ dẫn đến đúng NPC
+
+========================================
+
+UC 4: THEO DÕI TIẾN ĐỘ
+
+Tên Use Case	Theo dõi tiến độ
+Tác nhân	Hệ thống
+Mục đích	Tự động tracking và cập nhật tiến độ các nhiệm vụ đang active
+Điều kiện tiên quyết	Player có ít nhất 1 quest đang active
+Hậu điều kiện	Tiến độ quest được cập nhật real-time và hiển thị chính xác
+Luồng sự kiện	Monitor các hành động của player (kill monster, collect item, etc.) - So sánh với quest objectives - Cập nhật progress counter - Hiển thị progress notification - Cập nhật quest tracker UI - Kiểm tra completion status - Thông báo khi quest hoàn thành
+Luồng sự kiện thay thế	Multiple quests có cùng objective - Cập nhật progress cho tất cả quest liên quan - Tránh double counting | Progress bị desync - Sync lại từ server - Cập nhật UI với dữ liệu chính xác
+
+========================================
+
+UC 5: NHIỆM VỤ NGÀY & PHỤ
+
+Tên Use Case	Nhiệm vụ ngày & phụ
+Tác nhân	Hệ thống
+Mục đích	Quản lý các nhiệm vụ đặc biệt như daily quest, side quest, event quest
+Điều kiện tiên quyết	Player đăng nhập hoặc đạt điều kiện kích hoạt quest đặc biệt
+Hậu điều kiện	Nhiệm vụ đặc biệt được kích hoạt và có thể thực hiện
+Luồng sự kiện	Kiểm tra daily quest reset time - Tạo daily quests mới cho player - Kiểm tra event quests đang active - Kiểm tra điều kiện unlock side quests - Thêm available quests vào quest giver - Thông báo về quests mới - Cập nhật quest availability
+Luồng sự kiện thay thế	Daily quest đã completed hôm nay - Không tạo daily quest mới - Chờ đến reset time | Event đã kết thúc - Xóa event quests khỏi available list - Thông báo "Event đã kết thúc"

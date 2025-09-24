@@ -1,0 +1,63 @@
+@startuml Sequence_UC4_Ap_Dung_Damage
+!theme plain
+
+title Biểu đồ Trình tự - UC Áp Dụng Damage & Hiệu Ứng
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Đã tính toán xong damage
+activate UI
+UI -> System: 2. Áp dụng damage & hiệu ứng
+activate System
+
+System -> DB: 3. Trừ HP của mục tiêu
+activate DB
+DB --> System: 4. Xác nhận HP updated
+deactivate DB
+
+System -> DB: 5. Áp dụng hiệu ứng đặc biệt
+activate DB
+DB --> System: 6. Xác nhận effects applied
+deactivate DB
+
+System -> System: 7. Hiển thị damage number
+System -> System: 8. Phát animation nhận damage
+
+System --> UI: 9. Thông báo damage applied
+UI --> Player: 10. Hiển thị damage numbers
+
+System -> DB: 11. Kiểm tra HP mục tiêu
+activate DB
+DB --> System: 12. Trả về current HP
+deactivate DB
+
+alt HP <= 0 (mục tiêu chết)
+    System -> DB: 13. Đánh dấu mục tiêu eliminated
+    activate DB
+    DB --> System: 14. Xác nhận target killed
+    deactivate DB
+    
+    System -> DB: 15. Trao EXP cho player
+    activate DB
+    DB --> System: 16. Xác nhận EXP awarded
+    deactivate DB
+    
+    System --> UI: 17. Thông báo target eliminated
+    UI --> Player: 18. Hiển thị mục tiêu chết
+    UI --> Player: 19. Hiển thị EXP gained
+    
+else HP > 0 (mục tiêu còn sống)
+    System --> UI: 20. Thông báo damage dealt
+    UI --> Player: 21. Mục tiêu vẫn sống
+    UI --> Player: 22. Tiếp tục combat
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

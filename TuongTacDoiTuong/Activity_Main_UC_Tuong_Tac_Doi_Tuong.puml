@@ -1,0 +1,55 @@
+@startuml Activity_Main_UC_Tuong_Tac_Doi_Tuong
+!theme plain
+
+title Biểu đồ Hoạt động Tổng quát - UC Tương Tác Đối Tượng
+
+|Player|
+start
+:tương tác với object trong game world;
+
+|System|
+if (object là rương?) then (rương)
+  :thực hiện UC "Mở rương";
+  note right: Include - khi tương tác chest
+  
+  |Player|
+  :nhận vật phẩm từ rương;
+  
+else (NPC)
+  :thực hiện UC "Hộp thoại";
+  note right: Include - khi tương tác NPC
+  
+  |Player|
+  :trò chuyện với NPC;
+  
+else (interactive object)
+  if (đủ điều kiện kích hoạt?) then (yes)
+    :thực hiện UC "Kích hoạt vật phẩm";
+    note right: Extend - khi có điều kiện
+    
+    |Player|
+    :object được kích hoạt (switch, lever, etc.);
+    
+  else (no)
+    |Player|
+    :thấy thông báo chưa đủ điều kiện;
+  endif
+  
+else (trigger zone)
+  if (bước vào trigger zone?) then (yes)
+    :thực hiện UC "Kích hoạt sự kiện";
+    note right: Extend - khi enter trigger
+    
+    |Player|
+    :trải nghiệm event (cutscene, spawn, etc.);
+    
+  else (no)
+    |Player|
+    :không có gì xảy ra;
+  endif
+endif
+
+stop
+
+@enduml
+

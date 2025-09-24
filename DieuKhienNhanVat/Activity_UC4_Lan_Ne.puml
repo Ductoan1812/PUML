@@ -1,0 +1,38 @@
+@startuml Activity_UC4_Lan_Ne
+!theme plain
+
+title Biểu đồ Hoạt động - UC Lăn Né
+
+|Player|
+start
+:nhấn phím lăn né (Shift + hướng di chuyển);
+
+|System|
+:kiểm tra stamina hiện tại;
+
+if (đủ stamina?) then (yes)
+  :trừ stamina cần thiết;
+  :kích hoạt trạng thái invincible tạm thời;
+  :di chuyển nhanh theo hướng đã chọn;
+  :phát animation lăn né;
+  :kết thúc trạng thái invincible;
+  
+  |Player|
+  :nhân vật thực hiện lăn né;
+  :tránh được damage;
+  :tiếp tục điều khiển;
+  
+else (no)
+  :hiển thị thông báo "Không đủ stamina";
+  :không thực hiện lăn né;
+  
+  |Player|
+  :nhận thông báo không đủ stamina;
+  :thử hành động khác;
+endif
+
+stop
+
+@enduml
+
+

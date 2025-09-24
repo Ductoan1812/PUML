@@ -1,0 +1,27 @@
+@startuml UC_Quan_Ly_Vat_Pham
+!theme plain
+
+title Use Case Diagram Chi Tiết - UC Quản Lý Vật Phẩm
+
+actor "Player" as P
+
+usecase "Quản lý vật phẩm" as MainUC
+usecase "Kiểm tra sức chứa" as UC1
+usecase "Cập nhật HUD & Toast" as UC2
+usecase "Thêm&Stack item" as UC3
+usecase "Bỏ&Sort&Filter" as UC4
+usecase "Tự động nhặt" as UC5
+
+' Main relationship
+P --> MainUC
+
+' Include relationships
+MainUC ..> UC1 : <<include>>
+MainUC ..> UC2 : <<include>>
+MainUC ..> UC3 : <<include>>
+
+' Extend relationships
+UC4 ..> MainUC : <<extend>>
+UC5 ..> MainUC : <<extend>>
+
+@enduml

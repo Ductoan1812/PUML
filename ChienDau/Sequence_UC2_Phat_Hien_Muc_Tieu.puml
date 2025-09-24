@@ -1,0 +1,50 @@
+@startuml Sequence_UC2_Phat_Hien_Muc_Tieu
+!theme plain
+
+title Biểu đồ Trình tự - UC Phát hiện Mục tiêu
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Đã vượt qua kiểm tra CD & tài nguyên
+activate UI
+UI -> System: 2. Bắt đầu phát hiện mục tiêu
+activate System
+
+System -> DB: 3. Quét vùng tấn công xung quanh
+activate DB
+DB --> System: 4. Trả về danh sách enemies trong tầm
+deactivate DB
+
+System -> System: 5. Tìm các enemy trong tầm tấn công
+
+alt có mục tiêu trong tầm
+    System -> System: 6. Sắp xếp theo độ ưu tiên
+    System -> System: 7. Chọn mục tiêu chính
+    System -> System: 8. Khóa mục tiêu
+    
+    System --> UI: 9. Thông báo target acquired
+    UI --> Player: 10. Hiển thị mục tiêu được khóa
+    UI --> Player: 11. Chuẩn bị thực hiện tấn công
+    
+else không có mục tiêu
+    System -> DB: 12. Tiêu tốn MP/stamina
+    activate DB
+    DB --> System: 13. Xác nhận trừ resources
+    deactivate DB
+    
+    System -> System: 14. Hiển thị animation tấn công trượt
+    
+    System --> UI: 15. Thông báo no target found
+    UI --> Player: 16. Hiển thị tấn công không trúng
+    UI --> Player: 17. Mất tài nguyên không hiệu quả
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

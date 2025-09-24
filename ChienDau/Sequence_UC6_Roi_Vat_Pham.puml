@@ -1,0 +1,52 @@
+@startuml Sequence_UC6_Roi_Vat_Pham
+!theme plain
+
+title Biểu đồ Trình tự - UC Rơi Vật Phẩm
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Mục tiêu bị tiêu diệt hoàn toàn
+activate UI
+UI -> System: 2. Kích hoạt drop system
+activate System
+
+System -> DB: 3. Kiểm tra drop table của enemy
+activate DB
+DB --> System: 4. Trả về drop rates và items
+deactivate DB
+
+System -> System: 5. Random vật phẩm theo tỷ lệ
+
+alt random trúng vật phẩm
+    System -> DB: 6. Tạo vật phẩm instance
+    activate DB
+    DB --> System: 7. Xác nhận item created
+    deactivate DB
+    
+    System -> System: 8. Đặt vật phẩm tại vị trí enemy
+    System -> System: 9. Hiển thị drop animation
+    
+    System --> UI: 10. Thông báo item dropped
+    UI --> Player: 11. Hiển thị vật phẩm rơi
+    UI --> Player: 12. Có thể thu thập
+    
+else random không trúng
+    System -> DB: 13. Chỉ trao gold/EXP
+    activate DB
+    DB --> System: 14. Xác nhận rewards given
+    deactivate DB
+    
+    System --> UI: 15. Thông báo chỉ có gold/EXP
+    UI --> Player: 16. Hiển thị gold/EXP gained
+    UI --> Player: 17. Không có vật phẩm
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

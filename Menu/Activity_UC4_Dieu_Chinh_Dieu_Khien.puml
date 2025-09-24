@@ -1,0 +1,55 @@
+@startuml Activity_UC4_Dieu_Chinh_Dieu_Khien
+!theme plain
+
+title Biểu đồ Hoạt động - UC Điều Chỉnh Điều Khiển
+
+|Player|
+start
+:mở Controls settings;
+
+|System|
+:hiển thị danh sách actions và keys hiện tại;
+
+|Player|
+:click vào action muốn thay đổi;
+
+|System|
+:chờ input key mới;
+
+|Player|
+:nhập key mới từ bàn phím;
+
+|System|
+:kiểm tra conflict với key khác;
+
+if (key có conflict?) then (conflict)
+  :hiển thị "Key already in use";
+  :hỏi có muốn swap không;
+  
+  |Player|
+  if (chọn swap?) then (yes)
+    :xác nhận swap keys;
+    
+    |System|
+    :swap keys giữa 2 actions;
+    :cập nhật key binding;
+    
+  else (no)
+    :yêu cầu chọn key khác;
+    
+    |Player|
+    :chọn key khác;
+  endif
+  
+else (no conflict)
+  :cập nhật key binding;
+endif
+
+:test key trong game;
+:lưu settings vào config;
+:hiển thị "Controls updated successfully";
+
+|Player|
+:xác nhận key binding mới;
+
+stop

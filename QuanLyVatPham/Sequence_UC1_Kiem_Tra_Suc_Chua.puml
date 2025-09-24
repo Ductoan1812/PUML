@@ -1,0 +1,58 @@
+@startuml Sequence_UC1_Kiem_Tra_Suc_Chua
+!theme plain
+
+title Biểu đồ Trình tự - UC Kiểm tra Sức chứa
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Thực hiện hành động liên quan vật phẩm
+activate UI
+UI -> System: 2. Yêu cầu kiểm tra sức chứa
+activate System
+
+System -> DB: 3. Đếm số slot đã sử dụng
+activate DB
+DB --> System: 4. Trả về used slots count
+deactivate DB
+
+System -> DB: 5. Lấy số slot tối đa
+activate DB
+DB --> System: 6. Trả về max slots
+deactivate DB
+
+System -> System: 7. Tính slot còn trống
+
+System -> DB: 8. Kiểm tra khối lượng hiện tại
+activate DB
+DB --> System: 9. Trả về current weight
+deactivate DB
+
+System -> DB: 10. Lấy giới hạn khối lượng
+activate DB
+DB --> System: 11. Trả về weight limit
+deactivate DB
+
+alt inventory đầy slots
+    System --> UI: 12. Thông báo "Inventory đầy"
+    UI --> Player: 13. Hiển thị inventory full
+    UI --> Player: 14. Không thể thêm vật phẩm
+    
+else vượt giới hạn khối lượng
+    System --> UI: 15. Thông báo "Quá tải trọng"
+    UI --> Player: 16. Hiển thị overweight warning
+    UI --> Player: 17. Cần giảm khối lượng
+    
+else có thể thêm vật phẩm
+    System --> UI: 18. Xác nhận có thể thêm
+    UI --> Player: 19. Cho phép thao tác tiếp
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

@@ -1,0 +1,85 @@
+BẢNG KỊCH BẢN USE CASE - UC CHIẾN ĐẤU
+
+========================================
+
+UC 1: KIỂM TRA CD & TÀI NGUYÊN
+
+Tên Use Case	Kiểm tra CD & tài nguyên
+Tác nhân	Hệ thống
+Mục đích	Kiểm tra điều kiện để nhân vật có thể thực hiện tấn công
+Điều kiện tiên quyết	Player thực hiện hành động tấn công
+Hậu điều kiện	Xác định được khả năng tấn công của nhân vật
+Luồng sự kiện	Nhận input tấn công từ player - Kiểm tra cooldown của skill/weapon - Kiểm tra MP/stamina hiện tại - Xác nhận đủ điều kiện để tấn công - Chuyển sang bước phát hiện mục tiêu
+Luồng sự kiện thay thế	Skill đang trong thời gian cooldown - Hiển thị thông báo "Skill chưa sẵn sàng" - Không thực hiện tấn công | MP/stamina không đủ - Hiển thị thông báo "Không đủ tài nguyên" - Không thực hiện tấn công
+
+========================================
+
+UC 2: PHÁT HIỆN MỤC TIÊU
+
+Tên Use Case	Phát hiện mục tiêu
+Tác nhân	Hệ thống
+Mục đích	Tìm và xác định mục tiêu trong tầm tấn công
+Điều kiện tiên quyết	Đã vượt qua kiểm tra CD & tài nguyên
+Hậu điều kiện	Có mục tiêu hợp lệ để tấn công hoặc xác định không có mục tiêu
+Luồng sự kiện	Quét vùng tấn công xung quanh nhân vật - Tìm các enemy trong tầm - Sắp xếp theo độ ưu tiên (gần nhất, yếu nhất) - Chọn mục tiêu chính - Khóa mục tiêu và chuẩn bị tấn công
+Luồng sự kiện thay thế	Không tìm thấy mục tiêu trong tầm - Hiển thị animation tấn công không trúng - Tiêu tốn MP/stamina nhưng không gây damage
+
+========================================
+
+UC 3: TÍNH SÁT THƯƠNG
+
+Tên Use Case	Tính sát thương
+Tác nhân	Hệ thống
+Mục đích	Tính toán damage dựa trên stats nhân vật và kẻ thù
+Điều kiện tiên quyết	Đã xác định được mục tiêu hợp lệ
+Hậu điều kiện	Có giá trị damage chính xác để áp dụng
+Luồng sự kiện	Lấy attack power của nhân vật - Lấy defense của mục tiêu - Tính toán damage cơ bản (attack - defense) - Áp dụng các modifier (crit, buff, debuff) - Tính toán damage cuối cùng
+Luồng sự kiện thay thế	Damage tính được <= 0 - Set damage = 1 (minimum damage) - Hiển thị "MISS" hoặc "BLOCKED"
+
+========================================
+
+UC 4: ÁP DỤNG DAMAGE & HIỆU ỨNG
+
+Tên Use Case	Áp dụng damage & hiệu ứng
+Tác nhân	Hệ thống
+Mục đích	Áp dụng damage và các hiệu ứng lên mục tiêu
+Điều kiện tiên quyết	Đã tính toán xong damage
+Hậu điều kiện	Mục tiêu nhận damage và hiệu ứng tương ứng
+Luồng sự kiện	Trừ HP của mục tiêu theo damage - Áp dụng hiệu ứng đặc biệt (poison, stun, etc.) - Hiển thị damage number - Phát animation nhận damage - Kiểm tra HP mục tiêu sau khi nhận damage
+Luồng sự kiện thay thế	HP mục tiêu <= 0 sau khi nhận damage - Mục tiêu bị tiêu diệt - Player nhận EXP - Kích hoạt UC "Rơi vật phẩm"
+
+========================================
+
+UC 5: CẬP NHẬT DAO DIỆN
+
+Tên Use Case	Cập nhật dao diện
+Tác nhân	Hệ thống
+Mục đích	Cập nhật giao diện hiển thị thông tin chiến đấu
+Điều kiện tiên quyết	Đã hoàn thành một lượt tấn công
+Hậu điều kiện	UI được cập nhật với thông tin mới nhất
+Luồng sự kiện	Cập nhật HP/MP của nhân vật - Cập nhật HP của mục tiêu - Cập nhật cooldown của skill - Hiển thị combo counter nếu có - Cập nhật EXP bar nếu nhận được EXP
+Luồng sự kiện thay thế	UI bị lỗi hiển thị - Sử dụng giá trị backup - Log lỗi để debug sau
+
+========================================
+
+UC 6: RƠI VẬT PHẨM
+
+Tên Use Case	Rơi vật phẩm
+Tác nhân	Hệ thống
+Mục đích	Tạo vật phẩm rơi khi kẻ thù bị tiêu diệt
+Điều kiện tiên quyết	Mục tiêu bị tiêu diệt hoàn toàn
+Hậu điều kiện	Vật phẩm xuất hiện trên bản đồ tại vị trí kẻ thù chết
+Luồng sự kiện	Kiểm tra drop table của kẻ thù - Random vật phẩm theo tỷ lệ - Tạo vật phẩm tại vị trí kẻ thù - Hiển thị animation rơi vật phẩm - Thêm vật phẩm vào danh sách có thể thu thập
+Luồng sự kiện thay thế	Random không trúng vật phẩm nào - Chỉ rơi gold/EXP - Không tạo vật phẩm vật lý
+
+========================================
+
+UC 7: ĐÓN CHÍ MẠNG
+
+Tên Use Case	Đón chí mạng
+Tác nhân	Hệ thống
+Mục đích	Xử lý tấn công chí mạng với damage cao hơn
+Điều kiện tiên quyết	Random trúng tỷ lệ critical hit
+Hậu điều kiện	Damage được nhân lên theo hệ số crit
+Luồng sự kiện	Kiểm tra critical chance của nhân vật - Random xác định có critical không - Nhân damage với critical multiplier - Hiển thị hiệu ứng đặc biệt - Phát animation critical hit
+Luồng sự kiện thay thế	Critical chance = 0 - Bỏ qua UC này - Áp dụng damage bình thường

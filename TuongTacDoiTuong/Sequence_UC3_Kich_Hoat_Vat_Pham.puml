@@ -1,0 +1,56 @@
+@startuml Sequence_UC3_Kich_Hoat_Vat_Pham
+!theme plain
+
+title Biểu đồ Trình tự - UC Kích Hoạt Vật Phẩm
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Tương tác với interactive object
+activate UI
+UI -> System: 2. Yêu cầu kích hoạt object
+activate System
+
+System -> DB: 3. Kiểm tra điều kiện kích hoạt
+activate DB
+DB --> System: 4. Trả về requirements
+deactivate DB
+
+alt chưa đủ điều kiện
+    System --> UI: 5. Thông báo requirements
+    UI --> Player: 6. Hiển thị yêu cầu
+    
+else object đã kích hoạt
+    System --> UI: 7. Thông báo "Đã được kích hoạt"
+    UI --> Player: 8. Không có hiệu ứng
+    
+else có thể kích hoạt
+    System -> System: 9. Phát animation kích hoạt
+    
+    System -> DB: 10. Thực hiện object effects
+    activate DB
+    DB --> System: 11. Xác nhận effects applied
+    deactivate DB
+    
+    System -> DB: 12. Cập nhật object state
+    activate DB
+    DB --> System: 13. Xác nhận state updated
+    deactivate DB
+    
+    System -> DB: 14. Log cho quest tracking
+    activate DB
+    DB --> System: 15. Xác nhận logged
+    deactivate DB
+    
+    System --> UI: 16. Hiển thị activation feedback
+    UI --> Player: 17. Thấy object activated
+    UI --> Player: 18. Hiệu ứng xảy ra
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+

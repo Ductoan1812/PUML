@@ -1,0 +1,27 @@
+@startuml UC_Dieu_Khien_Nhan_Vat
+!theme plain
+
+title Use Case Diagram Chi Tiết - UC Điều Khiển Nhân Vật
+
+actor "Player" as P
+
+usecase "Điều khiển nhân vật" as MainUC
+usecase "Đọc Input" as UC1
+usecase "Áp dụng vận động" as UC2
+usecase "Update Animation" as UC3
+usecase "Lăn né" as UC4
+usecase "Bị khống chế" as UC5
+
+' Main relationship
+P --> MainUC
+
+' Include relationships
+MainUC ..> UC1 : <<include>>
+MainUC ..> UC2 : <<include>>
+MainUC ..> UC3 : <<include>>
+
+' Extend relationships
+UC4 ..> MainUC : <<extend>>
+UC5 ..> MainUC : <<extend>>
+
+@enduml

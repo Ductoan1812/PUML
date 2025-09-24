@@ -1,0 +1,72 @@
+@startuml Sequence_UC5_Nhiem_Vu_Ngay_Phu
+!theme plain
+
+title Biểu đồ Trình tự - UC Nhiệm Vụ Ngày & Phụ
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Đăng nhập hoặc trigger điều kiện
+activate UI
+UI -> System: 2. Kích hoạt special quest system
+activate System
+
+System -> DB: 3. Kiểm tra daily quest reset time
+activate DB
+DB --> System: 4. Trả về reset time info
+deactivate DB
+
+System -> DB: 5. Kiểm tra daily completed hôm nay
+activate DB
+DB --> System: 6. Trả về daily completion status
+deactivate DB
+
+alt daily đã completed
+    System --> UI: 7. Không có daily quest mới
+    UI --> Player: 8. Chờ đến ngày mai
+    
+else daily chưa completed
+    System -> DB: 9. Tạo daily quests mới
+    activate DB
+    DB --> System: 10. Xác nhận daily quests created
+    deactivate DB
+    
+    System -> DB: 11. Kiểm tra event quests active
+    activate DB
+    DB --> System: 12. Trả về event quest status
+    deactivate DB
+    
+    alt event đã kết thúc
+        System -> DB: 13. Xóa event quests
+        activate DB
+        DB --> System: 14. Xác nhận event quests removed
+        deactivate DB
+        
+        System --> UI: 15. Thông báo "Event đã kết thúc"
+        UI --> Player: 16. Chỉ có daily quests
+        
+    else event vẫn active
+        System -> DB: 17. Kiểm tra side quest unlock conditions
+        activate DB
+        DB --> System: 18. Trả về side quest availability
+        deactivate DB
+        
+        System -> DB: 19. Cập nhật available quests
+        activate DB
+        DB --> System: 20. Xác nhận quests updated
+        deactivate DB
+        
+        System --> UI: 21. Thông báo quests mới available
+        UI --> Player: 22. Daily + Event + Side quests
+        UI --> Player: 23. Nhiều lựa chọn quest
+    end
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

@@ -1,0 +1,36 @@
+@startuml Activity_UC2_Phat_Hien_Muc_Tieu
+!theme plain
+
+title Biểu đồ Hoạt động - UC Phát hiện Mục tiêu
+
+|Player|
+start
+:đã vượt qua kiểm tra CD & tài nguyên;
+
+|System|
+:quét vùng tấn công xung quanh nhân vật;
+:tìm các enemy trong tầm;
+
+if (tìm thấy mục tiêu?) then (yes)
+  :sắp xếp theo độ ưu tiên (gần nhất, yếu nhất);
+  :chọn mục tiêu chính;
+  :khóa mục tiêu và chuẩn bị tấn công;
+  
+  |Player|
+  :nhìn thấy mục tiêu được khóa;
+  :chuẩn bị tấn công;
+  
+else (no)
+  :hiển thị animation tấn công không trúng;
+  :tiêu tốn MP/stamina nhưng không gây damage;
+  
+  |Player|
+  :nhìn thấy tấn công trượt;
+  :mất tài nguyên nhưng không hiệu quả;
+endif
+
+stop
+
+@enduml
+
+

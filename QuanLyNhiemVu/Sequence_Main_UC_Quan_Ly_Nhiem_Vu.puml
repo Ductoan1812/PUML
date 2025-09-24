@@ -1,0 +1,81 @@
+@startuml Sequence_Main_UC_Quan_Ly_Nhiem_Vu
+!theme plain
+
+title Biểu đồ Trình tự Tổng quát - UC Quản Lý Nhiệm Vụ
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Tương tác với quest system
+activate UI
+UI -> System: 2. Quest management request
+activate System
+
+== UC "Nhận nhiệm vụ" (Include - khi tương tác NPC) ==
+alt player tương tác NPC
+    System -> System: 3. Thực hiện UC Nhận nhiệm vụ
+    System -> DB: 4. Process quest acceptance
+    activate DB
+    DB --> System: 5. Quest added to log
+    deactivate DB
+    
+    System --> UI: 6. Show quest accepted
+    UI --> Player: 7. Quest mới trong log
+end
+
+== UC "Theo dõi tiến độ" (Include - liên tục) ==
+System -> System: 8. Thực hiện UC Theo dõi tiến độ
+System -> DB: 9. Monitor quest progress
+activate DB
+DB --> System: 10. Progress updates
+deactivate DB
+
+System --> UI: 11. Update quest tracker
+UI --> Player: 12. Quest progress visible
+
+== Quest Completion Flow ==
+alt quest objectives completed
+    == UC "Hoàn thành nhiệm vụ" (Include - khi done) ==
+    System -> System: 13. Thực hiện UC Hoàn thành nhiệm vụ
+    System -> DB: 14. Validate quest completion
+    activate DB
+    DB --> System: 15. Quest ready to submit
+    deactivate DB
+    
+    System --> UI: 16. Show quest completable
+    UI --> Player: 17. Có thể nộp quest
+    
+    == UC "Phần thưởng" (Include - sau submit) ==
+    System -> System: 18. Thực hiện UC Phần thưởng
+    System -> DB: 19. Distribute rewards
+    activate DB
+    DB --> System: 20. Rewards given
+    deactivate DB
+    
+    System --> UI: 21. Show rewards received
+    UI --> Player: 22. Nhận EXP, gold, items
+end
+
+== UC "Nhiệm vụ ngày & phụ" (Extend - special conditions) ==
+alt đăng nhập hoặc trigger đặc biệt
+    System -> System: 23. Thực hiện UC Nhiệm vụ ngày & phụ
+    System -> DB: 24. Check special quest availability
+    activate DB
+    DB --> System: 25. Special quests available
+    deactivate DB
+    
+    System --> UI: 26. Show special quests
+    UI --> Player: 27. Daily/event/side quests available
+    
+else không có trigger đặc biệt
+    System --> UI: 28. Regular quest flow only
+    UI --> Player: 29. Chỉ có quest thường
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+

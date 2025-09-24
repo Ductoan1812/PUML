@@ -1,0 +1,46 @@
+@startuml Activity_UC4_Kich_Hoat_Su_Kien
+!theme plain
+
+title Biểu đồ Hoạt động - UC Kích Hoạt Sự Kiện
+
+|Player|
+start
+:bước vào trigger zone hoặc thực hiện hành động trigger;
+
+|System|
+:phát hiện player trong trigger zone;
+:kiểm tra điều kiện trigger (level, quest status, item);
+
+if (điều kiện trigger chưa đủ?) then (yes)
+  :event không được kích hoạt;
+  :chờ đến khi đủ điều kiện;
+  
+  |Player|
+  :không có gì xảy ra;
+  :cần đáp ứng điều kiện;
+  
+else (no)
+  if (event đã được trigger rồi?) then (yes)
+    :bỏ qua trigger;
+    :không thực hiện gì thêm;
+    
+    |Player|
+    :không có hiệu ứng;
+    
+  else (no)
+    :kích hoạt event script;
+    :thực hiện các hiệu ứng (cutscene, spawn enemies, weather change);
+    :cập nhật game state;
+    :thông báo cho player nếu cần;
+    :disable trigger nếu là one-time event;
+    
+    |Player|
+    :trải nghiệm event;
+    :thấy thay đổi trong game world;
+  endif
+endif
+
+stop
+
+@enduml
+

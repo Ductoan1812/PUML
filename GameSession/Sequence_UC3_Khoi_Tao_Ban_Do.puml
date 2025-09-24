@@ -1,0 +1,70 @@
+@startuml Sequence_UC3_Khoi_Tao_Ban_Do
+!theme plain
+
+title Biểu đồ Trình tự - UC Khởi tạo Bản đồ
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Chờ đợi render bản đồ
+activate UI
+UI -> System: 2. Bắt đầu khởi tạo bản đồ
+activate System
+
+System -> DB: 3. Lấy dữ liệu terrain
+activate DB
+DB --> System: 4. Trả về terrain data
+deactivate DB
+
+System -> System: 5. Render terrain và background
+
+System -> DB: 6. Lấy vị trí objects tĩnh
+activate DB
+DB --> System: 7. Trả về object positions
+deactivate DB
+
+System -> System: 8. Đặt các object tĩnh
+
+System -> DB: 9. Lấy vị trí NPC
+activate DB
+DB --> System: 10. Trả về NPC positions
+deactivate DB
+
+System -> System: 11. Spawn các NPC
+
+System -> DB: 12. Lấy cấu hình quái vật
+activate DB
+DB --> System: 13. Trả về monster config
+deactivate DB
+
+System -> System: 14. Spawn quái vật
+
+System -> DB: 15. Lấy vị trí vật phẩm
+activate DB
+
+alt render thành công
+    DB --> System: 16. Trả về item positions
+    deactivate DB
+    
+    System -> System: 17. Đặt vật phẩm trên bản đồ
+    System --> UI: 18. Thông báo render hoàn thành
+    UI --> Player: 19. Hiển thị bản đồ hoàn chỉnh
+    
+else lỗi render
+    DB --> System: 20. Lỗi data
+    deactivate DB
+    
+    System -> System: 21. Log lỗi để debug
+    System -> System: 22. Sử dụng bản đồ mặc định
+    System --> UI: 23. Thông báo dùng bản đồ mặc định
+    UI --> Player: 24. Hiển thị bản đồ mặc định
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

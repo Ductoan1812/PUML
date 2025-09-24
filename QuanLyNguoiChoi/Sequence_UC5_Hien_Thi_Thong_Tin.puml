@@ -1,0 +1,73 @@
+@startuml Sequence_UC5_Hien_Thi_Thong_Tin
+!theme plain
+
+title Biểu đồ Trình tự - UC Hiển Thị Thông Tin
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Mở character info panel
+activate UI
+UI -> System: 2. Yêu cầu load character info
+activate System
+
+System -> DB: 3. Lấy dữ liệu nhân vật
+activate DB
+
+alt load thành công
+    DB --> System: 4. Trả về character data
+    deactivate DB
+    
+    System -> DB: 5. Lấy equipment bonuses
+    activate DB
+    DB --> System: 6. Trả về equipment stats
+    deactivate DB
+    
+    System -> DB: 7. Lấy buff/debuff effects
+    activate DB
+    DB --> System: 8. Trả về active effects
+    deactivate DB
+    
+    System -> System: 9. Tính toán stats tổng hợp
+    
+    System --> UI: 10. Gửi complete character info
+    UI --> Player: 11. Hiển thị thông tin đầy đủ
+    UI --> Player: 12. Real-time stats tracking
+    
+else lỗi load dữ liệu
+    DB --> System: 13. Lỗi database
+    deactivate DB
+    
+    System -> DB: 14. Lấy cached data
+    activate DB
+    DB --> System: 15. Trả về backup data
+    deactivate DB
+    
+    System --> UI: 16. Thông báo "Đang cập nhật thông tin"
+    UI --> Player: 17. Hiển thị cached info
+    
+    System -> DB: 18. Retry load từ server
+    activate DB
+    
+    alt retry thành công
+        DB --> System: 19. Fresh data
+        deactivate DB
+        System --> UI: 20. Refresh UI với data mới
+        UI --> Player: 21. Thông tin được cập nhật
+        
+    else retry thất bại
+        DB --> System: 22. Vẫn lỗi
+        deactivate DB
+        System --> UI: 23. Giữ cached data
+        UI --> Player: 24. Thông tin có thể không chính xác
+    end
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

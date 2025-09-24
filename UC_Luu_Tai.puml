@@ -1,0 +1,28 @@
+@startuml UC_Luu_Tai
+!theme plain
+
+title Use Case Diagram Chi Tiết - UC Lưu&Tải
+
+actor "Player" as P
+
+usecase "Lưu&tải" as MainUC
+usecase "Serializa&deserialize" as UC1
+usecase "Đọc&ghi file" as UC2
+usecase "Tự động lưu" as UC3
+usecase "Backup dữ liệu" as UC4
+
+' Main relationship
+P --> MainUC
+
+' Include relationships
+MainUC ..> UC1 : <<include>>
+MainUC ..> UC2 : <<include>>
+MainUC ..> UC3 : <<include>>
+
+' Extend relationships
+UC4 ..> MainUC : <<extend>>
+
+@enduml
+
+
+

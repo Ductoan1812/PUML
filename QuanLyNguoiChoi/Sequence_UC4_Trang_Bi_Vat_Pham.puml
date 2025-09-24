@@ -1,0 +1,73 @@
+@startuml Sequence_UC4_Trang_Bi_Vat_Pham
+!theme plain
+
+title Biểu đồ Trình tự - UC Trang Bị Vật Phẩm
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Drag-drop/double-click equipment
+activate UI
+UI -> System: 2. Yêu cầu trang bị item
+activate System
+
+System -> DB: 3. Kiểm tra level requirement
+activate DB
+DB --> System: 4. Trả về level requirement
+deactivate DB
+
+System -> DB: 5. Kiểm tra class requirement
+activate DB
+DB --> System: 6. Trả về class requirement
+deactivate DB
+
+alt level không đủ
+    System --> UI: 7. Thông báo "Cần level X"
+    UI --> Player: 8. Hiển thị level requirement
+    
+else class không phù hợp
+    System --> UI: 9. Thông báo "Chỉ dành cho class Y"
+    UI --> Player: 10. Hiển thị class mismatch
+    
+else đủ điều kiện
+    System -> DB: 11. Kiểm tra slot đã có equipment
+    activate DB
+    DB --> System: 12. Trả về current equipment
+    deactivate DB
+    
+    alt có equipment cũ
+        System -> DB: 13. Gỡ bỏ equipment cũ
+        activate DB
+        DB --> System: 14. Xác nhận old item unequipped
+        deactivate DB
+    end
+    
+    System -> DB: 15. Trang bị item mới
+    activate DB
+    DB --> System: 16. Xác nhận new item equipped
+    deactivate DB
+    
+    System -> DB: 17. Cập nhật player stats
+    activate DB
+    DB --> System: 18. Xác nhận stats updated
+    deactivate DB
+    
+    System -> DB: 19. Cập nhật character appearance
+    activate DB
+    DB --> System: 20. Xác nhận appearance updated
+    deactivate DB
+    
+    System --> UI: 21. Thông báo equip thành công
+    UI --> Player: 22. Hiển thị item equipped
+    UI --> Player: 23. Stats thay đổi
+    UI --> Player: 24. Character appearance updated
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

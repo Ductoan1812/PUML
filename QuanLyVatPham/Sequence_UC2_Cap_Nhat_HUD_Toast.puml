@@ -1,0 +1,58 @@
+@startuml Sequence_UC2_Cap_Nhat_HUD_Toast
+!theme plain
+
+title Biểu đồ Trình tự - UC Cập Nhật HUD & Toast
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Có thay đổi trong inventory
+activate UI
+UI -> System: 2. Yêu cầu cập nhật UI
+activate System
+
+System -> DB: 3. Lấy số lượng vật phẩm mới
+activate DB
+DB --> System: 4. Trả về item counts
+deactivate DB
+
+System -> System: 5. Cập nhật HUD numbers
+
+System -> DB: 6. Lấy thông tin vật phẩm mới nhận
+activate DB
+DB --> System: 7. Trả về new item info
+deactivate DB
+
+System -> System: 8. Tạo toast notification
+
+System -> DB: 9. Lấy weight/capacity data
+activate DB
+DB --> System: 10. Trả về weight info
+deactivate DB
+
+System -> System: 11. Cập nhật weight bar
+
+alt cập nhật thành công
+    System --> UI: 12. Gửi tất cả UI updates
+    UI --> Player: 13. Hiển thị toast notification
+    UI --> Player: 14. Cập nhật HUD smooth
+    UI --> Player: 15. Highlight items mới
+    
+else lỗi cập nhật UI
+    System -> DB: 16. Lấy cached data
+    activate DB
+    DB --> System: 17. Trả về backup data
+    deactivate DB
+    
+    System --> UI: 18. Refresh toàn bộ UI
+    UI --> Player: 19. UI có delay nhưng chính xác
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
+

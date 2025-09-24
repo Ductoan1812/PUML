@@ -1,0 +1,45 @@
+@startuml Activity_UC5_Cap_Nhat_UI
+!theme plain
+
+title Biểu đồ Hoạt động - UC Cập Nhật Giao Diện
+
+|Player|
+start
+:đã hoàn thành một lượt tấn công;
+
+|System|
+:cập nhật HP/MP của nhân vật;
+:cập nhật HP của mục tiêu;
+:cập nhật cooldown của skill;
+:hiển thị combo counter nếu có;
+
+if (nhận được EXP?) then (yes)
+  :cập nhật EXP bar;
+  
+  |Player|
+  :nhìn thấy UI được cập nhật;
+  :thấy EXP tăng;
+  
+else (no)
+  |Player|
+  :nhìn thấy UI được cập nhật;
+  :không có EXP mới;
+endif
+
+if (UI bị lỗi hiển thị?) then (yes)
+  :sử dụng giá trị backup;
+  :log lỗi để debug sau;
+  
+  |Player|
+  :có thể thấy UI không chính xác;
+  
+else (no)
+  |Player|
+  :UI hiển thị chính xác;
+endif
+
+stop
+
+@enduml
+
+

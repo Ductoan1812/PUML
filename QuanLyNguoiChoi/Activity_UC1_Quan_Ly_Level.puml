@@ -1,0 +1,51 @@
+@startuml Activity_UC1_Quan_Ly_Level
+!theme plain
+
+title Biểu đồ Hoạt động - UC Quản Lý Level
+
+|Player|
+start
+:nhận EXP từ combat/quest;
+
+|System|
+:kiểm tra EXP hiện tại so với EXP cần thiết;
+
+if (đủ EXP để lên level?) then (yes)
+  :tự động nâng level lên 1;
+  :reset EXP về 0;
+  :tăng HP và MP tối đa;
+  :cộng thêm điểm kỹ năng;
+  :hiển thị thông báo "Level Up!";
+  
+  |Player|
+  :nhìn thấy level up effect;
+  :có điểm kỹ năng mới để phân phối;
+  
+  if (player phân phối điểm kỹ năng?) then (yes)
+    |System|
+    :cho phép phân phối điểm;
+    
+    |Player|
+    :phân phối điểm kỹ năng;
+    
+  else (no)
+    |System|
+    :để điểm kỹ năng ở trạng thái chờ;
+    
+    |Player|
+    :có thể phân phối sau;
+  endif
+  
+else (no)
+  :chỉ hiển thị thanh EXP progress;
+  :không có thay đổi level;
+  
+  |Player|
+  :thấy EXP tăng nhưng chưa đủ lên level;
+endif
+
+stop
+
+@enduml
+
+

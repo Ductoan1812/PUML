@@ -1,0 +1,48 @@
+@startuml Activity_UC2_Ap_Dung_Van_Dong
+!theme plain
+
+title Biểu đồ Hoạt động - UC Áp Dụng Vận Động
+
+|Player|
+start
+:input di chuyển đã được xử lý;
+
+|System|
+:tính toán vị trí mới dựa trên input;
+:kiểm tra collision với môi trường;
+
+if (có collision?) then (yes)
+  :dừng di chuyển;
+  :giữ nguyên vị trí hiện tại;
+  
+  |Player|
+  :nhân vật không di chuyển;
+  :thử hướng khác;
+  
+else (no)
+  :kiểm tra giới hạn bản đồ;
+  
+  if (vượt quá giới hạn?) then (yes)
+    :giới hạn vị trí trong phạm vi cho phép;
+    :cập nhật vị trí nhân vật;
+    :cập nhật camera theo nhân vật;
+    
+    |Player|
+    :nhân vật di chuyển đến biên bản đồ;
+    :tiếp tục điều khiển;
+    
+  else (no)
+    :cập nhật vị trí nhân vật;
+    :cập nhật camera theo nhân vật;
+    
+    |Player|
+    :nhân vật di chuyển tự do;
+    :tiếp tục điều khiển;
+  endif
+endif
+
+stop
+
+@enduml
+
+

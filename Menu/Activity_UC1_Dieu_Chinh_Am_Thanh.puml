@@ -1,0 +1,49 @@
+@startuml Activity_UC1_Dieu_Chinh_Am_Thanh
+!theme plain
+
+title Biểu đồ Hoạt động - UC Điều Chỉnh Âm Thanh
+
+|Player|
+start
+:mở menu settings và chọn tab Audio;
+
+|System|
+:hiển thị các slider âm thanh (Master, Music, SFX, Voice);
+
+|Player|
+:kéo slider để điều chỉnh volume;
+
+|System|
+:phát sample audio để test;
+:áp dụng thay đổi real-time;
+
+if (Audio device không khả dụng?) then (yes)
+  :hiển thị "Audio device error";
+  :sử dụng default audio settings;
+  
+  |Player|
+  :thấy thông báo lỗi device;
+  
+else (no)
+  :lưu settings vào config file;
+  
+  if (lỗi khi lưu settings?) then (yes)
+    :hiển thị "Cannot save settings";
+    :giữ nguyên settings cũ;
+    
+    |Player|
+    :thấy thông báo lỗi save;
+    :settings không được lưu;
+    
+  else (no)
+    :hiển thị thông báo "Settings saved";
+    
+    |Player|
+    :settings được lưu thành công;
+  endif
+endif
+
+stop
+
+@enduml
+

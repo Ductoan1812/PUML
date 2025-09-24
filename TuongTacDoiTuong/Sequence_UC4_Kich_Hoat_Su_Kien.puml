@@ -1,0 +1,75 @@
+@startuml Sequence_UC4_Kich_Hoat_Su_Kien
+!theme plain
+
+title Biểu đồ Trình tự - UC Kích Hoạt Sự Kiện
+
+actor Player
+participant "Giao diện" as UI
+participant "Hệ thống" as System
+database "DataBase" as DB
+
+Player -> UI: 1. Bước vào trigger zone
+activate UI
+UI -> System: 2. Phát hiện trigger
+activate System
+
+System -> DB: 3. Kiểm tra trigger conditions
+activate DB
+DB --> System: 4. Trả về condition status
+deactivate DB
+
+alt điều kiện chưa đủ
+    System --> UI: 5. Event không kích hoạt
+    UI --> Player: 6. Không có gì xảy ra
+    
+else event đã trigger
+    System --> UI: 7. Bỏ qua trigger
+    UI --> Player: 8. Không có hiệu ứng
+    
+else có thể trigger event
+    System -> DB: 9. Kích hoạt event script
+    activate DB
+    DB --> System: 10. Xác nhận event started
+    deactivate DB
+    
+    System -> System: 11. Thực hiện event effects
+    
+    alt cutscene event
+        System --> UI: 12. Play cutscene
+        UI --> Player: 13. Xem cutscene
+        
+    else spawn event
+        System -> DB: 14. Spawn enemies/objects
+        activate DB
+        DB --> System: 15. Xác nhận spawned
+        deactivate DB
+        
+        System --> UI: 16. Hiển thị spawned entities
+        UI --> Player: 17. Thấy enemies/objects mới
+        
+    else environment event
+        System -> DB: 18. Thay đổi weather/environment
+        activate DB
+        DB --> System: 19. Xác nhận environment changed
+        deactivate DB
+        
+        System --> UI: 20. Cập nhật environment
+        UI --> Player: 21. Thấy thay đổi môi trường
+    end
+    
+    System -> DB: 22. Cập nhật game state
+    activate DB
+    DB --> System: 23. Xác nhận state updated
+    deactivate DB
+    
+    System -> DB: 24. Disable trigger nếu one-time
+    activate DB
+    DB --> System: 25. Xác nhận trigger disabled
+    deactivate DB
+end
+
+deactivate System
+deactivate UI
+
+@enduml
+
