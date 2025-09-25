@@ -30,7 +30,7 @@ if (chọn Yes?) then (yes)
       |Player|
       :về main menu với game đã được lưu;
       
-    else (Don't Save)
+    elseif (chọn Don't Save?) then (Don't Save)
       |System|
       :dừng background music của gameplay;
       :giải phóng game world resources;

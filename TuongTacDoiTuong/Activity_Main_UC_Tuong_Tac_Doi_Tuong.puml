@@ -15,14 +15,14 @@ if (object là rương?) then (rương)
   |Player|
   :nhận vật phẩm từ rương;
   
-else (NPC)
+elseif (object là NPC?) then (NPC)
   :thực hiện UC "Hộp thoại";
   note right: Include - khi tương tác NPC
   
   |Player|
   :trò chuyện với NPC;
   
-else (interactive object)
+elseif (object là interactive object?) then (interactive)
   if (đủ điều kiện kích hoạt?) then (yes)
     :thực hiện UC "Kích hoạt vật phẩm";
     note right: Extend - khi có điều kiện
